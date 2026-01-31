@@ -4,8 +4,8 @@ import { ChevronLeft, ChevronRight, Cat, Sparkles } from "lucide-react";
 import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
 import { Background } from "./Background";
-import { NekoLoading } from "../components/NekoLoading";
-import { NekoAlertModal } from "../components/NekoAlertModal";
+import { NekoLoading } from "./NekoLoading";
+import { NekoAlertModal } from "./NekoAlertModal";
 
 interface KanjiCompound {
   word: string;

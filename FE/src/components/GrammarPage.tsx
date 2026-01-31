@@ -12,7 +12,7 @@ import {
   AlertTriangle,
   X,
 } from "lucide-react";
-import { NekoLoading } from "../components/NekoLoading";
+import { NekoLoading } from "./NekoLoading";
 import api from "../api/auth";
 import { MiniTestModal } from "./MiniTestModal";
 

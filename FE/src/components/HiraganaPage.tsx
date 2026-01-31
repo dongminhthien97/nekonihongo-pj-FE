@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Cat } from "lucide-react";
-import { HiraKataDetailModal } from "../components/HiraKataDetailModal";
-import { NekoLoading } from "../components/NekoLoading";
+import { HiraKataDetailModal } from "./HiraKataDetailModal";
+import { NekoLoading } from "./NekoLoading";
 import api from "../api/auth";
-import { NekoAlertModal } from "../components/NekoAlertModal";
+import { NekoAlertModal } from "./NekoAlertModal";
 import { LessonSelectModal } from "./LessonSelectModal";
 
-interface Katakana {
+interface Hiragana {
   id: number;
   character: string;
   romanji: string;
@@ -19,43 +19,43 @@ interface Lesson {
   title: string;
   description: string;
   total_characters: number;
-  characters: Katakana[];
+  characters: Hiragana[];
 }
 
-interface KatakanaPageProps {
+interface HiraganaPageProps {
   onNavigate: (page: string) => void;
 }
 
 const LESSONS_PER_PAGE = 12;
 const CHARACTERS_PER_PAGE = 12;
 
-export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
-  const [katakanaList, setKatakanaList] = useState<Katakana[]>([]);
+export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
+  const [hiraganaList, setHiraganaList] = useState<Hiragana[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   const [lessonPage, setLessonPage] = useState(1);
   const [characterPage, setCharacterPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selectedCharacter, setSelectedCharacter] = useState<Katakana | null>(
-    null
+  const [selectedCharacter, setSelectedCharacter] = useState<Hiragana | null>(
+    null,
   );
   const [showNoLessonModal, setShowNoLessonModal] = useState(false);
 
-  // Modal chọn nhiều lesson cho flashcard
+  // NEW: Modal chọn nhiều lesson cho flashcard
   const [showLessonSelectModal, setShowLessonSelectModal] = useState(false);
   const [selectedLessonIds, setSelectedLessonIds] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
 
-  // FETCH & NORMALIZE DATA (Sử dụng endpoint /katakana)
+  // FETCH & NORMALIZE DATA
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await api.get("/katakana");
+        const response = await api.get("/hiragana");
         let rawData =
-          response.data.data || response.data.katakana || response.data;
+          response.data.data || response.data.hiragana || response.data;
 
         if (Array.isArray(rawData)) {
           const normalizedData = rawData.map((item: any) => ({
@@ -67,7 +67,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
           }));
 
           await new Promise((resolve) => setTimeout(resolve, 600));
-          setKatakanaList(normalizedData);
+          setHiraganaList(normalizedData);
           setLessons(createLessons(normalizedData));
         } else {
           setError("Không thể đọc dữ liệu từ server.");
@@ -81,7 +81,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
     fetchData();
   }, []);
 
-  const createLessons = (data: Katakana[]): Lesson[] => {
+  const createLessons = (data: Hiragana[]): Lesson[] => {
     const lessonTitles = [
       "Nguyên âm",
       "Hàng KA",
@@ -101,7 +101,6 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
       "Âm ghép (Yoon)",
     ];
 
-    // Chia nhóm tương tự Hiragana
     const groups = [
       data.slice(0, 5),
       data.slice(5, 10),
@@ -124,14 +123,16 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
     return groups.map((chars, index) => ({
       id: index + 1,
       title: lessonTitles[index] || `Nhóm ${index + 1}`,
-      description: `Học các ký tự Katakana ${lessonTitles[index] || "nhóm"}`,
+      description: `Học các ký tự ${lessonTitles[index] || "nhóm"}`,
       total_characters: chars.length,
       characters: chars,
     }));
   };
 
+  // NEW: Handle start flashcard with multi-lesson selection
   const handleStartFlashcard = () => {
     setShowLessonSelectModal(true);
+    // Pre-select lesson hiện tại nếu đang xem detail
     if (selectedLesson) {
       setSelectedLessonIds(new Set([selectedLesson.id]));
     } else {
@@ -145,26 +146,37 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
       return;
     }
 
+    // 1. Lấy danh sách các bài học đã chọn
     const selectedLessons = lessons.filter((l) => selectedLessonIds.has(l.id));
+
+    // 2. Gom tất cả ký tự lại
     const rawCharacters = selectedLessons.flatMap((l) => l.characters);
 
-    // Lọc trùng lặp dựa trên mặt chữ
+    // 3. FIX TRIỆT ĐỂ: Lọc dựa trên mặt chữ (char.character)
+    // Thay vì dùng char.id, dùng char.character sẽ loại bỏ chữ "あ" trùng lặp
+    // kể cả khi chúng có ID khác nhau trong database.
     const uniqueCharacters = Array.from(
-      new Map(rawCharacters.map((char) => [char.character, char])).values()
+      new Map(rawCharacters.map((char) => [char.character, char])).values(),
     );
 
+    // 4. Trộn ngẫu nhiên (Dùng spread để đảm bảo tạo mảng mới)
     const shuffled = [...uniqueCharacters].sort(() => Math.random() - 0.5);
 
+    // 5. Chuẩn bị dữ liệu lưu trữ
     const flashcardData = {
-      type: "katakana",
-      lessonTitle: `Ôn ${selectedLessonIds.size} bài Katakana (${uniqueCharacters.length} ký tự)`,
+      type: "hiragana",
+      // Hiển thị tiêu đề chính xác số lượng thực tế sau khi lọc
+      lessonTitle: `Ôn ${selectedLessonIds.size} bài (${uniqueCharacters.length} ký tự)`,
       characters: shuffled,
     };
 
+    // 6. Lưu vào LocalStorage
     localStorage.setItem(
       "nekoFlashcardHiraKata",
-      JSON.stringify(flashcardData)
+      JSON.stringify(flashcardData),
     );
+
+    // 7. Điều hướng
     setShowLessonSelectModal(false);
     onNavigate("flashcard-hirakata");
   };
@@ -172,31 +184,33 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
   const totalLessonPages = Math.ceil(lessons.length / LESSONS_PER_PAGE);
   const currentLessons = lessons.slice(
     (lessonPage - 1) * LESSONS_PER_PAGE,
-    lessonPage * LESSONS_PER_PAGE
+    lessonPage * LESSONS_PER_PAGE,
   );
   const currentCharacters =
     selectedLesson?.characters.slice(
       (characterPage - 1) * CHARACTERS_PER_PAGE,
-      characterPage * CHARACTERS_PER_PAGE
+      characterPage * CHARACTERS_PER_PAGE,
     ) || [];
   const totalCharPages = Math.ceil(
-    (selectedLesson?.characters.length || 0) / CHARACTERS_PER_PAGE
+    (selectedLesson?.characters.length || 0) / CHARACTERS_PER_PAGE,
   );
 
   if (isLoading)
-    return <NekoLoading message="Mèo đang chuẩn bị bảng chữ Katakana..." />;
+    return <NekoLoading message="Mèo đang chuẩn bị bảng chữ cái..." />;
 
   return (
     <div className="min-h-screen">
       <main className="relative z-10 container mx-auto px-4 py-12">
+        {/* HEADER */}
         <div className="text-center mb-12">
           <h1 className="relative z-10 mb-12 md:mb-16">
             <span className="hero-section-title hero-text-glow">
-              Học Katakana
+              Học Hiragana
             </span>
           </h1>
         </div>
 
+        {/* DANH SÁCH BÀI HỌC HOẶC CHI TIẾT */}
         {!selectedLesson ? (
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -288,7 +302,10 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
                   <div className="text-center space-y-4">
                     <p
                       className="text-7xl font-light text-black group-hover:scale-110 transition-transform"
-                      style={{ fontFamily: "'Noto Sans JP', sans-serif" }}
+                      style={{
+                        fontFamily:
+                          "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif",
+                      }}
                     >
                       {char.character}
                     </p>
@@ -321,7 +338,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
         )}
       </main>
 
-      {/* MÈO FLASHCARD */}
+      {/* MÈO BAY – BẤM MỞ MODAL CHỌN LESSON */}
       <div className="fixed bottom-10 right-10 z-50 hidden lg:block">
         <div
           className="relative group cursor-pointer"
@@ -329,7 +346,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
         >
           <div className="tooltip-slide-out">
             <div className="colored-border-label">
-              <p className="text-xl font-bold">Ôn Flashcard Katakana! 🐾</p>
+              <p className="text-xl font-bold">Chọn bài để ôn Flashcard! 🐾</p>
               <div className="absolute bottom-0 right-8 translate-y-full">
                 <div className="triangle-down-pink"></div>
               </div>
@@ -343,7 +360,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
           <div className="circular-gradient-hover-glow"></div>
         </div>
       </div>
-
+      {/* MODAL CHỌN LESSON FLASHCARD */}
       <LessonSelectModal
         isOpen={showLessonSelectModal}
         onClose={() => setShowLessonSelectModal(false)}
@@ -351,60 +368,28 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
         selectedIds={selectedLessonIds}
         onSelectedChange={setSelectedLessonIds}
         onConfirm={handleConfirmFlashcard}
-        type="katakana"
+        type="hiragana"
       />
-
+      {/* MODALS KHÁC */}
       {selectedCharacter && (
         <HiraKataDetailModal
           character={{
             ...selectedCharacter,
             strokeOrder: selectedCharacter.stroke_order,
           }}
-          type="katakana"
+          type="hiragana"
           onClose={() => setSelectedCharacter(null)}
         />
       )}
-
       <NekoAlertModal
         isOpen={showNoLessonModal}
         onClose={() => setShowNoLessonModal(false)}
         title="Meow meow..."
-        message="Hãy chọn ít nhất 1 bài để ôn flashcard Katakana nhé!"
+        message="Hãy chọn ít nhất 1 bài để ôn flashcard nhé!"
       />
-
-      {/* TOÀN BỘ STYLE TỪ HIRAGANAPAGE – ĐỒNG BỘ 100% */}
+      {/* STYLE COPIED FROM VOCABULARYPAGE */}
       <style>{`
-        @keyframes fly {
-          0% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(2deg); }
-          100% { transform: translateY(0) rotate(-1deg); }
-        }
-
-        .responsive-circular-image-hover {
-          width: 10rem;
-          height: 10rem;
-          border-radius: 9999px;
-          object-fit: cover;
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-          animation: fly 6s ease-in-out infinite;
-          filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15));
-          transform: scale(1) rotate(0deg);
-          transition: all 300ms ease-in-out;
-          border-width: 4px;
-          border-style: solid;
-          border-color: #f9a8d4;
-        }
-
-        @media (min-width: 640px) { .responsive-circular-image-hover { width: 6rem; height: 6rem; } }
-        @media (min-width: 768px) { .responsive-circular-image-hover { width: 7rem; height: 7rem; } }
-        @media (min-width: 1024px) { .responsive-circular-image-hover { width: 8rem; height: 8rem; } }
-        @media (min-width: 1280px) { .responsive-circular-image-hover { width: 9rem; height: 9rem; } }
-
-        .group:hover .responsive-circular-image-hover {
-          transform: scale(1.1) rotate(12deg);
-        }
-
-             /* Mặc định cho thiết bị di động (grid-cols-2) */
+      /* Mặc định cho thiết bị di động (grid-cols-2) */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1381,8 +1366,8 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
             opacity: 1;
             transform: translateY(0);
           }
-        }
-      `}</style>
+        }   
+  `}</style>
     </div>
   );
 }

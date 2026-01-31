@@ -1,6 +1,6 @@
 // src/components/ExercisePage.tsx
 import { useState, useEffect, useRef } from "react";
-import { NekoLoading } from "../components/NekoLoading";
+import { NekoLoading } from "./NekoLoading";
 import {
   ArrowLeft,
   CheckCircle,

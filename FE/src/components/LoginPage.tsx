@@ -1,6 +1,6 @@
 // src/pages/LoginPage.tsx hoặc src/components/LoginPage.tsx
 import { useState } from "react";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useAuth } from "../context/AuthContext";
 import { Background } from "./Background";
 

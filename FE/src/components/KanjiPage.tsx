@@ -1,8 +1,8 @@
 // src/pages/KanjiPage.tsx
 import { useState, useEffect, useMemo } from "react";
 import { Search, ChevronLeft, ChevronRight, Cat } from "lucide-react";
-import { KanjiDetailModal } from "../components/KanjiDetailModal";
-import { NekoLoading } from "../components/NekoLoading";
+import { KanjiDetailModal } from "./KanjiDetailModal";
+import { NekoLoading } from "./NekoLoading";
 import api from "../api/auth";
 import { NekoAlertModal } from "./NekoAlertModal";
 
@@ -40,7 +40,7 @@ export function KanjiPage({
 }) {
   const [lessons, setLessons] = useState<KanjiLesson[]>([]);
   const [selectedLesson, setSelectedLesson] = useState<KanjiLesson | null>(
-    null
+    null,
   );
   const [lessonPage, setLessonPage] = useState(1);
   const [kanjiPage, setKanjiPage] = useState(1);
@@ -114,7 +114,7 @@ export function KanjiPage({
         lessonTitle: selectedLesson.title,
         compounds: selectedCompounds,
         allCompounds: allCompounds, // để học tiếp có thể lấy lại
-      })
+      }),
     );
 
     requestAnimationFrame(() => onNavigate("flashcard-kanji"));
@@ -125,7 +125,7 @@ export function KanjiPage({
   const currentLessons = useMemo(() => {
     return lessons.slice(
       (lessonPage - 1) * LESSONS_PER_PAGE,
-      lessonPage * LESSONS_PER_PAGE
+      lessonPage * LESSONS_PER_PAGE,
     );
   }, [lessons, lessonPage]);
 
@@ -151,7 +151,7 @@ export function KanjiPage({
             if (compound.word.includes(query)) {
               // Tìm tất cả Kanji trong lesson có trong từ ghép này
               const relatedKanji = lesson.kanjiList.filter((kj) =>
-                compound.word.includes(kj.kanji)
+                compound.word.includes(kj.kanji),
               );
 
               results.push({
@@ -206,8 +206,8 @@ export function KanjiPage({
         self.findIndex((r) =>
           r.type === "compound"
             ? r.word === result.word
-            : r.kanjiList[0].kanji === result.kanjiList[0].kanji
-        )
+            : r.kanjiList[0].kanji === result.kanjiList[0].kanji,
+        ),
     );
 
     return uniqueResults;
@@ -217,7 +217,7 @@ export function KanjiPage({
     if (!selectedLesson) return [];
     return selectedLesson.kanjiList.slice(
       (kanjiPage - 1) * KANJI_PER_PAGE,
-      kanjiPage * KANJI_PER_PAGE
+      kanjiPage * KANJI_PER_PAGE,
     );
   }, [selectedLesson, kanjiPage]);
 

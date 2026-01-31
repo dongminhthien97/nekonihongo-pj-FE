@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Cat, Sparkles } from "lucide-react";
-import { NekoLoading } from "../components/NekoLoading";
-import { NekoAlertModal } from "../components/NekoAlertModal";
+import { NekoLoading } from "./NekoLoading";
+import { NekoAlertModal } from "./NekoAlertModal";
 
 interface FlashcardItem {
   character: string;

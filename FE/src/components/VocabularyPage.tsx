@@ -2,8 +2,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { Search, ChevronLeft, ChevronRight, Cat, Sparkles } from "lucide-react";
 import api from "../api/auth";
-import { NekoLoading } from "../components/NekoLoading";
-import { NekoAlertModal } from "../components/NekoAlertModal";
+import { NekoLoading } from "./NekoLoading";
+import { NekoAlertModal } from "./NekoAlertModal";
 
 interface Word {
   japanese: string;

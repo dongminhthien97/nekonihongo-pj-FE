@@ -4,8 +4,8 @@ import { ChevronLeft, ChevronRight, Cat, Sparkles } from "lucide-react";
 import { Navigation } from "./Navigation";
 import { Footer } from "./Footer";
 import { Background } from "./Background";
-import { NekoLoading } from "../components/NekoLoading";
-import { NekoAlertModal } from "../components/NekoAlertModal";
+import { NekoLoading } from "./NekoLoading";
+import { NekoAlertModal } from "./NekoAlertModal";
 
 interface Word {
   japanese: string;
@@ -51,7 +51,7 @@ export function FlashcardPage({
       if (!data) {
         console.warn("Không có dữ liệu flashcard trong localStorage");
         setErrorMessage(
-          "Không có dữ liệu flashcard! Mèo đưa bạn về trang từ vựng nhé..."
+          "Không có dữ liệu flashcard! Mèo đưa bạn về trang từ vựng nhé...",
         );
         setShowErrorModal(true);
         return;
@@ -68,7 +68,7 @@ export function FlashcardPage({
       } catch (err) {
         setErrorTitle("Meow meow...");
         setErrorMessage(
-          "Dữ liệu flashcard bị lỗi rồi! Mèo đưa bạn về trang từ vựng nhé..."
+          "Dữ liệu flashcard bị lỗi rồi! Mèo đưa bạn về trang từ vựng nhé...",
         );
         setShowErrorModal(true);
       }
@@ -164,7 +164,7 @@ export function FlashcardPage({
     const allWords: Word[] = JSON.parse(allWordsJson);
     const learnedWords = new Set(words.map((w) => w.japanese));
     const remainingWords = allWords.filter(
-      (word) => !learnedWords.has(word.japanese)
+      (word) => !learnedWords.has(word.japanese),
     );
 
     let newWords: Word[] = [];
@@ -175,7 +175,7 @@ export function FlashcardPage({
 
       // HIỆN MODAL SIÊU DỄ THƯƠNG
       setContinueMessage(
-        "Mèo đã chọn 10 từ mới hoàn toàn khác lần trước cho bạn rồi đấy!"
+        "Mèo đã chọn 10 từ mới hoàn toàn khác lần trước cho bạn rồi đấy!",
       );
       setShowContinueMessage(true);
     } else if (remainingWords.length > 0) {
@@ -188,7 +188,7 @@ export function FlashcardPage({
       newWords.push(...oldWords);
 
       setContinueMessage(
-        "Chỉ còn ít từ mới thôi, mèo bù thêm vài từ cũ để bạn ôn lại nhé!"
+        "Chỉ còn ít từ mới thôi, mèo bù thêm vài từ cũ để bạn ôn lại nhé!",
       );
       setShowContinueMessage(true);
     } else {
