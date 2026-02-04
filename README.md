@@ -8,4 +8,10 @@
   Run `npm i` to install the dependencies.
 
   Run `npm run dev` to start the development server.
+
+  ## Environment variables (Vercel)
+
+  Set the following variable in Vercel (Project Settings → Environment Variables) so production builds call the deployed backend:
+
+  - `VITE_API_URL=https://nekonihongo-pj-1.onrender.com/api`
   
