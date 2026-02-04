@@ -1,7 +1,7 @@
 // src/pages/JlptGrammar.tsx
 import { useState, useEffect } from "react";
 import { NekoLoading } from "./NekoLoading";
-import api from "../api/auth";
+import api from "../api/api";
 import toast from "react-hot-toast";
 
 interface GrammarPattern {
@@ -53,7 +53,7 @@ export function JlptGrammar({ level, onNavigate }: JlptGrammarProps) {
             }
           } else {
             setPatterns([]);
-            toast("Dữ liệu không hợp lệ. Mèo đang kiểm tra lại... 😿", {
+            toast("Dữ liệu không hợp lềE Mèo đang kiểm tra lại... 😿", {
               icon: "😿",
               duration: 2000,
             });
@@ -64,7 +64,7 @@ export function JlptGrammar({ level, onNavigate }: JlptGrammarProps) {
             setPatterns(res.data);
           } else {
             setPatterns([]);
-            toast("Dữ liệu không hợp lệ. Mèo đang kiểm tra lại... 😿", {
+            toast("Dữ liệu không hợp lềE Mèo đang kiểm tra lại... 😿", {
               icon: "😿",
               duration: 2000,
             });
@@ -75,11 +75,11 @@ export function JlptGrammar({ level, onNavigate }: JlptGrammarProps) {
 
         if (err.response?.status === 401) {
           alert(
-            "Phiên đăng nhập của bạn đã hết hạn!\nMèo sẽ đưa bạn về trang đăng nhập ngay đây 😿",
+            "Phiên đăng nhập của bạn đã hết hạn!\nMèo sẽ đưa bạn vềEtrang đăng nhập ngay đây 😿",
           );
 
           toast.error(
-            "Phiên đăng nhập hết hạn rồi... Mèo đưa bạn về đăng nhập nhé 😿",
+            "Phiên đăng nhập hết hạn rồi... Mèo đưa bạn vềEđăng nhập nhé 😿",
             {
               duration: 2000,
             },
@@ -118,7 +118,7 @@ export function JlptGrammar({ level, onNavigate }: JlptGrammarProps) {
 
   if (isLoading)
     return (
-      <NekoLoading message={`Mèo đang chuẩn bị ngữ pháp ${levelUpper}...`} />
+      <NekoLoading message={`Mèo đang chuẩn bềEngữ pháp ${levelUpper}...`} />
     );
 
   return (
@@ -131,7 +131,7 @@ export function JlptGrammar({ level, onNavigate }: JlptGrammarProps) {
         {/* Chọn ngày */}
         <div className="text-center mb-10">
           <p className="text-white text-3xl mb-4">
-            Học theo ngày – 5 cấu trúc mỗi ngày
+            Học theo ngày  E5 cấu trúc mỗi ngày
           </p>
           <div className="flex-center-group">
             <button
@@ -139,7 +139,7 @@ export function JlptGrammar({ level, onNavigate }: JlptGrammarProps) {
               disabled={selectedDay === 1}
               className="btn-primary"
             >
-              ← Ngày trước
+              ↁENgày trước
             </button>
 
             <span className="btn-secondary">
@@ -152,7 +152,7 @@ export function JlptGrammar({ level, onNavigate }: JlptGrammarProps) {
               disabled={selectedDay === totalDays}
               className="btn-primary"
             >
-              Ngày sau →
+              Ngày sau ↁE
             </button>
           </div>
         </div>

@@ -9,7 +9,7 @@ import {
   GripVertical,
   AlertCircle,
 } from "lucide-react";
-import api from "../api/auth";
+import api from "../api/api";
 
 // --- INTERFACES ---
 interface Question {
@@ -55,7 +55,7 @@ const renderWithFurigana = (text: string) => {
   }
 
   const furiganaRegex =
-    /([\u4e00-\u9faf\u3005\u30a0-\u30ff\u3040-\u309f]+)[(（]([\u3040-\u309f\u30a0-\u30ff\s]+)[)）]/g;
+    /([\u4e00-\u9faf\u3005\u30a0-\u30ff\u3040-\u309f]+)[(�E�E([\u3040-\u309f\u30a0-\u30ff\s]+)[)�E�]/g;
 
   const parts: JSX.Element[] = [];
   let lastIndex = 0;
@@ -97,7 +97,7 @@ const renderWithFurigana = (text: string) => {
 
 // --- HELPER: Parse Multiple Choice Options ---
 const parseMultipleChoiceOptions = (text: string) => {
-  const bracketRegex = /（(.*?)）|［(.*?)］/g;
+  const bracketRegex = /�E�E.*?)�E�|�E�(.*?)�E�/g;
   const matches = [];
   let match;
 
@@ -105,7 +105,7 @@ const parseMultipleChoiceOptions = (text: string) => {
     const content = match[1] || match[2];
     if (content) {
       const options = content
-        .split(/[、,]/)
+        .split(/[、E]/)
         .map((opt) => opt.trim())
         .filter(Boolean);
       if (options.length >= 2) {
@@ -182,7 +182,7 @@ export function MiniTestModal({
 
     if (!lessonId || lessonId <= 0 || !userId || userId <= 0) {
       if (onError) {
-        onError("ID bài học hoặc người dùng không hợp lệ", "validation");
+        onError("ID bài học hoặc người dùng không hợp lềE, "validation");
       }
       return;
     }
@@ -225,18 +225,18 @@ export function MiniTestModal({
               const lines = q.raw_text.split("\n");
               for (const line of lines) {
                 if (
-                  line.includes("→") ||
-                  line.includes("／") ||
+                  line.includes("ↁE) ||
+                  line.includes("�E�E) ||
                   line.includes("/")
                 ) {
-                  const questionPart = line.split("→")[0] || line;
+                  const questionPart = line.split("ↁE)[0] || line;
                   const words = questionPart
-                    .replace("例：", "")
-                    .replace("例", "")
+                    .replace("例！E, "")
+                    .replace("侁E, "")
                     .trim()
-                    .split(/[／\/]/)
+                    .split(/[�E�\/]/)
                     .map((w) => w.trim())
-                    .filter((w) => w && !w.includes("例") && !w.includes("→"));
+                    .filter((w) => w && !w.includes("侁E) && !w.includes("ↁE));
 
                   if (words.length > 0) {
                     initialRearrange[q.id] = words;
@@ -250,14 +250,14 @@ export function MiniTestModal({
         } else {
           if (onError) {
             onError(
-              "Không thể tải câu hỏi. Dữ liệu không đúng định dạng.",
+              "Không thềEtải câu hỏi. Dữ liệu không đúng định dạng.",
               "server",
             );
           }
         }
       } catch (err: any) {
         if (onError) {
-          onError("Không thể tải câu hỏi. Vui lòng thử lại sau.", "server");
+          onError("Không thềEtải câu hỏi. Vui lòng thử lại sau.", "server");
         }
       } finally {
         setLoading(false);
@@ -329,7 +329,7 @@ export function MiniTestModal({
           });
         });
       } else if (q.question_type === "fill_blank") {
-        const blankRegex = /（\s*）|＿{2,}|_{2,}|【\s*】|\[ \]|___+/g;
+        const blankRegex = /�E�Es*�E�|�E�{2,}|_{2,}|【\s*】|\[ \]|___+/g;
         const lines = q.raw_text.split("\n").filter((l) => l.trim());
 
         lines.forEach((line, lineIdx) => {
@@ -539,7 +539,7 @@ export function MiniTestModal({
           return;
         } else {
           errorMsg =
-            errorData.message || "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.";
+            errorData.message || "Dữ liệu không hợp lềE Vui lòng kiểm tra lại.";
           errorTyp = "validation";
         }
       } else if (e.response?.status === 401) {
@@ -600,7 +600,7 @@ export function MiniTestModal({
       return (
         <div className="rearrange-container">
           <div className="rearrange-instruction">
-            <p>Kéo và thả các từ dưới đây để sắp xếp thành câu đúng:</p>
+            <p>Kéo và thả các từ dưới đây đềEsắp xếp thành câu đúng:</p>
           </div>
           <div className="rearrange-words">
             {items.map((word, index) => (
@@ -639,7 +639,7 @@ export function MiniTestModal({
       <div className="question-content-container">
         {lines.map((line, lineIdx) => {
           if (question.question_type === "fill_blank") {
-            const blankRegex = /（\s*）|＿{2,}|_{2,}|【\s*】|\[ \]|___+/g;
+            const blankRegex = /�E�Es*�E�|�E�{2,}|_{2,}|【\s*】|\[ \]|___+/g;
 
             const parts: Array<
               | { type: "text"; content: string }
@@ -898,10 +898,10 @@ export function MiniTestModal({
                                 {q.question_type === "fill_blank"
                                   ? "Điền từ thích hợp vào ô trống."
                                   : q.question_type === "multiple_choice"
-                                    ? "Chọn đáp án đúng trong các ngoặc tròn (...) hoặc ngoặc vuông ［...］."
+                                    ? "Chọn đáp án đúng trong các ngoặc tròn (...) hoặc ngoặc vuông �E�...�E�."
                                     : q.question_type === "rearrange" ||
                                         q.question_type === "reorder"
-                                      ? "Kéo và thả các từ để sắp xếp thành câu đúng."
+                                      ? "Kéo và thả các từ đềEsắp xếp thành câu đúng."
                                       : "Sắp xếp lại các từ/cụm từ."}
                               </p>
                               <p className="hint-points">
@@ -947,7 +947,7 @@ export function MiniTestModal({
               {submitting ? (
                 <div className="submit-spinner" />
               ) : timeLeft <= 0 ? (
-                "Hết giờ"
+                "Hết giềE
               ) : (
                 <>
                   <span>Nộp bài</span>

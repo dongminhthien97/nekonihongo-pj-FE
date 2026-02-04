@@ -1,7 +1,7 @@
 // VocabularyPage.tsx
 import { useState, useMemo, useEffect } from "react";
 import { Search, ChevronLeft, ChevronRight, Cat, Sparkles } from "lucide-react";
-import api from "../api/auth";
+import api from "../api/api";
 import { NekoLoading } from "./NekoLoading";
 import { NekoAlertModal } from "./NekoAlertModal";
 
@@ -37,14 +37,14 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   const LESSONS_PER_PAGE = 12;
   const WORDS_PER_PAGE = 12;
 
-  // LẤY DỮ LIỆU THẬT TỪ BACKEND
+  // LẤY DỮ LIềE THẬT TỪ BACKEND
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await api.get("/vocabulary/lessons");
         const serverLessons = res.data.data || [];
 
-        // Đảm bảo loading hiện ít nhất 1.5 giây – trải nghiệm mượt mà, sang trọng
+        // Đảm bảo loading hiện ít nhất 1.5 giây  Etrải nghiệm mượt mà, sang trọng
         await new Promise((resolve) => setTimeout(resolve, 600));
 
         setLessons(serverLessons);
@@ -52,22 +52,22 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
         console.error("Lỗi khi tải từ vựng:", err);
 
         if (err.response?.status === 401) {
-          alert("Phiên đăng nhập hết hạn! Mèo đưa bạn về trang đăng nhập nhé");
+          alert("Phiên đăng nhập hết hạn! Mèo đưa bạn vềEtrang đăng nhập nhé");
 
           // Xóa hết dữ liệu đăng nhập
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("nekoUser");
 
-          // Chuyển về login
+          // Chuyển vềElogin
           onNavigate("login");
           return;
         }
 
-        // Các lỗi khác (500, mạng, v.v.) → fallback local data + thông báo
+        // Các lỗi khác (500, mạng, v.v.) ↁEfallback local data + thông báo
         setLessons(localVocabularyLessons || []);
         setError(
-          "Không thể kết nối đến server! Mèo đã tải dữ liệu mẫu cho bạn rồi",
+          "Không thềEkết nối đến server! Mèo đã tải dữ liệu mẫu cho bạn rồi",
         );
       } finally {
         // Đảm bảo loading tắt sau đúng 1.5s dù có lỗi hay không
@@ -85,7 +85,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
       setShowNoLessonModal(true);
       return;
     }
-    // === CÓ BÀI HỌC + CÓ TỪ → VÀO FLASHCARD NGAY! ===
+    // === CÁEBÀI HỌC + CÁETỪ ↁEVÀO FLASHCARD NGAY! ===
     let selectedWords = [...selectedLesson.words];
 
     // Random 10 từ nếu bài có nhiều hơn 10 từ
@@ -95,30 +95,30 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
         .slice(0, 10);
     }
 
-    // === XÁC ĐỊNH TRANG GỐC ĐỂ QUAY VỀ SAU KHI HỌC XONG ===
-    // Thay đổi giá trị này tùy theo trang bạn đang ở:
-    // - VocabularyN5 → "vocabulary-n5"
-    // - GrammarN5ListPage → "grammar-n5"
-    // - KanjiN5 → "kanji-n5"
-    // - Exercise → "exercise"
-    const originPage = "vocabulary"; // ← Thay bằng route đúng của trang hiện tại
+    // === XÁC ĐỊNH TRANG GỐC ĐềEQUAY VỀ SAU KHI HỌC XONG ===
+    // Thay đổi giá trềEnày tùy theo trang bạn đang ềE
+    // - VocabularyN5 ↁE"vocabulary-n5"
+    // - GrammarN5ListPage ↁE"grammar-n5"
+    // - KanjiN5 ↁE"kanji-n5"
+    // - Exercise ↁE"exercise"
+    const originPage = "vocabulary"; // ↁEThay bằng route đúng của trang hiện tại
 
     // Lưu data flashcard chính (10 từ)
     const flashcardData = {
       lessonId: selectedLesson.id,
       lessonTitle: selectedLesson.title,
       words: selectedWords,
-      originPage: originPage, // ← THÊM ĐỂ BIẾT QUAY VỀ ĐÂU
+      originPage: originPage, // ↁETHÊM ĐềEBIẾT QUAY VỀ ĐÂU
     };
 
     localStorage.setItem("nekoFlashcardData", JSON.stringify(flashcardData));
 
-    // Lưu tất cả từ trong bài để học tiếp (nếu cần)
+    // Lưu tất cả từ trong bài đềEhọc tiếp (nếu cần)
     localStorage.setItem(
       "nekoFlashcardAllWords",
       JSON.stringify({
         words: selectedLesson.words,
-        originPage: originPage, // ← Cũng thêm để đồng bộ (tùy chọn)
+        originPage: originPage, // ↁECũng thêm đềEđồng bềE(tùy chọn)
       }),
     );
     requestAnimationFrame(() => onNavigate("flashcard"));
@@ -136,7 +136,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
         return [];
       }
     };
-    // Vì useMemo không hỗ trợ async trực tiếp → dùng trick
+    // Vì useMemo không hềEtrợ async trực tiếp ↁEdùng trick
     let results: { word: Word; lessonId: number }[] = [];
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -191,24 +191,24 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
         {/* Header + Search */}
         <div className="text-center mb-12">
           <h1 className="relative z-10 mb-12 md:mb-16">
-            {/* KHUNG ĐEN MỜ + VIỀN NEON + TRONG SUỐT CÓ THỂ ĐIỀU CHỈNH */}
+            {/* KHUNG ĐEN MềE+ VIỀN NEON + TRONG SUỐT CÁETHềEĐIỀU CHềEH */}
             <div className="absolute inset-0 -z-10 rounded-3xl" />
-            {/* CHỮ CHÍNH – ĐEN ĐẬM + GLOW TRẮNG */}
+            {/* CHỮ CHÍNH  EĐEN ĐẬM + GLOW TRẮNG */}
             <span className="hero-section-title hero-text-glow">
               Từ Vựng Tiếng Nhật
             </span>
           </h1>
-          {/* THANH TÌM KIẾM SIÊU ĐỈNH – VIỀN NỔI BẬT + TEXT CĂN GIỮA */}
+          {/* THANH TÌM KIẾM SIÊU ĐềEH  EVIỀN NỔI BẬT + TEXT CāE GIỮA */}
           <div className="max-w-4xl mx-auto">
             <div className="relative group ">
-              {/* Thanh input chính – nền trắng mờ, viền sáng, bóng đẹp */}
+              {/* Thanh input chính  Enền trắng mềE viền sáng, bóng đẹp */}
               <div className="glass-effect-container animate-fade-in">
                 {/* ICON TÌM KIẾM SIÊU NỔI */}
                 <div className="element-overlay-positioned">
                   <Search className="icon-centered-left" strokeWidth={5} />
                 </div>
 
-                {/* INPUT – TEXT CĂN GIỮA HOÀN HẢO */}
+                {/* INPUT  ETEXT CāE GIỮA HOÀN HẢO */}
                 <input
                   type="text"
                   placeholder="Tìm từ vựng... (猫, neko, mèo, bài 10...)"
@@ -221,7 +221,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
                 />
               </div>
             </div>
-            {/* Kết quả tìm kiếm – CARD SIÊU TO */}
+            {/* Kết quả tìm kiếm  ECARD SIÊU TO */}
             {searchResults.length > 0 && (
               <div className="mt-10 max-w-4xl mx-auto space-y-4 animate-fade-in">
                 <p className="pulsing-centered-text">
@@ -271,7 +271,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
                     className="responsive-hover-card animate-fade-in"
                   >
                     <div className="text-gray-800 animate-pulse-soft">
-                      {/* MÈO SIÊU DỄ THƯƠNG – MẶC ĐỊNH CHO MỌI BÀI! */}
+                      {/* MÁE SIÊU DềETHƯƠNG  EMẶC ĐỊNH CHO MỌI BÀI! */}
                       <Cat className="relative w-full h-full" />
                     </div>
                     <div className="text-center py-6">
@@ -287,7 +287,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
                 ))}
               </div>
 
-              {/* Phân trang bài học — đồng bộ với style phân trang từ vựng */}
+              {/* Phân trang bài học  Eđồng bềEvới style phân trang từ vựng */}
               {totalLessonPages > 1 && (
                 <div className="flex justify-center items-center gap-6 mt-12">
                   <button
@@ -331,7 +331,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
             </div>
           </>
         ) : (
-          /* Trong bài học – từ vựng + phân trang */
+          /* Trong bài học  Etừ vựng + phân trang */
           <div className="max-w-7xl mx-auto">
             <div className="flex  items-center justify-right mb-10">
               <div className="w-full  flex flex-col items-center gap-4">
@@ -342,7 +342,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
                   onClick={() => setSelectedLesson(null)}
                   className="button"
                 >
-                  ← Tất cả bài học
+                  ↁETất cả bài học
                 </button>
               </div>
             </div>
@@ -407,13 +407,13 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
           </div>
         )}
       </main>
-      {/* MÈO BAY SIÊU DỄ THƯƠNG – HOVER HIỆN BONG BÓNG CHAT + CLICK VÀO HỌC FLASHCARD */}
+      {/* MÁE BAY SIÊU DềETHƯƠNG  EHOVER HIềE BONG BÓNG CHAT + CLICK VÀO HỌC FLASHCARD */}
       <div className="fixed bottom-10 right-10 z-50 hidden lg:block">
         <div
           className="relative group cursor-pointer"
           onClick={handleStartFlashcard}
         >
-          {/* Bong bóng chat – chỉ hiện khi hover */}
+          {/* Bong bóng chat  EchềEhiện khi hover */}
           <div className="tooltip-slide-out">
             <div className="colored-border-label">
               <p className="text-xl font-bold drop-shadow-md">
@@ -428,7 +428,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
             </div>
           </div>
 
-          {/* Mèo bay – có hiệu ứng hover nhẹ */}
+          {/* Mèo bay  Ecó hiệu ứng hover nhẹ */}
           <img
             src="https://i.pinimg.com/1200x/8c/98/00/8c9800bb4841e7daa0a3db5f7db8a4b7.jpg"
             alt="Flying Neko"
@@ -573,10 +573,10 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
 /* Định nghĩa keyframes cho hiệu ứng pulse */
 @keyframes pulse {
   0%, 100% {
-    opacity: 1; /* Bắt đầu và kết thúc với độ mờ đầy đủ */
+    opacity: 1; /* Bắt đầu và kết thúc với đềEmềEđầy đủ */
   }
   50% {
-    opacity: 0.4; /* Giảm độ mờ xuống 40% ở giữa chu kỳ */
+    opacity: 0.4; /* Giảm đềEmềExuống 40% ềEgiữa chu kỳ */
   }
 }
       .bold-subheading-style {
@@ -601,7 +601,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   position: relative;
   
   /* bg-white/80 */
-  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mờ 80% */
+  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mềE80% */
   
   /* rounded-[32px] */
   border-radius: 2rem; /* 32px */
@@ -687,7 +687,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
       .glassmorphism-card {
   /* bg-white */
   background-color: #ffffff;
-  /* rounded-[32px] (Ưu tiên giá trị tùy chỉnh này) */
+  /* rounded-[32px] (Ưu tiên giá trềEtùy chỉnh này) */
   border-radius: 2rem; /* 32px */
   
   /* p-8 */
@@ -729,11 +729,11 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   margin-top: 0.5rem; /* 8px */
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Sử dụng text-shadow để tạo hiệu ứng glow */
+  /* Sử dụng text-shadow đềEtạo hiệu ứng glow */
   text-shadow: 
-    /* Lớp bóng mờ trắng làm nền để chữ sáng hơn */
+    /* Lớp bóng mềEtrắng làm nền đềEchữ sáng hơn */
     0 0 3px rgba(255, 255, 255, 0.9),
-    /* Các lớp bóng mờ màu neon chính */
+    /* Các lớp bóng mềEmàu neon chính */
     0 0 8px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 12px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 16px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
@@ -750,16 +750,16 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   color: #ffffff; 
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Tập trung vào các lớp bóng mờ màu neon để làm nổi bật chữ trắng */
+  /* Tập trung vào các lớp bóng mềEmàu neon đềElàm nổi bật chữ trắng */
   text-shadow: 
-    /* Lớp bóng mờ trắng nhẹ làm nền */
+    /* Lớp bóng mềEtrắng nhẹ làm nền */
     0 0 4px rgba(255, 255, 255, 0.8),
-    /* Các lớp bóng mờ màu neon chính */
+    /* Các lớp bóng mềEmàu neon chính */
     0 0 10px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 15px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 20px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
     
-  /* drop-shadow-lg bị loại bỏ do không phù hợp với hiệu ứng glow của chữ trắng */
+  /* drop-shadow-lg bềEloại bềEdo không phù hợp với hiệu ứng glow của chữ trắng */
   filter: none; /* Đảm bảo không có drop-shadow */
 }
       
@@ -775,11 +775,11 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   margin-top: 0.25rem; /* 4px */
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Sử dụng text-shadow để tạo hiệu ứng glow */
+  /* Sử dụng text-shadow đềEtạo hiệu ứng glow */
   text-shadow: 
-    /* Lớp bóng mờ trắng làm nền */
+    /* Lớp bóng mềEtrắng làm nền */
     0 0 2px rgba(255, 255, 255, 0.8),
-    /* Các lớp bóng mờ màu neon */
+    /* Các lớp bóng mềEmàu neon */
     0 0 5px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 8px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 12px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
@@ -796,16 +796,16 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   color: #ffffff; /* Giữ nguyên màu chữ trắng */
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Sử dụng text-shadow để tạo hiệu ứng glow, không dùng filter: drop-shadow */
+  /* Sử dụng text-shadow đềEtạo hiệu ứng glow, không dùng filter: drop-shadow */
   text-shadow: 
-    /* Lớp bóng mờ trắng làm nền */
+    /* Lớp bóng mềEtrắng làm nền */
     0 0 4px rgba(255, 255, 255, 0.8),
-    /* Các lớp bóng mờ màu neon */
+    /* Các lớp bóng mềEmàu neon */
     0 0 10px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 15px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 20px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
     
-    /* Có thể thêm các màu khác nếu muốn đầy đủ dải cầu vồng */
+    /* Có thềEthêm các màu khác nếu muốn đầy đủ dải cầu vồng */
 }
       .full-gradient-hover-effect {
   /* absolute */
@@ -845,7 +845,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   position: relative;
   
   /* bg-white/80 */
-  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mờ 80% */
+  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mềE80% */
   
   /* border */
   border-width: 1px; 
@@ -882,7 +882,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
     /* shadow-2xl */
     0 25px 50px -12px rgba(0, 0, 0, 0.25), 
     /* hover:shadow-pink-500/30 */
-    0 0 15px rgba(236, 72, 153, 0.3); /* Giá trị gần đúng cho shadow màu hồng */
+    0 0 15px rgba(236, 72, 153, 0.3); /* Giá trềEgần đúng cho shadow màu hồng */
 }
       .transparent-search-input {
   /* w-full */
@@ -917,12 +917,12 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
 
 /* focus:outline-none */
 .transparent-search-input:focus {
-  outline: 0; /* Loại bỏ viền focus mặc định của trình duyệt */
+  outline: 0; /* Loại bềEviền focus mặc định của trình duyệt */
 }
 
 /* placeholder:text-white/70 và placeholder:font-bold */
 .transparent-search-input::placeholder {
-  color: rgba(255, 255, 255, 0.7); /* Màu trắng mờ 70% */
+  color: rgba(255, 255, 255, 0.7); /* Màu trắng mềE70% */
   font-weight: 700; /* In đậm */
 }
       .element-overlay-positioned {
@@ -939,7 +939,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   transform: translateY(-50%); /* Căn giữa dọc */
   
   /* pointer-events-none */
-  pointer-events: none; /* NGĂN CHẶN tương tác chuột/chạm */
+  pointer-events: none; /* NGāE CHẶN tương tác chuột/chạm */
   
   /* z-20 */
   z-index: 20; 
@@ -955,7 +955,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   top: 50%;
   
   /* -translate-y-1/2 */
-  transform: translateY(-50%); /* Dùng để căn giữa dọc (Vertical centering) */
+  transform: translateY(-50%); /* Dùng đềEcăn giữa dọc (Vertical centering) */
   
   /* w-12 */
   width: 3rem; /* 48px */
@@ -979,10 +979,10 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   position: relative;
   
   /* bg-black/50 */
-  background-color: rgba(0, 0, 0, 0.5); /* Nền đen mờ 50% */
+  background-color: rgba(0, 0, 0, 0.5); /* Nền đen mềE50% */
   
   /* backdrop-blur-2xl */
-  backdrop-filter: blur(40px); /* Hiệu ứng làm mờ nền phía sau */
+  backdrop-filter: blur(40px); /* Hiệu ứng làm mềEnền phía sau */
   
   /* rounded-full */
   border-radius: 9999px; 
@@ -991,13 +991,13 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   border-width: 4px; 
   
   /* border-white/40 */
-  border-color: rgba(255, 255, 255, 0.4); /* Viền trắng mờ 40% */
+  border-color: rgba(255, 255, 255, 0.4); /* Viền trắng mềE40% */
   
   /* shadow-2xl */
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* Bóng lớn */
   
   /* ring-8 ring-white/10 (Tạo hiệu ứng "ring" bằng box-shadow inset hoặc outline/viền thứ hai) */
-  /* Sử dụng box-shadow để mô phỏng hiệu ứng ring */
+  /* Sử dụng box-shadow đềEmô phỏng hiệu ứng ring */
   box-shadow: 
     0 25px 50px -12px rgba(0, 0, 0, 0.25), /* Shadow-2xl */
     0 0 0 8px rgba(255, 255, 255, 0.1); /* Ring 8px, màu trắng 10% */
@@ -1006,8 +1006,8 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   overflow: hidden; 
 }
 
-/* LƯU Ý QUAN TRỌNG VỀ backdrop-filter:
-Để đảm bảo backdrop-filter hoạt động, phần tử này phải có độ trong suốt (opacity < 1) hoặc màu nền sử dụng rgba() (như bg-black/50 đã làm).
+/* LƯU ÁEQUAN TRỌNG VỀ backdrop-filter:
+ĐềEđảm bảo backdrop-filter hoạt động, phần tử này phải có đềEtrong suốt (opacity < 1) hoặc màu nền sử dụng rgba() (như bg-black/50 đã làm).
 */
       .pulsing-gradient-aura {
   /* absolute */
@@ -1034,7 +1034,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   /* z-index */
   z-index: -1; /* Đảm bảo hiệu ứng nằm dưới nội dung chính */
   
-  /* transition (để chuyển đổi opacity mượt mà) */
+  /* transition (đềEchuyển đổi opacity mượt mà) */
   transition: opacity 150ms ease-in-out;
   
   /* animate-border-spin */
@@ -1080,13 +1080,13 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   
   /* animate-border-spin (CSS Tùy chỉnh: Tạo keyframes và áp dụng) */
   animation: border-spin 3s linear infinite; 
-  z-index: -1; /* Thường được dùng để đặt lớp này dưới nội dung chính */
+  z-index: -1; /* Thường được dùng đềEđặt lớp này dưới nội dung chính */
 }
 
 /* group-focus-within:opacity-100 (Sử dụng selector lồng nhau) */
 /* Áp dụng cho phần tử mẹ có class 'group' và bên trong nó có phần tử đang focus */
 .group:focus-within .gradient-border-effect,
-.gradient-border-effect:focus { /* Chỉ sử dụng focus trực tiếp nếu không phải group */
+.gradient-border-effect:focus { /* ChềEsử dụng focus trực tiếp nếu không phải group */
   opacity: 1;
 }
 
@@ -1123,13 +1123,13 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   /* text-white */
   color: #ffffff; 
   
-  /* drop-shadow-2xl (Giá trị gần đúng, có thể phức tạp hơn) */
+  /* drop-shadow-2xl (Giá trềEgần đúng, có thềEphức tạp hơn) */
   filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15)) drop-shadow(0 10px 10px rgba(0, 0, 0, 0.04));
   
   /* -translate-y-3 */
   transform: translateY(-0.75rem); /* -12px */
   
-  /* text-6xl (Giá trị mặc định cho text-6xl) */
+  /* text-6xl (Giá trềEmặc định cho text-6xl) */
   font-size: 3.75rem; /* 60px */
   line-height: 1; 
   
@@ -1140,8 +1140,8 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Kích thước text cho màn hình nhỏ (sm:text-6xl) */
-/* Cùng giá trị mặc định, không cần media query */
+/* Kích thước text cho màn hình nhềE(sm:text-6xl) */
+/* Cùng giá trềEmặc định, không cần media query */
 
 /* Thiết lập cho màn hình trung bình (md) - min-width: 768px */
 @media (min-width: 768px) {
@@ -1227,7 +1227,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   background-color: rgba(255, 255, 255, 0.3); 
   
   /* transition và transform */
-  transition: all 150ms ease-in-out; /* Giá trị mặc định cho transition */
+  transition: all 150ms ease-in-out; /* Giá trềEmặc định cho transition */
 }
 
 /* md:p-5 */
@@ -1257,7 +1257,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   /* h-6 */
   height: 1.5rem; /* 24px */
   
-  /* transition (Thêm vào để hiệu ứng scale mượt mà) */
+  /* transition (Thêm vào đềEhiệu ứng scale mượt mà) */
   transition: transform 150ms ease-in-out; 
 }
 
@@ -1312,10 +1312,10 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   background-color: rgba(255, 255, 255, 0.3); 
   
   /* transition */
-  transition: all 150ms ease-in-out; /* Giá trị mặc định cho transition */
+  transition: all 150ms ease-in-out; /* Giá trềEmặc định cho transition */
   
   /* transform */
-  /* Chỉ là một lớp đánh dấu, không thêm thuộc tính CSS riêng biệt */
+  /* ChềElà một lớp đánh dấu, không thêm thuộc tính CSS riêng biệt */
 }
   .button {
   /* px-8 py-4 -> padding: 1rem top/bottom, 2rem left/right */

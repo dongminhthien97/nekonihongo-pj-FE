@@ -1,7 +1,7 @@
 // src/components/JlptKanjiPage.tsx
 import { useState, useEffect } from "react";
 import { NekoLoading } from "./NekoLoading";
-import api from "../api/auth";
+import api from "../api/api";
 import toast from "react-hot-toast";
 
 interface KanjiJlptItem {
@@ -141,7 +141,7 @@ export function JlptKanjiPage({
         {/* Pagination Section */}
         <div className="pagination-container">
           <p className="pagination-subtitle">
-            Học theo ngày – 10 Kanji mỗi ngày
+            Học theo ngày  E10 Kanji mỗi ngày
           </p>
           <div className="pagination-controls">
             <button
@@ -149,7 +149,7 @@ export function JlptKanjiPage({
               disabled={selectedDay === 1}
               className="btn-nav"
             >
-              ← Ngày trước
+              ↁENgày trước
             </button>
             <div className="day-indicator">
               Ngày {selectedDay} / {totalDays}
@@ -159,7 +159,7 @@ export function JlptKanjiPage({
               disabled={selectedDay === totalDays}
               className="btn-nav"
             >
-              Ngày sau →
+              Ngày sau ↁE
             </button>
           </div>
         </div>
@@ -213,13 +213,13 @@ export function JlptKanjiPage({
           </table>
         </div>
 
-        {/* Floating Action Button (MÈO BAY) */}
+        {/* Floating Action Button (MÁE BAY) */}
         <div className="floating-neko-container">
           <div className="neko-trigger" onClick={handleStartFlashcardDay}>
             <div className="neko-tooltip">
               <div className="tooltip-content">
                 Học flashcard 10 Kanji {level} ngày {selectedDay} nào mèo ơi!
-                🖌️🐾
+                🖌�E�🐾
               </div>
             </div>
             <div className="neko-image-wrapper">

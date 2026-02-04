@@ -19,7 +19,7 @@ import {
   Square,
   Home,
 } from "lucide-react";
-import api from "../../api/auth";
+import api from "../../api/api";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 import { AdminTestDetailModal } from "../../components/Admin/AdminTestDetailModal";
@@ -94,7 +94,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
       return;
     }
     if (user.role !== "ADMIN") {
-      toast.error("Bạn không có quyền truy cập trang quản trị");
+      toast.error("Bạn không có quyền truy cập trang quản trềE);
       onNavigate("landing");
       return;
     }
@@ -345,13 +345,13 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
 
   const handleBatchDelete = async () => {
     if (selectedTests.length === 0) {
-      toast.error("Vui lòng chọn ít nhất một bài test để xóa");
+      toast.error("Vui lòng chọn ít nhất một bài test đềExóa");
       return;
     }
 
     if (
       !window.confirm(
-        `Bạn có chắc muốn xóa ${selectedTests.length} bài test đã chọn? Hành động này không thể hoàn tác.`,
+        `Bạn có chắc muốn xóa ${selectedTests.length} bài test đã chọn? Hành động này không thềEhoàn tác.`,
       )
     ) {
       return;
@@ -386,10 +386,10 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
           toast.success(`Đã xóa thành công ${successCount} bài test`);
         } else if (successCount > 0 && failedCount > 0) {
           toast.success(
-            `Đã xóa thành công ${successCount} bài test, ${failedCount} bài không thể xóa`,
+            `Đã xóa thành công ${successCount} bài test, ${failedCount} bài không thềExóa`,
           );
         } else {
-          toast.error("Không thể xóa các bài test đã chọn");
+          toast.error("Không thềExóa các bài test đã chọn");
         }
 
         await fetchUnreadCount();
@@ -414,7 +414,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
   const handleDeleteTest = async (testId: number) => {
     if (
       !window.confirm(
-        "Bạn có chắc muốn xóa bài test này? Hành động này không thể hoàn tác.",
+        "Bạn có chắc muốn xóa bài test này? Hành động này không thềEhoàn tác.",
       )
     ) {
       return;
@@ -454,7 +454,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
         if (error.response.status === 403) {
           errorMessage = "Không có quyền xóa bài test này";
         } else if (error.response.status === 404) {
-          errorMessage = "Bài test không tồn tại hoặc đã bị xóa";
+          errorMessage = "Bài test không tồn tại hoặc đã bềExóa";
           setTests((prevTests) =>
             prevTests.filter((test) => test.id !== testId),
           );
@@ -542,7 +542,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
       test.score !== null && test.score !== undefined
         ? test.score.toString().replace(".", ",")
         : "Chưa chấm",
-      test.status === "pending" ? "Chờ duyệt" : "Đã phản hồi",
+      test.status === "pending" ? "ChềEduyệt" : "Đã phản hồi",
       formatDateForCSV(test.submittedAt),
       test.feedbackAt ? formatDateForCSV(test.feedbackAt) : "Chưa phản hồi",
       test.timeSpent ? Math.round(test.timeSpent / 60) : "0",
@@ -676,7 +676,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
             <div className="stat-card pending">
               <div className="stat-content">
                 <div>
-                  <p className="stat-label">Chờ duyệt</p>
+                  <p className="stat-label">ChềEduyệt</p>
                   <p className="stat-value">
                     {tests.filter((t) => t.status === "pending").length}
                   </p>
@@ -714,7 +714,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
                 onClick={() => setFilter("pending")}
               >
                 <Clock size={14} />
-                Chờ duyệt ({tests.filter((t) => t.status === "pending").length})
+                ChềEduyệt ({tests.filter((t) => t.status === "pending").length})
               </button>
               <button
                 className={`filter-tab ${filter === "feedbacked" ? "active" : ""}`}
@@ -756,7 +756,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
                       className="clear-selection"
                       onClick={() => setSelectedTests([])}
                     >
-                      Bỏ chọn tất cả
+                      BềEchọn tất cả
                     </button>
                   </div>
                 </div>
@@ -850,7 +850,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
                               {test.status === "pending" ? (
                                 <>
                                   <Clock size={12} />
-                                  Chờ duyệt
+                                  ChềEduyệt
                                 </>
                               ) : (
                                 <>
@@ -954,12 +954,12 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
               <h3>Không tìm thấy bài test nào</h3>
               <p>
                 {search
-                  ? "Thử tìm kiếm với từ khóa khác hoặc xóa bộ lọc tìm kiếm"
+                  ? "Thử tìm kiếm với từ khóa khác hoặc xóa bềElọc tìm kiếm"
                   : "Học viên chưa nộp bài test nào cho các bài học ngữ pháp"}
               </p>
               {search && (
                 <button className="clear-search" onClick={() => setSearch("")}>
-                  Xóa bộ lọc tìm kiếm
+                  Xóa bềElọc tìm kiếm
                 </button>
               )}
             </div>

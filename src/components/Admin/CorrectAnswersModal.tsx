@@ -13,7 +13,7 @@ import {
   Search,
   Zap,
 } from "lucide-react";
-import api from "../../api/auth";
+import api from "../../api/api";
 import toast from "react-hot-toast";
 
 interface QuestionDetail {
@@ -91,7 +91,7 @@ export function CorrectAnswersModal({
         toast.error("Không có dữ liệu câu hỏi cho bài học này");
       }
     } catch (error: any) {
-      toast.error("Không thể tải thông tin câu hỏi");
+      toast.error("Không thềEtải thông tin câu hỏi");
       setQuestions([]);
     } finally {
       setLoading(false);
@@ -160,7 +160,7 @@ export function CorrectAnswersModal({
     navigator.clipboard
       .writeText(text)
       .then(() => toast.success("Đã copy vào clipboard"))
-      .catch(() => toast.error("Không thể copy"));
+      .catch(() => toast.error("Không thềEcopy"));
   };
 
   const copyFullData = (question: any) => {
@@ -174,8 +174,8 @@ export function CorrectAnswersModal({
 
     navigator.clipboard
       .writeText(JSON.stringify(fullData, null, 2))
-      .then(() => toast.success("Đã copy toàn bộ dữ liệu"))
-      .catch(() => toast.error("Không thể copy"));
+      .then(() => toast.success("Đã copy toàn bềEdữ liệu"))
+      .catch(() => toast.error("Không thềEcopy"));
   };
 
   const renderDatabaseWarning = () => {
@@ -211,7 +211,7 @@ export function CorrectAnswersModal({
                     Bảng <code>grammar_questions</code> không có cột{" "}
                     <code>correct_answer</code>
                   </li>
-                  <li>Hoặc cột này tồn tại nhưng API không trả về</li>
+                  <li>Hoặc cột này tồn tại nhưng API không trả vềE/li>
                   <li>Hoặc dữ liệu chưa được nhập vào cột này</li>
                 </ul>
               </div>
@@ -219,11 +219,11 @@ export function CorrectAnswersModal({
           ) : (
             <>
               <p className="warning-message">
-                <strong>Chỉ một số câu hỏi có correct_answer</strong>
+                <strong>ChềEmột sềEcâu hỏi có correct_answer</strong>
               </p>
               <div className="warning-details">
                 <p>
-                  Trong {questions.length} câu hỏi, chỉ có{" "}
+                  Trong {questions.length} câu hỏi, chềEcó{" "}
                   {
                     questions.filter(
                       (q) => q.correct_answer && q.correct_answer.trim() !== "",
@@ -239,7 +239,7 @@ export function CorrectAnswersModal({
           <button
             className="action-button"
             onClick={() => {
-              toast.success("Đã mở DevTools Console");
+              toast.success("Đã mềEDevTools Console");
             }}
           >
             <Search size={14} /> Xem Console
@@ -267,12 +267,12 @@ export function CorrectAnswersModal({
             </div>
             <div className="warning-text">
               <div className="warning-title">
-                CỘT CORRECT_ANSWER KHÔNG CÓ DỮ LIỆU
+                CỘT CORRECT_ANSWER KHÔNG CÁEDỮ LIềE
               </div>
               <div className="warning-description">
                 {!hasCorrectAnswer
-                  ? "Trường correct_answer không tồn tại trong đối tượng API trả về."
-                  : "Trường correct_answer tồn tại nhưng giá trị là rỗng hoặc null."}
+                  ? "Trường correct_answer không tồn tại trong đối tượng API trả vềE"
+                  : "Trường correct_answer tồn tại nhưng giá trềElà rỗng hoặc null."}
               </div>
             </div>
           </div>
@@ -307,7 +307,7 @@ export function CorrectAnswersModal({
             <Database size={16} />
             <span>
               Dữ liệu cột correct_answer
-              {hasCorrectAnswer ? " (ĐÃ TỒN TẠI)" : " (KHÔNG TỒN TẠI)"}
+              {hasCorrectAnswer ? " (ĐÁETỒN TẠI)" : " (KHÔNG TỒN TẠI)"}
             </span>
           </div>
           <div className="detail-content">
@@ -345,19 +345,19 @@ export function CorrectAnswersModal({
                 </div>
                 <div className="empty-content">
                   <p>
-                    Trường <code>correct_answer</code> tồn tại nhưng giá trị là
-                    rỗng hoặc chỉ có khoảng trắng.
+                    Trường <code>correct_answer</code> tồn tại nhưng giá trềElà
+                    rỗng hoặc chềEcó khoảng trắng.
                   </p>
                   <div className="empty-value">
-                    <span className="value-label">Giá trị:</span>
+                    <span className="value-label">Giá trềE</span>
                     <pre className="value-content">"{correctAnswerValue}"</pre>
                   </div>
                   <div className="empty-stats">
                     <span className="stat">
-                      Độ dài: {correctAnswerValue.length}
+                      ĐềEdài: {correctAnswerValue.length}
                     </span>
                     <span className="stat">
-                      Chỉ có khoảng trắng:{" "}
+                      ChềEcó khoảng trắng:{" "}
                       {correctAnswerValue.trim() === "" ? "Có" : "Không"}
                     </span>
                   </div>
@@ -367,7 +367,7 @@ export function CorrectAnswersModal({
               <div className="correct-answer-display">
                 <div className="answer-header">
                   <span className="answer-label">
-                    Giá trị cột correct_answer:
+                    Giá trềEcột correct_answer:
                   </span>
                   <button
                     className="copy-button"
@@ -382,7 +382,7 @@ export function CorrectAnswersModal({
                 </div>
                 <div className="answer-info">
                   <span className="info-item">
-                    Độ dài: {correctAnswerValue.length} ký tự
+                    ĐềEdài: {correctAnswerValue.length} ký tự
                   </span>
                   <span className="info-item">Loại: {question.type}</span>
                 </div>
@@ -438,7 +438,7 @@ export function CorrectAnswersModal({
         <div className="detail-section">
           <div className="detail-header">
             <Database size={16} />
-            <span>Raw Data (Toàn bộ đối tượng từ API)</span>
+            <span>Raw Data (Toàn bềEđối tượng từ API)</span>
           </div>
           <div className="detail-content">
             <div className="raw-data-container">
@@ -446,7 +446,7 @@ export function CorrectAnswersModal({
                 <button
                   className="copy-button"
                   onClick={() => copyFullData(question)}
-                  title="Copy toàn bộ dữ liệu"
+                  title="Copy toàn bềEdữ liệu"
                 >
                   <Copy size={14} /> Copy JSON
                 </button>
@@ -522,7 +522,7 @@ export function CorrectAnswersModal({
             <span>Kiểm tra cấu trúc database và dữ liệu correct_answer</span>
             {apiData && (
               <span className="api-count">
-                API trả về: {apiData.count} bản ghi
+                API trả vềE {apiData.count} bản ghi
               </span>
             )}
           </div>
@@ -565,7 +565,7 @@ export function CorrectAnswersModal({
               >
                 {expandedQuestions.length === questions.length
                   ? "Thu gọn tất cả"
-                  : "Mở rộng tất cả"}
+                  : "MềErộng tất cả"}
               </button>
             </div>
           </div>
@@ -602,7 +602,7 @@ export function CorrectAnswersModal({
                             <AlertTriangle size={14} /> Empty Value
                           </span>
                         ) : (
-                          <span className="success-badge">✓ Has Answer</span>
+                          <span className="success-badge">✁EHas Answer</span>
                         )}
                       </div>
                       <div className="question-header-right">
@@ -612,7 +612,7 @@ export function CorrectAnswersModal({
                             e.stopPropagation();
                             copyFullData(question);
                           }}
-                          title="Copy toàn bộ dữ liệu câu hỏi"
+                          title="Copy toàn bềEdữ liệu câu hỏi"
                         >
                           <Copy size={14} />
                         </button>

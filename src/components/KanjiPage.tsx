@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Search, ChevronLeft, ChevronRight, Cat } from "lucide-react";
 import { KanjiDetailModal } from "./KanjiDetailModal";
 import { NekoLoading } from "./NekoLoading";
-import api from "../api/auth";
+import api from "../api/api";
 import { NekoAlertModal } from "./NekoAlertModal";
 
 const LESSONS_PER_PAGE = 12;
@@ -59,10 +59,10 @@ export function KanjiPage({
         setLessons(serverLessons);
         setError("");
       } catch (err: any) {
-        console.error("❌ Lỗi khi tải Kanji:", err);
+        console.error("❁ELỗi khi tải Kanji:", err);
 
         if (err.response?.status === 401) {
-          alert("Phiên đăng nhập hết hạn! Mèo đưa bạn về trang đăng nhập nhé");
+          alert("Phiên đăng nhập hết hạn! Mèo đưa bạn vềEtrang đăng nhập nhé");
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("nekoUser");
@@ -70,7 +70,7 @@ export function KanjiPage({
           return;
         }
 
-        setError("Không thể tải dữ liệu Kanji. Mèo đang cố gắng...");
+        setError("Không thềEtải dữ liệu Kanji. Mèo đang cềEgắng...");
       } finally {
         setTimeout(() => setIsLoading(false), 600);
       }
@@ -94,7 +94,7 @@ export function KanjiPage({
     });
 
     if (allCompounds.length === 0) {
-      alert("Bài học này chưa có từ ghép để học flashcard!");
+      alert("Bài học này chưa có từ ghép đềEhọc flashcard!");
       return;
     }
 
@@ -106,14 +106,14 @@ export function KanjiPage({
         .slice(0, 10);
     }
 
-    // Lưu vào localStorage để FlashcardKanji đọc
+    // Lưu vào localStorage đềEFlashcardKanji đọc
     localStorage.setItem(
       "nekoFlashcardKanjiData",
       JSON.stringify({
         lessonId: selectedLesson.id,
         lessonTitle: selectedLesson.title,
         compounds: selectedCompounds,
-        allCompounds: allCompounds, // để học tiếp có thể lấy lại
+        allCompounds: allCompounds, // đềEhọc tiếp có thềElấy lại
       }),
     );
 
@@ -135,7 +135,7 @@ export function KanjiPage({
     const query = searchQuery.trim();
     const results: {
       type: "compound" | "kanji";
-      word?: string; // chỉ có khi là từ ghép
+      word?: string; // chềEcó khi là từ ghép
       reading?: string;
       meaning?: string;
       lessonId: number;
@@ -143,7 +143,7 @@ export function KanjiPage({
       kanjiList: Kanji[]; // các Kanji thành phần
     }[] = [];
 
-    // 1. Tìm theo TỪ GHÉP (ưu tiên cao nhất – giống tra từ điển)
+    // 1. Tìm theo TỪ GHÉP (ưu tiên cao nhất  Egiống tra từ điển)
     lessons.forEach((lesson) => {
       lesson.kanjiList.forEach((k) => {
         if (k.compounds && k.compounds.length > 0) {
@@ -169,7 +169,7 @@ export function KanjiPage({
       });
     });
 
-    // 2. Nếu không tìm thấy từ ghép → tìm theo Kanji riêng lẻ (fallback)
+    // 2. Nếu không tìm thấy từ ghép ↁEtìm theo Kanji riêng lẻ (fallback)
     if (results.length === 0) {
       lessons.forEach((lesson) => {
         lesson.kanjiList.forEach((k) => {
@@ -199,7 +199,7 @@ export function KanjiPage({
       });
     }
 
-    // Loại bỏ trùng lặp từ ghép (nếu nhiều Kanji cùng có từ ghép giống nhau)
+    // Loại bềEtrùng lặp từ ghép (nếu nhiều Kanji cùng có từ ghép giống nhau)
     const uniqueResults = results.filter(
       (result, index, self) =>
         index ===
@@ -226,7 +226,7 @@ export function KanjiPage({
     : 0;
 
   if (isLoading) {
-    return <NekoLoading message="Mèo đang chuẩn bị bài học Kanji cho bạn..." />;
+    return <NekoLoading message="Mèo đang chuẩn bềEbài học Kanji cho bạn..." />;
   }
 
   if (error && lessons.length === 0) {
@@ -267,7 +267,7 @@ export function KanjiPage({
                 </div>
                 <input
                   type="text"
-                  placeholder="Tìm Kanji... (猫, 。。。)"
+                  placeholder="Tìm Kanji... (猫, 。。、E"
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -290,7 +290,7 @@ export function KanjiPage({
                     key={idx}
                     className="glass-card-hover-effect cursor-pointer group"
                     onClick={() => {
-                      // Chọn Kanji đầu tiên trong danh sách để xem chi tiết
+                      // Chọn Kanji đầu tiên trong danh sách đềExem chi tiết
                       if (result.kanjiList.length > 0) {
                         setSelectedKanji(result.kanjiList[0]);
                       }
@@ -301,7 +301,7 @@ export function KanjiPage({
 
                     <div className="relative z-10 p-8 md:p-10">
                       {result.type === "compound" ? (
-                        /* ===== HIỂN THỊ TỪ GHÉP – GIỐNG TỪ ĐIỂN SIÊU ĐẸP ===== */
+                        /* ===== HIềE THềETỪ GHÉP  EGIỐNG TỪ ĐIềE SIÊU ĐẸP ===== */
                         <div className="text-center space-y-6 max-w-4xl mx-auto p-4">
                           {/* Từ ghép lớn - Giữ vai trò Spotlight */}
                           <div className="space-y-2">
@@ -316,11 +316,10 @@ export function KanjiPage({
 
                             {/* Nghĩa tiếng Việt: Điểm nhấn màu sắc dịu */}
                             <p className="text-3xl md:text-2xl text-black font-semibold italic">
-                              「 {result.meaning} 」
-                            </p>
+                              、E{result.meaning} 、E                            </p>
                           </div>
 
-                          {/* Thông tin bài học: Nhẹ nhàng, nằm trong một badge mờ */}
+                          {/* Thông tin bài học: Nhẹ nhàng, nằm trong một badge mềE*/}
                           <div className="inline-block px-4 py-1 text-3xl md:text-base">
                             📚 Bài {result.lessonId} –{" "}
                             <span className="text-black">
@@ -353,7 +352,7 @@ export function KanjiPage({
                           ))}
                         </div>
                       ) : (
-                        /* ===== HIỂN THỊ KANJI RIÊNG LẺ – GIỮ NGUYÊN STYLE CŨ ===== */
+                        /* ===== HIềE THềEKANJI RIÊNG LẺ  EGIỮ NGUYÊN STYLE CŨ ===== */
                         <div className="flex items-center justify-between gap-6">
                           <div className="flex-1 text-left">
                             <p className="rainbow-glow-title text-5xl md:text-6xl font-black">
@@ -473,7 +472,7 @@ export function KanjiPage({
                   onClick={() => setSelectedLesson(null)}
                   className="button"
                 >
-                  ← Tất cả bài học
+                  ↁETất cả bài học
                 </button>
               </div>
             </div>
@@ -538,7 +537,7 @@ export function KanjiPage({
           </div>
         )}
       </main>
-      {/* MÈO BAY SIÊU DỄ THƯƠNG – CLICK VÀO HỌC FLASHCARD KANJI TỪ BÀI HIỆN TẠI */}
+      {/* MÁE BAY SIÊU DềETHƯƠNG  ECLICK VÀO HỌC FLASHCARD KANJI TỪ BÀI HIềE TẠI */}
       <div className="fixed bottom-10 right-10 z-50 hidden lg:block">
         <div
           className="relative group cursor-pointer"
@@ -589,7 +588,7 @@ export function KanjiPage({
       />
       <style>{`
       .kanji-simple-card {
-  /* Nền trắng có độ trong suốt để tạo hiệu ứng kính */
+  /* Nền trắng có đềEtrong suốt đềEtạo hiệu ứng kính */
   background-color: rgba(255, 255, 255, 0.9); 
   
   /* Bo góc cực lớn 32px */
@@ -603,10 +602,10 @@ export function KanjiPage({
   align-items: center;
   justify-content: center;
   
-  /* Viền trắng mờ tạo độ dày cho mặt kính */
+  /* Viền trắng mềEtạo đềEdày cho mặt kính */
   border: 2px solid rgba(255, 255, 255, 0.4);
   
-  /* Hiệu ứng bóng đổ đa tầng (shadow-xl) */
+  /* Hiệu ứng bóng đềEđa tầng (shadow-xl) */
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
               0 8px 10px -6px rgba(0, 0, 0, 0.1);
   
@@ -614,7 +613,7 @@ export function KanjiPage({
   transition: all 400ms ease-in-out;
   cursor: pointer;
   
-  /* Quan trọng: Hiệu ứng làm mờ lớp nền phía sau (nếu có màu nền) */
+  /* Quan trọng: Hiệu ứng làm mềElớp nền phía sau (nếu có màu nền) */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -630,7 +629,7 @@ export function KanjiPage({
   /* Nền trong suốt hơn một chút khi hover */
   background-color: rgba(255, 255, 255, 0.8);
   
-  /* Đổ bóng sâu hơn khi thẻ nổi lên */
+  /* ĐềEbóng sâu hơn khi thẻ nổi lên */
   box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15);
 }
 
@@ -674,7 +673,7 @@ export function KanjiPage({
   /* hover:-translate-y-2 */
   transform: translateY(-8px);
   
-  /* Tăng cường bóng đổ khi thẻ nổi lên */
+  /* Tăng cường bóng đềEkhi thẻ nổi lên */
   box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.4);
 }
 .rainbow-glow-title {
@@ -682,7 +681,7 @@ export function KanjiPage({
   font-size: clamp(3.75rem, 10vw, 4.5rem);
   font-weight: 900;
   line-height: 1.1;
-  letter-spacing: -0.02em; /* Thu hẹp một chút để các khối màu đặc hơn */
+  letter-spacing: -0.02em; /* Thu hẹp một chút đềEcác khối màu đặc hơn */
 
   /* Gradient 5 màu rực rỡ */
   background: linear-gradient(
@@ -695,7 +694,7 @@ export function KanjiPage({
   /* Hiệu ứng chuyển động màu mượt mà */
   animation: rainbow-flow 6s ease infinite;
 
-  /* drop-shadow-2xl: Đổ bóng cực sâu để tách lớp */
+  /* drop-shadow-2xl: ĐềEbóng cực sâu đềEtách lớp */
   filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.3));
 
   /* Khử răng cưa cực mạnh cho font lớn */

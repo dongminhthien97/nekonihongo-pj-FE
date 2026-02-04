@@ -1,4 +1,4 @@
-// src/context/AuthContext.tsx (FULL CODE HOÀN CHỈNH – FIX BUG REPEATED LOGIN/LOGOUT REDIRECT LOGIN, THÊM RELOAD SAU LOGIN/LOGOUT ĐỂ AUTH LOAD USER MỚI, LOADING UX MƯỢT)
+// src/context/AuthContext.tsx (FULL CODE HOÀN CHềEH  EFIX BUG REPEATED LOGIN/LOGOUT REDIRECT LOGIN, THÊM RELOAD SAU LOGIN/LOGOUT ĐềEAUTH LOAD USER MỚI, LOADING UX MƯỢT)
 
 import {
   createContext,
@@ -7,8 +7,8 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
-import { loginRequest } from "../api/auth";
-import api from "../api/auth";
+import { loginRequest } from "../api/api";
+import api from "../api/api";
 import toast from "react-hot-toast";
 
 export interface User {
@@ -144,12 +144,12 @@ export const AuthProvider = ({
 
       await loadUserFromBackend();
 
-      // Không set hasSeenSplash = false nếu muốn giữ splash chỉ lần đầu
+      // Không set hasSeenSplash = false nếu muốn giữ splash chềElần đầu
       // setHasSeenSplash(false); // Comment nếu không muốn splash mỗi lần login
 
-      toast.success("Đăng nhập thành công! Chào mừng trở lại 😻");
+      toast.success("Đăng nhập thành công! Chào mừng trềElại 😻");
 
-      // FORCE RELOAD ĐỂ AUTH CONTEXT + INTERCEPTOR LOAD TOKEN MỚI HOÀN TOÀN
+      // FORCE RELOAD ĐềEAUTH CONTEXT + INTERCEPTOR LOAD TOKEN MỚI HOÀN TOÀN
       // FIX BUG REPEATED LOGIN REDIRECT LOGIN
       window.location.reload();
 
@@ -176,7 +176,7 @@ export const AuthProvider = ({
 
     onNavigate?.("landing");
 
-    // FORCE RELOAD ĐỂ CLEAN STATE HOÀN TOÀN
+    // FORCE RELOAD ĐềECLEAN STATE HOÀN TOÀN
     window.location.reload();
   };
 
@@ -194,7 +194,7 @@ export const AuthProvider = ({
     try {
       await loadUserFromBackend();
     } catch {
-      toast.error("Không thể cập nhật thông tin 😿");
+      toast.error("Không thềEcập nhật thông tin 😿");
     }
   };
 

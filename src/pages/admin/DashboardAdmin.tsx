@@ -1,7 +1,7 @@
-// src/pages/admin/DashboardAdmin.tsx (FULL CODE HOÀN CHỈNH – GIỮ NGUYÊN 100% UI/UX + STYLE, FIX REDIRECT LOGIN BẰNG AUTH GUARD + LOADING)
+// src/pages/admin/DashboardAdmin.tsx (FULL CODE HOÀN CHềEH  EGIỮ NGUYÊN 100% UI/UX + STYLE, FIX REDIRECT LOGIN BẰNG AUTH GUARD + LOADING)
 
 import { useEffect, useState } from "react";
-import api from "../../api/auth";
+import api from "../../api/api";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
 
@@ -64,7 +64,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
     if (authLoading) return;
 
     if (!user) {
-      toast.error("Bạn cần đăng nhập để truy cập 😿");
+      toast.error("Bạn cần đăng nhập đềEtruy cập 😿");
       onNavigate("login");
       return;
     }
@@ -143,13 +143,13 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
       fetchUsers();
     } catch (err: any) {
       const msg = err.response?.data?.message || "Tạo user thất bại";
-      alert(`❌ ${msg}`);
+      alert(`❁E${msg}`);
     }
   };
 
   const handleUpdateUser = async () => {
     if (!formData.id || !formData.username?.trim() || !formData.email?.trim()) {
-      alert("Thông tin không hợp lệ!");
+      alert("Thông tin không hợp lềE");
       return;
     }
 
@@ -167,11 +167,11 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
       };
 
       await api.put(`/admin/users/${formData.id}`, payload);
-      toast.success("✅ Cập nhật thành công!");
+      toast.success("✁ECập nhật thành công!");
       handleCloseModal();
       await fetchUsers();
     } catch (err: any) {
-      toast.error(`❌ ${err.response?.data?.message || "Cập nhật thất bại"}`);
+      toast.error(`❁E${err.response?.data?.message || "Cập nhật thất bại"}`);
     }
   };
 
@@ -180,13 +180,13 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
 
     try {
       await api.delete(`/admin/users/${id}`);
-      alert("🗑️ Xóa user thành công!");
+      alert("🗑�E�EXóa user thành công!");
       fetchUsers();
       if (selectedUser?.id === id) {
         setSelectedUser(users[0] || null);
       }
     } catch (err: any) {
-      alert(`❌ ${err.response?.data?.message || "Xóa thất bại"}`);
+      alert(`❁E${err.response?.data?.message || "Xóa thất bại"}`);
     }
   };
 
@@ -343,7 +343,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
         <div className="header-container">
           <div>
             <h1 className="section-title">Admin Dashboard 👑</h1>
-            <p className="text-gray-600 mt-1">Quản lý người dùng hệ thống</p>
+            <p className="text-gray-600 mt-1">Quản lý người dùng hềEthống</p>
           </div>
           <div className="flex gap-3">
             <button
@@ -380,7 +380,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
         <div className="responsive-grid">
           <div className="content-card">
             <div className="sub-title">{users.length}</div>
-            <div className="helper-text">Tổng số user</div>
+            <div className="helper-text">Tổng sềEuser</div>
           </div>
           <div className="content-card">
             <div className="sub-title">
@@ -455,7 +455,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
                   }
                   className="secondary-item"
                 >
-                  {sortOrder === "asc" ? "↑" : "↓"}
+                  {sortOrder === "asc" ? "ↁE : "ↁE}
                 </button>
               </div>
             </div>
@@ -581,7 +581,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
           {totalPages > 1 && (
             <div className="card-footer">
               <div className="text-sm text-gray-500">
-                Hiển thị {startIndex + 1}-
+                Hiển thềE{startIndex + 1}-
                 {Math.min(startIndex + itemsPerPage, sortedUsers.length)} của{" "}
                 {sortedUsers.length} user
               </div>
@@ -591,7 +591,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
                   disabled={currentPage === 1}
                   className="step-button"
                 >
-                  ← Trước
+                  ↁETrước
                 </button>
                 {[...Array(Math.min(5, totalPages))].map((_, idx) => {
                   let pageNum;
@@ -624,7 +624,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
                   disabled={currentPage === totalPages}
                   className="btn-nav"
                 >
-                  Sau →
+                  Sau ↁE
                 </button>
               </div>
             </div>
@@ -784,7 +784,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
                     onClick={handleCloseModal}
                     className="text-gray-400 hover:text-gray-600 text-2xl"
                   >
-                    ×
+                    ÁE
                   </button>
                 </div>
 
@@ -820,7 +820,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
                   </div>
 
                   <div>
-                    <label className="content-grid-compact">Họ và tên</label>
+                    <label className="content-grid-compact">HềEvà tên</label>
                     <input
                       type="text"
                       value={formData.fullName || ""}
@@ -828,7 +828,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
                         setFormData({ ...formData, fullName: e.target.value })
                       }
                       className="input-smart"
-                      placeholder="Nguyễn Văn A"
+                      placeholder="NguyềE Văn A"
                     />
                   </div>
 
@@ -842,7 +842,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
                           setFormData({ ...formData, password: e.target.value })
                         }
                         className="input-smart"
-                        placeholder="Để trống = 123456"
+                        placeholder="ĐềEtrống = 123456"
                       />
                     </div>
                   )}
@@ -970,7 +970,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
   transition: all 0.3s ease;
   
   background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-  background-size: 200% auto; /* Để tạo hiệu ứng di chuyển gradient */
+  background-size: 200% auto; /* ĐềEtạo hiệu ứng di chuyển gradient */
   
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }

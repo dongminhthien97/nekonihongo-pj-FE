@@ -11,7 +11,7 @@ import {
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
-import api from "../api/auth";
+import api from "../api/api";
 
 export function Navigation({
   currentPage,
@@ -42,7 +42,7 @@ export function Navigation({
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [feedbackCount, setFeedbackCount] = useState(0);
 
-  // Fetch số bài mini test đã feedback khi user đăng nhập
+  // Fetch sềEbài mini test đã feedback khi user đăng nhập
   useEffect(() => {
     if (user?.role === "USER") {
       const fetchFeedbackCount = async () => {
@@ -50,7 +50,7 @@ export function Navigation({
           const res = await api.get("/user/mini-test/feedback-count");
           setFeedbackCount(res.data.count || 0);
         } catch (err) {
-          console.error("Lỗi lấy số feedback:", err);
+          console.error("Lỗi lấy sềEfeedback:", err);
         }
       };
       fetchFeedbackCount();
@@ -146,7 +146,7 @@ export function Navigation({
               );
             })}
 
-            {/* BELL NOTIFICATION CHO USER (chỉ hiện khi là USER và có feedback mới) */}
+            {/* BELL NOTIFICATION CHO USER (chềEhiện khi là USER và có feedback mới) */}
             {user.role === "USER" && (
               <div className="relative ml-4">
                 <button
@@ -215,7 +215,7 @@ export function Navigation({
         </div>
       </div>
 
-      {/* MODAL LOGOUT – GIỮ NGUYÊN 100% TỪ CODE GỐC */}
+      {/* MODAL LOGOUT  EGIỮ NGUYÊN 100% TỪ CODE GỐC */}
       {isLogoutModalOpen && (
         <div className="fixed inset-0 z-[9999] flex min-h-screen items-center justify-center px-4">
           <div
@@ -258,7 +258,7 @@ export function Navigation({
       )}
       <style>{`
       .badge-error-pulse {
-  /* Vị trí tuyệt đối */
+  /* VềEtrí tuyệt đối */
   position: absolute;
   top: -0.25rem;    /* tương ứng -top-1 (1 * 0.25rem = 4px) */
   right: -0.25rem;  /* tương ứng -right-1 */
@@ -269,12 +269,12 @@ export function Navigation({
   border-radius: 9999px; /* tương ứng rounded-full */
 
   /* Màu sắc & Font */
-  background-color: #ef4444; /* đỏ red-500 */
+  background-color: #ef4444; /* đềEred-500 */
   color: #ffffff;
   font-size: 0.75rem;        /* tương ứng text-xs (12px) */
   font-weight: 700;          /* tương ứng font-bold */
 
-  /* Căn giữa số/nội dung bên trong */
+  /* Căn giữa sềEnội dung bên trong */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -294,7 +294,7 @@ export function Navigation({
 }
       .group-hover-rotate {
   /* transition duration-500 */
-  /* Áp dụng transition cho thuộc tính transform để việc xoay diễn ra mượt mà */
+  /* Áp dụng transition cho thuộc tính transform đềEviệc xoay diềE ra mượt mà */
   transition: transform 500ms ease-in-out; 
 }
 
@@ -307,13 +307,13 @@ export function Navigation({
   /* text-gray-600 */
   color: #4b5563; 
   
-  /* transition (Thêm vào để hiệu ứng hover mượt mà) */
+  /* transition (Thêm vào đềEhiệu ứng hover mượt mà) */
   transition: background-color 300ms ease-in-out; 
 }
 
 /* Các hiệu ứng hover */
 .gray-text-hover-pink:hover {
-  /* hover:bg-[#FFC7EA]/20 (Màu hồng nhạt #FFC7EA với độ mờ 20%) */
+  /* hover:bg-[#FFC7EA]/20 (Màu hồng nhạt #FFC7EA với đềEmềE20%) */
   background-color: rgba(255, 199, 234, 0.2); 
 }
       .hover-black-scale {
@@ -323,7 +323,7 @@ export function Navigation({
   /* scale-110 (Phần tử này được phóng to 110% mặc định) */
   transform: scale(1.1);
   
-  /* transition (Thêm vào để hiệu ứng hover mượt mà) */
+  /* transition (Thêm vào đềEhiệu ứng hover mượt mà) */
   transition: all 300ms ease-in-out; 
 }
 
@@ -349,18 +349,18 @@ export function Navigation({
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); 
   
   /* scale-110 (Phần tử này được phóng to 110% mặc định, thường là lỗi nếu muốn scale khi hover) */
-  /* Nếu bạn muốn hiệu ứng chỉ xảy ra khi hover, lớp này phải là hover:scale-110 */
-  /* Ở đây tôi giữ nguyên theo yêu cầu: scale(1.1) là trạng thái mặc định. */
+  /* Nếu bạn muốn hiệu ứng chềExảy ra khi hover, lớp này phải là hover:scale-110 */
+  /* ềEđây tôi giữ nguyên theo yêu cầu: scale(1.1) là trạng thái mặc định. */
   transform: scale(1.1);
   
-  /* transition (Thêm vào để hiệu ứng hover mượt mà) */
+  /* transition (Thêm vào đềEhiệu ứng hover mượt mà) */
   transition: all 300ms ease-in-out; 
 }
 
 /* Các hiệu ứng hover (hover:text-red-600) */
 .hover-text-scale:hover {
   /* hover:text-red-600 */
-  color: #dc2626; /* Màu đỏ 600 */
+  color: #dc2626; /* Màu đềE600 */
   
   /* Các thuộc tính khác (shadow, scale) giữ nguyên trừ khi có lớp hover tương ứng */
 }
@@ -371,7 +371,7 @@ export function Navigation({
   /* drop-shadow-md */
   filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.07)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.06));
   
-  /* transition (Thêm vào để hiệu ứng hover mượt mà) */
+  /* transition (Thêm vào đềEhiệu ứng hover mượt mà) */
   transition: all 300ms ease-in-out; 
 }
 
@@ -409,7 +409,7 @@ export function Navigation({
   /* text-red-600 */
   color: #dc2626; 
   
-  /* transition (Thêm vào để hiệu ứng hover mượt mà) */
+  /* transition (Thêm vào đềEhiệu ứng hover mượt mà) */
   transition: background-image 300ms ease-in-out; 
 }
 
@@ -437,7 +437,7 @@ export function Navigation({
   /* scale-105 */
   transform: scale(1.05);
   
-  /* transition (Thêm vào để đảm bảo hiệu ứng scale mượt mà) */
+  /* transition (Thêm vào đềEđảm bảo hiệu ứng scale mượt mà) */
   transition: all 300ms ease-in-out; 
 }
       .text-shadow-hover-effect {
@@ -452,20 +452,20 @@ export function Navigation({
   /* scale-105 (Áp dụng transform cơ bản) */
   transform: scale(1.05);
   
-  /* transition (Thêm vào để hiệu ứng hover mượt mà) */
+  /* transition (Thêm vào đềEhiệu ứng hover mượt mà) */
   transition: all 300ms ease-in-out; 
 }
 
 /* Các hiệu ứng hover */
 .text-shadow-hover-effect:hover {
   /* hover:shadow-red-500/60 */
-  /* Thay đổi box-shadow sang màu đỏ 500 (#ef4444) với độ mờ 60% */
+  /* Thay đổi box-shadow sang màu đềE500 (#ef4444) với đềEmềE60% */
   box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.6), 0 4px 6px -4px rgba(239, 68, 68, 0.6);
   
   /* Khi dùng hover:shadow mà không có hover:scale, ta giữ nguyên scale. 
      Tuy nhiên, lớp scale-105 nằm ngoài hover, nên nó đã được áp dụng. 
-     Nếu muốn scale chỉ xảy ra khi hover, cần thêm lớp hover:scale-105. 
-     Ở đây ta giữ nguyên scale 1.05 cho cả hai trạng thái. */
+     Nếu muốn scale chềExảy ra khi hover, cần thêm lớp hover:scale-105. 
+     ềEđây ta giữ nguyên scale 1.05 cho cả hai trạng thái. */
 }
       .flex-button-style {
   /* flex */
@@ -491,7 +491,7 @@ export function Navigation({
   /* transition-all duration-300 */
   transition: all 300ms ease-in-out; 
 }
-      /* Đảm bảo phần tử này có transition đã được định nghĩa ở lớp CSS cơ bản */
+      /* Đảm bảo phần tử này có transition đã được định nghĩa ềElớp CSS cơ bản */
 
 .group:hover .group-transform-effect {
   /* group-hover:scale-125 và group-hover:-rotate-6 */
@@ -499,9 +499,9 @@ export function Navigation({
   transform: scale(1.25) rotate(-6deg);
   
   /* group-hover:shadow-pink-500/60 */
-  /* Sử dụng box-shadow để tạo bóng đổ màu hồng */
+  /* Sử dụng box-shadow đềEtạo bóng đềEmàu hồng */
   box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.6), 0 4px 6px -4px rgba(236, 72, 153, 0.6); 
-  /* (Giá trị box-shadow tương đương với một shadow trung bình, màu hồng 500 với độ mờ 60%) */
+  /* (Giá trềEbox-shadow tương đương với một shadow trung bình, màu hồng 500 với đềEmềE60%) */
 }
       .header-sticky-blur {
   /* sticky top-0 */
@@ -515,17 +515,17 @@ export function Navigation({
   background-color: rgba(255, 255, 255, 0.95); /* Nền trắng gần như đục */
   
   /* backdrop-blur-md */
-  backdrop-filter: blur(12px); /* Làm mờ nền phía sau (hiệu ứng kính mờ) */
+  backdrop-filter: blur(12px); /* Làm mềEnền phía sau (hiệu ứng kính mềE */
   
   /* shadow-sm */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Bóng đổ mỏng */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Bóng đềEmỏng */
   
   /* border-b */
   border-bottom-width: 1px;
-  border-style: solid; /* Cần thiết để viền hiển thị */
+  border-style: solid; /* Cần thiết đềEviền hiển thềE*/
   
   /* border-[#FFC7EA]/20 (Màu hồng nhạt #FFC7EA) */
-  border-bottom-color: rgba(255, 199, 234, 0.2); /* Viền dưới hồng nhạt mờ 20% */
+  border-bottom-color: rgba(255, 199, 234, 0.2); /* Viền dưới hồng nhạt mềE20% */
 }
         @keyframes wiggle {
           0%, 100% { transform: rotate(-5deg); }
@@ -535,7 +535,7 @@ export function Navigation({
         .animate-wiggle {
           animation: wiggle 0.5s ease-in-out;
         }
-          /* TEXT ĐỎ RỰC GLOBAL CHO NÚT LOGOUT – SIÊU MẠNH, SIÊU ĐỎ, SIÊU DỄ SỢ */
+          /* TEXT ĐềERỰC GLOBAL CHO NÚT LOGOUT  ESIÊU MẠNH, SIÊU ĐềE SIÊU DềESỢ */
 .text-red-600 {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
@@ -544,7 +544,7 @@ export function Navigation({
   letter-spacing: 0.8px !important;
 }
 
-/* Hover → đỏ sáng + phát sáng neon */
+/* Hover ↁEđềEsáng + phát sáng neon */
 .text-red-600:hover {
   color: #ef4444 !important;
   text-shadow: 
@@ -554,7 +554,7 @@ export function Navigation({
   transition: all 0.3s ease !important;
 }
 
-/* Đảm bảo chữ "Thoát" luôn đỏ rực dù có class gì đi nữa */
+/* Đảm bảo chữ "Thoát" luôn đềErực dù có class gì đi nữa */
 #nav-logout span,
 button[title="Thoát"] span,
 button:has(svg[data-icon="log-out"]) span,
@@ -570,7 +570,7 @@ span:where(.text-red-600) {
     color: #7e22ce;                      /* text-purple-700 */
     
     /* Gradient nền */
-    background: linear-gradient(to right, #e9d5ff, #fbcfe8); /* from-purple-100 → to-pink-100 */
+    background: linear-gradient(to right, #e9d5ff, #fbcfe8); /* from-purple-100 ↁEto-pink-100 */
     
     box-shadow: 0 10px 25px -5px rgba(168, 34, 222, 0.3),
                 0 20px 40px -12px rgba(236, 72, 153, 0.25);
@@ -582,20 +582,20 @@ span:where(.text-red-600) {
     overflow: hidden;
   }
 
-  /* Hover – đậm màu hơn + phóng to */
+  /* Hover  Eđậm màu hơn + phóng to */
   .btn-stay-neko:hover {
-    background: linear-gradient(to right, #ddd6fe, #f9a8d4); /* hover:from-purple-200 → hover:to-pink-200 */
+    background: linear-gradient(to right, #ddd6fe, #f9a8d4); /* hover:from-purple-200 ↁEhover:to-pink-200 */
     transform: scale(1.05);
     box-shadow: 0 20px 40px -10px rgba(168, 34, 222, 0.4),
                 0 30px 60px -15px rgba(236, 72, 153, 0.35);
   }
 
-  /* Khi nhấn – bẹp xuống tí */
+  /* Khi nhấn  Ebẹp xuống tí */
   .btn-stay-neko:active {
     transform: scale(0.95);
   }
 
-  /* Hiệu ứng sóng lấp lánh khi hover – siêu kawaii */
+  /* Hiệu ứng sóng lấp lánh khi hover  Esiêu kawaii */
   .btn-stay-neko::before {
     content: '';
     position: absolute;
@@ -617,8 +617,8 @@ span:where(.text-red-600) {
     color: white;
     text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 
-    /* Gradient đỏ → hồng đậm */
-    background: linear-gradient(to right, #ef4444, #ec4899); /* from-red-500 → to-pink-600 */
+    /* Gradient đềEↁEhồng đậm */
+    background: linear-gradient(to right, #ef4444, #ec4899); /* from-red-500 ↁEto-pink-600 */
 
     box-shadow: 
       0 15px 35px -5px rgba(239, 68, 68, 0.5),
@@ -631,21 +631,21 @@ span:where(.text-red-600) {
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  /* HOVER – đỏ hơn, đậm hơn, to hơn */
+  /* HOVER  EđềEhơn, đậm hơn, to hơn */
   .btn-logout-danger-neko:hover {
-    background: linear-gradient(to right, #dc2626, #db2777); /* from-red-600 → to-pink-700 */
+    background: linear-gradient(to right, #dc2626, #db2777); /* from-red-600 ↁEto-pink-700 */
     transform: scale(1.05);
     box-shadow: 
       0 25px 50px -10px rgba(239, 68, 68, 0.6),
       0 35px 70px -15px rgba(236, 72, 153, 0.5);
   }
 
-  /* KHI NHẤN – bẹp xuống + rung nhẹ */
+  /* KHI NHẤN  Ebẹp xuống + rung nhẹ */
   .btn-logout-danger-neko:active {
     transform: scale(0.95);
   }
 
-  /* SÓNG LẤP LÁNH SIÊU SANG – chạy ngang khi hover */
+  /* SÓNG LẤP LÁNH SIÊU SANG  Echạy ngang khi hover */
   */
   .btn-logout-danger-neko::before {
     content: '';
@@ -678,7 +678,7 @@ span:where(.text-red-600) {
     text-align: center;
     margin-bottom: 1rem;                   /* mb-4 */
 
-    /* Gradient hồng → tím đậm */
+    /* Gradient hồng ↁEtím đậm */
     background: linear-gradient(to right, #ec4899, #a855f7);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -706,7 +706,7 @@ span:where(.text-red-600) {
     }
   }
 
-  /* Mobile nhỏ hơn tí cho đẹp */
+  /* Mobile nhềEhơn tí cho đẹp */
   @media (max-width: 480px) {
     .title-logout-neko {
       font-size: 2rem;
@@ -719,7 +719,7 @@ span:where(.text-red-600) {
     -webkit-backdrop-filter: blur(24px);
     border-radius: 32px;                         /* rounded-[32px] */
     
-    /* Bóng đổ siêu to */
+    /* Bóng đềEsiêu to */
     box-shadow: 
       0 25px 50px -12px rgba(236, 72, 153, 0.35),
       0 35px 70px -15px rgba(168, 85, 247, 0.25),
@@ -755,7 +755,7 @@ span:where(.text-red-600) {
     }
   }
 
-  /* Bonus: hover nhẹ → nổi lên tí cho sang */
+  /* Bonus: hover nhẹ ↁEnổi lên tí cho sang */
   .modal-card-neko:hover {
     transform: translateY(-6px);
     box-shadow: 
@@ -778,26 +778,26 @@ span:where(.text-red-600) {
   margin-bottom: 1.25rem;
 }
 
-/* Responsive: Trên màn hình điện thoại rất nhỏ (dưới 480px) 
-   nên cân nhắc chuyển về 1 cột nếu nội dung bên trong quá dài */
+/* Responsive: Trên màn hình điện thoại rất nhềE(dưới 480px) 
+   nên cân nhắc chuyển vềE1 cột nếu nội dung bên trong quá dài */
 @media (max-width: 480px) {
   .grid-layout-2-mobile-friendly {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }
       `}</style>
-      {/* MODAL LOGOUT – ĐÃ FIX HOÀN HẢO, LUÔN Ở GIỮA MÀN HÌNH 100% */}
+      {/* MODAL LOGOUT  EĐÁEFIX HOÀN HẢO, LUÔN ềEGIỮA MÀN HÌNH 100% */}
       {isLogoutModalOpen && (
         <div className="fixed inset-0 z-[9999] flex min-h-screen items-center justify-center px-4">
-          {/* Overlay mờ + click để tắt */}
+          {/* Overlay mềE+ click đềEtắt */}
           <div
             className="absolute inset-0 bg-black/70 backdrop-blur-md"
             onClick={() => setIsLogoutModalOpen(false)}
           />
 
-          {/* Modal chính – ĐÃ ĐƯỢC CĂN CHÍNH XÁC GIỮA */}
+          {/* Modal chính  EĐÁEĐƯỢC CāE CHÍNH XÁC GIỮA */}
           <div className="relative w-full max-w-md">
-            {/* Thêm div này để tạo khoảng cách với navbar và căn giữa hoàn hảo */}
+            {/* Thêm div này đềEtạo khoảng cách với navbar và căn giữa hoàn hảo */}
             <div className="my-20 sm:my-0">
               <div className="modal-card-neko">
                 {/* Mèo khóc huhu */}
@@ -825,7 +825,7 @@ span:where(.text-red-600) {
                   </button>
                 </div>
 
-                {/* Mèo nhỏ góc */}
+                {/* Mèo nhềEgóc */}
                 <div className="absolute -top-10 -right-10 text-8xl animate-wiggle-1 opacity-90"></div>
               </div>
             </div>

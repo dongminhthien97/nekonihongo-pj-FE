@@ -1,6 +1,6 @@
 // src/components/ExerciseSelector.tsx
 import { useState, useEffect } from "react";
-import api from "../api/auth";
+import api from "../api/api";
 import toast from "react-hot-toast";
 
 interface Category {
@@ -33,7 +33,7 @@ export function ExerciseSelector({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // BỎ setIsLoading(true) → không cần loading nữa
+        // BềEsetIsLoading(true) ↁEkhông cần loading nữa
         const [catRes, levelRes] = await Promise.all([
           api.get("/categories"),
           api.get("/levels"),
@@ -41,7 +41,7 @@ export function ExerciseSelector({
 
         setCategories(catRes.data);
 
-        // Sắp xếp N5 → N1 (giảm dần)
+        // Sắp xếp N5 ↁEN1 (giảm dần)
         setLevels(
           levelRes.data.sort((a: Level, b: Level) =>
             b.level.localeCompare(a.level),
@@ -74,7 +74,7 @@ export function ExerciseSelector({
     if (isAvailable) {
       onNavigate("exercise", { category: catName, level: levelName });
     } else {
-      toast("Bài tập này sẽ sớm ra mắt nhé! Mèo đang chuẩn bị rất kỹ đây 😺", {
+      toast("Bài tập này sẽ sớm ra mắt nhé! Mèo đang chuẩn bềErất kỹ đây 😺", {
         icon: "⏳",
         duration: 1000,
       });
@@ -87,7 +87,7 @@ export function ExerciseSelector({
   return (
     <div className="min-h-screen relative">
       <main className="relative z-10 container mx-auto px-4 py-16 md:py-24 animate-fade-in">
-        {/* Tiêu đề */}
+        {/* Tiêu đềE*/}
         <div className="text-center mb-16 md:mb-24">
           <h1 className="hero-section-title hero-text-glow">
             {!selectedCategory
@@ -96,8 +96,8 @@ export function ExerciseSelector({
           </h1>
           <p className="lead-text">
             {!selectedCategory
-              ? "Mèo đã chuẩn bị sẵn các loại bài tập siêu hay cho bạn rồi đấy! 🐾"
-              : "Chọn cấp độ JLPT bạn muốn luyện tập nào!"}
+              ? "Mèo đã chuẩn bềEsẵn các loại bài tập siêu hay cho bạn rồi đấy! 🐾"
+              : "Chọn cấp đềEJLPT bạn muốn luyện tập nào!"}
           </p>
         </div>
 
@@ -130,17 +130,17 @@ export function ExerciseSelector({
                     {cat.name === "VOCABULARY"
                       ? "📚"
                       : cat.name === "GRAMMAR"
-                        ? "✍️"
-                        : "🖌️"}
+                        ? "✍︁E
+                        : "🖌�E�E}
                   </div>
 
                   <h2 className="card-title">{cat.displayName}</h2>
-                  <p className="card-subtitle">Học theo cấp độ JLPT</p>
+                  <p className="card-subtitle">Học theo cấp đềEJLPT</p>
                   <p className="card-description">{cat.description}</p>
 
                   <div className="flex-container">
-                    <span>Bấm để chọn</span>
-                    <span className="moving-icon">→</span>
+                    <span>Bấm đềEchọn</span>
+                    <span className="moving-icon">ↁE/span>
                   </div>
                 </div>
               </button>
@@ -153,7 +153,7 @@ export function ExerciseSelector({
           <div className="max-w-6xl mx-auto">
             <button onClick={handleBack} className="glass-button">
               <span className="text-2xl group-hover:-translate-x-2 transition-transform">
-                ←
+                ↁE
               </span>
               <span>Quay lại chọn loại</span>
             </button>
@@ -198,7 +198,7 @@ export function ExerciseSelector({
                                 : "Thành thạo"}
                       </p>
                       <div className="text-lg font-bold text-white">
-                        {isAvailable ? "Bắt đầu ngay →" : "Sắp ra mắt..."}
+                        {isAvailable ? "Bắt đầu ngay ↁE : "Sắp ra mắt..."}
                       </div>
                     </div>
 
@@ -216,7 +216,7 @@ export function ExerciseSelector({
           </div>
         )}
 
-        {/* Footer dễ thương */}
+        {/* Footer dềEthương */}
         <div
           className="footer-container text-center"
           style={{ animationDelay: "0.8s" }}
@@ -246,11 +246,11 @@ export function ExerciseSelector({
   background: linear-gradient(135deg, #4ade80, #14b8a6); /* Green to Teal */
 }
 
-/* Lớp phủ chung để tạo độ trong suốt và hiệu ứng kính */
+/* Lớp phủ chung đềEtạo đềEtrong suốt và hiệu ứng kính */
 .gradient-overlay {
   position: absolute;
   inset: 0;
-  opacity: 0.2; /* Độ mờ nhẹ để không che mất nội dung */
+  opacity: 0.2; /* ĐềEmềEnhẹ đềEkhông che mất nội dung */
   transition: opacity 0.3s ease;
 }
 
@@ -290,13 +290,13 @@ export function ExerciseSelector({
   /* from-pink-400 (#f472b6) to-purple-500 (#a855f7) */
   background: linear-gradient(135deg, #f472b6, #a855f7);
   
-  /* Để áp dụng cho chữ (Text Gradient) */
+  /* ĐềEáp dụng cho chữ (Text Gradient) */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
       .main-viewport {
-  /* min-h-screen: Chiếm toàn bộ chiều cao trình duyệt */
+  /* min-h-screen: Chiếm toàn bềEchiều cao trình duyệt */
   min-height: 100vh;
 
   /* flex items-center justify-center: Căn giữa nội dung tuyệt đối */
@@ -310,7 +310,7 @@ export function ExerciseSelector({
   /* Chống cuộn ngang không mong muốn */
   overflow-x: hidden;
   
-  /* Đảm bảo nội dung không bị dính sát mép trên mobile */
+  /* Đảm bảo nội dung không bềEdính sát mép trên mobile */
   padding: 1rem;
 }
                            .animate-fade-in {
@@ -331,7 +331,7 @@ export function ExerciseSelector({
   /* max-w-6xl (1152px) */
   max-width: 72rem;
   
-  /* mx-auto (Căn giữa toàn bộ lưới) */
+  /* mx-auto (Căn giữa toàn bềElưới) */
   margin-left: auto;
   margin-right: auto;
 
@@ -342,10 +342,10 @@ export function ExerciseSelector({
   /* gap-12 (48px) */
   gap: 3rem;
   
-  padding: 1rem; /* Padding nhỏ để không bị dính sát mép màn hình điện thoại */
+  padding: 1rem; /* Padding nhềEđềEkhông bềEdính sát mép màn hình điện thoại */
 }
 
-/* lg:grid-cols-3 & lg:gap-20 (Màn hình từ 1024px trở lên) */
+/* lg:grid-cols-3 & lg:gap-20 (Màn hình từ 1024px trềElên) */
 @media (min-width: 1024px) {
   .grid-container {
     /* Chia làm 3 cột bằng nhau */
@@ -377,7 +377,7 @@ export function ExerciseSelector({
   text-align: center;
 }
 
-/* md:text-3xl (Màn hình từ 768px trở lên - 30px) */
+/* md:text-3xl (Màn hình từ 768px trềElên - 30px) */
 @media (min-width: 768px) {
   .lead-text {
     font-size: 1.875rem;
@@ -389,14 +389,14 @@ export function ExerciseSelector({
   font-size: 3.75rem;
   line-height: 1;
 
-  /* Cấu hình để animation hoạt động tốt */
+  /* Cấu hình đềEanimation hoạt động tốt */
   display: inline-block;
 
   /* animate-bounce */
   animation: bounce 1s infinite;
 }
 
-/* md:text-8xl (Màn hình từ 768px trở lên - 96px) */
+/* md:text-8xl (Màn hình từ 768px trềElên - 96px) */
 @media (min-width: 768px) {
   .bouncing-icon {
     font-size: 6rem;
@@ -419,7 +419,7 @@ export function ExerciseSelector({
   font-size: 1.5rem;
   line-height: 2rem;
 
-  /* text-white/90 (Độ trong suốt 90%) */
+  /* text-white/90 (ĐềEtrong suốt 90%) */
   color: rgba(255, 255, 255, 0.9);
 
   /* font-medium */
@@ -429,7 +429,7 @@ export function ExerciseSelector({
   margin-bottom: 1.5rem;
 }
 
-/* md:text-3xl (Màn hình từ 768px trở lên - 30px) */
+/* md:text-3xl (Màn hình từ 768px trềElên - 30px) */
 @media (min-width: 768px) {
   .accent-text {
     font-size: 1.875rem;
@@ -437,7 +437,7 @@ export function ExerciseSelector({
   }
 }
 
-/* md:mt-32 (Màn hình từ 768px trở lên - 128px) */
+/* md:mt-32 (Màn hình từ 768px trềElên - 128px) */
 @media (min-width: 768px) {
   .footer-container {
     margin-top: 8rem;
@@ -449,7 +449,7 @@ export function ExerciseSelector({
   font-size: 2.25rem; /* 36px */
   line-height: 2.5rem;
 
-  /* Cấu hình để transform hoạt động */
+  /* Cấu hình đềEtransform hoạt động */
   display: inline-block;
 
   /* transition-transform duration-500 */
@@ -477,7 +477,7 @@ export function ExerciseSelector({
   vertical-align: middle;
 }
 
-/* md:text-2xl (Màn hình từ 768px trở lên) */
+/* md:text-2xl (Màn hình từ 768px trềElên) */
 @media (min-width: 768px) {
   .flex-container {
     font-size: 1.5rem; /* 24px */
@@ -508,7 +508,7 @@ export function ExerciseSelector({
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* md:text-xl (Màn hình từ 768px trở lên - 20px) */
+/* md:text-xl (Màn hình từ 768px trềElên - 20px) */
 @media (min-width: 768px) {
   .card-description {
     font-size: 1.25rem;
@@ -529,7 +529,7 @@ export function ExerciseSelector({
   margin-bottom: 1.5rem;
 }
 
-/* md:text-2xl (Màn hình từ 768px trở lên - 24px) */
+/* md:text-2xl (Màn hình từ 768px trềElên - 24px) */
 @media (min-width: 768px) {
   .card-subtitle {
     font-size: 1.5rem;
@@ -555,7 +555,7 @@ export function ExerciseSelector({
           drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1));
 }
 
-/* md:text-5xl (Màn hình từ 768px trở lên) */
+/* md:text-5xl (Màn hình từ 768px trềElên) */
 @media (min-width: 768px) {
   .card-title {
     font-size: 3rem; /* 48px */
@@ -568,13 +568,13 @@ export function ExerciseSelector({
   line-height: 1;
   margin-bottom: 2rem; /* mb-8 (8 * 4px = 32px) */
   
-  /* Cấu hình để transform hoạt động mượt mà */
+  /* Cấu hình đềEtransform hoạt động mượt mà */
   display: inline-block; 
   transition: transform 0.5s ease; /* duration-500 */
   will-change: transform; /* Tối ưu hiệu năng cho trình duyệt */
 }
 
-/* md:text-9xl (Dành cho màn hình từ 768px trở lên) */
+/* md:text-9xl (Dành cho màn hình từ 768px trềElên) */
 @media (min-width: 768px) {
   .hero-text {
     font-size: 8rem; /* 128px */
@@ -598,14 +598,14 @@ export function ExerciseSelector({
   z-index: 0;
 }
 
-/* Vị trí góc trên trái */
+/* VềEtrí góc trên trái */
 .orb-top {
   top: 0;
   left: 0;
   transform: translate(-50%, -50%);
 }
 
-/* Vị trí góc dưới phải (Mã bạn vừa gửi) */
+/* VềEtrí góc dưới phải (Mã bạn vừa gửi) */
 .orb-bottom {
   bottom: 0;
   right: 0;
@@ -656,7 +656,7 @@ export function ExerciseSelector({
   opacity: 1;
 }
 
-/* Đảm bảo nội dung luôn hiển thị trên lớp gradient */
+/* Đảm bảo nội dung luôn hiển thềEtrên lớp gradient */
 .content {
   position: relative;
   z-index: 1;
@@ -673,7 +673,7 @@ export function ExerciseSelector({
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.2); /* border-white/20 */
   
-  /* Đổ bóng và Chuyển cảnh */
+  /* ĐềEbóng và Chuyển cảnh */
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* shadow-2xl */
   transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1); /* duration-700 */
   
@@ -711,13 +711,13 @@ export function ExerciseSelector({
   /* text-white */
   color: #ffffff; 
   
-  /* drop-shadow-2xl (Giá trị gần đúng, có thể phức tạp hơn) */
+  /* drop-shadow-2xl (Giá trềEgần đúng, có thềEphức tạp hơn) */
   filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15)) drop-shadow(0 10px 10px rgba(0, 0, 0, 0.04));
   
   /* -translate-y-3 */
   transform: translateY(-0.75rem); /* -12px */
   
-  /* text-6xl (Giá trị mặc định cho text-6xl) */
+  /* text-6xl (Giá trềEmặc định cho text-6xl) */
   font-size: 3.75rem; /* 60px */
   line-height: 1; 
   
@@ -728,8 +728,8 @@ export function ExerciseSelector({
   animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Kích thước text cho màn hình nhỏ (sm:text-6xl) */
-/* Cùng giá trị mặc định, không cần media query */
+/* Kích thước text cho màn hình nhềE(sm:text-6xl) */
+/* Cùng giá trềEmặc định, không cần media query */
 
 /* Thiết lập cho màn hình trung bình (md) - min-width: 768px */
 @media (min-width: 768px) {

@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { NekoLoading } from "./NekoLoading";
-import api from "../api/auth";
+import api from "../api/api";
 import { MiniTestModal } from "./MiniTestModal";
 
 const LESSONS_PER_PAGE = 12;
@@ -97,10 +97,10 @@ export function GrammarPage({
         setLessons(serverLessons);
         setError("");
       } catch (err: any) {
-        console.error("❌ Lỗi khi tải ngữ pháp:", err);
+        console.error("❁ELỗi khi tải ngữ pháp:", err);
 
         if (err.response?.status === 401) {
-          alert("Phiên đăng nhập hết hạn! Mèo đưa bạn về trang đăng nhập nhé");
+          alert("Phiên đăng nhập hết hạn! Mèo đưa bạn vềEtrang đăng nhập nhé");
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("nekoUser");
@@ -108,7 +108,7 @@ export function GrammarPage({
           return;
         }
 
-        setError("Không thể kết nối đến server! Mèo đang cố gắng...");
+        setError("Không thềEkết nối đến server! Mèo đang cềEgắng...");
       } finally {
         setTimeout(() => setIsLoading(false), 600);
       }
@@ -165,13 +165,13 @@ export function GrammarPage({
     if (selectedLesson && currentLessonData && userId) {
       setShowMiniTestModal(true);
     } else if (!selectedLesson) {
-      showCustomError("Vui lòng chọn bài học để làm bài test!");
+      showCustomError("Vui lòng chọn bài học đềElàm bài test!");
     } else if (!userId) {
-      showCustomError("Vui lòng đăng nhập để làm bài test!");
+      showCustomError("Vui lòng đăng nhập đềElàm bài test!");
     }
   };
 
-  // Hàm hiển thị modal thành công
+  // Hàm hiển thềEmodal thành công
   const showCustomSuccess = (data: {
     lessonId: number;
     lessonTitle: string;
@@ -182,7 +182,7 @@ export function GrammarPage({
     setShowSuccessModal(true);
   };
 
-  // Hàm hiển thị modal lỗi
+  // Hàm hiển thềEmodal lỗi
   const showCustomError = (
     message: string,
     type: "validation" | "server" | "timeout" = "server",
@@ -233,7 +233,7 @@ export function GrammarPage({
 
   if (isLoading) {
     return (
-      <NekoLoading message="Mèo đang chuẩn bị bài học ngữ pháp cho bạn..." />
+      <NekoLoading message="Mèo đang chuẩn bềEbài học ngữ pháp cho bạn..." />
     );
   }
 
@@ -337,7 +337,7 @@ export function GrammarPage({
                 onClick={() => setSelectedLesson(null)}
                 className="glass-pill-button"
               >
-                ← Tất cả bài học
+                ↁETất cả bài học
               </button>
             </div>
 
@@ -357,11 +357,11 @@ export function GrammarPage({
                     </h4>
 
                     <div className="subtle-gradient-panel mb-6">
-                      <p className="pink-bold-label">Ý NGHĨA</p>
+                      <p className="pink-bold-label">ÁENGHĨA</p>
                       <p className="large-bold-text">{g.meaning}</p>
                     </div>
 
-                    {/* Giải thích – có toggle ẩn/hiện */}
+                    {/* Giải thích  Ecó toggle ẩn/hiện */}
                     <button
                       onClick={() => toggleSection(pointIndex, "explanation")}
                       className="interactive-gradient-row-spaced"
@@ -405,7 +405,7 @@ export function GrammarPage({
                       />
                     </button>
 
-                    {/* Ví dụ – chỉ hiện khi expanded */}
+                    {/* Ví dụ  EchềEhiện khi expanded */}
                     {isExpanded && (
                       <div className="space-y-6 animate-fade-in">
                         {g.examples.map((ex, j) => (
@@ -507,7 +507,7 @@ export function GrammarPage({
           title={
             selectedLesson
               ? "Làm bài test cho bài học này!"
-              : "Chọn bài học để làm test"
+              : "Chọn bài học đềElàm test"
           }
         />
       </div>
@@ -534,7 +534,7 @@ export function GrammarPage({
             </div>
             <h2 className="success-title">Đã gửi bài thành công!</h2>
             <p className="success-message">
-              Chờ feedback từ admin nhé. Mèo sẽ thông báo cho bạn khi có kết
+              ChềEfeedback từ admin nhé. Mèo sẽ thông báo cho bạn khi có kết
               quả.
             </p>
             <div className="success-stats">
@@ -549,7 +549,7 @@ export function GrammarPage({
                 </span>
               </div>
               <div className="stat-item">
-                <span className="stat-label">Số nhóm câu:</span>
+                <span className="stat-label">SềEnhóm câu:</span>
                 <span className="stat-value">
                   {submissionData.questionCount}
                 </span>
@@ -602,7 +602,7 @@ export function GrammarPage({
             {errorType === "server" && (
               <div className="error-hint">
                 <p>
-                  ⚠️ <strong>Khắc phục:</strong> Kiểm tra kết nối mạng và thử
+                  ⚠�E�E<strong>Khắc phục:</strong> Kiểm tra kết nối mạng và thử
                   lại.
                 </p>
               </div>
@@ -611,7 +611,7 @@ export function GrammarPage({
             {errorType === "timeout" && (
               <div className="error-hint">
                 <p>
-                  ⏱️ <strong>Timeout:</strong> Request mất quá nhiều thời gian.
+                  ⏱�E�E<strong>Timeout:</strong> Request mất quá nhiều thời gian.
                   Vui lòng thử lại.
                 </p>
               </div>

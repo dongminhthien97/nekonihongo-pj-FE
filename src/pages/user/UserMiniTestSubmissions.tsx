@@ -1,6 +1,6 @@
 // src/pages/User/UserMiniTestSubmissions.tsx
 import { useState, useEffect } from "react";
-import api from "../../api/auth";
+import api from "../../api/api";
 import toast from "react-hot-toast";
 import {
   ChevronLeft,
@@ -152,7 +152,7 @@ export function UserMiniTestSubmissions({
                 setErrorModal({
                   open: true,
                   title: "Lỗi Parse Dữ Liệu",
-                  message: "Không thể phân tích dữ liệu câu trả lời từ server.",
+                  message: "Không thềEphân tích dữ liệu câu trả lời từ server.",
                 });
               }
             } else if (typeof s.answers === "object" && s.answers !== null) {
@@ -233,7 +233,7 @@ export function UserMiniTestSubmissions({
             open: true,
             title: "Không tìm thấy endpoint",
             message:
-              "Endpoint API không tồn tại hoặc bị lỗi. Vui lòng thử lại sau!",
+              "Endpoint API không tồn tại hoặc bềElỗi. Vui lòng thử lại sau!",
           });
         } else if (err.response.status === 500) {
           setErrorModal({
@@ -248,7 +248,7 @@ export function UserMiniTestSubmissions({
           open: true,
           title: "Lỗi Kết Nối",
           message:
-            "Không thể kết nối đến server! Vui lòng kiểm tra kết nối mạng.",
+            "Không thềEkết nối đến server! Vui lòng kiểm tra kết nối mạng.",
         });
       } else {
         setDebugInfo(`Lỗi: ${err.message}`);
@@ -287,7 +287,7 @@ export function UserMiniTestSubmissions({
       setErrorModal({
         open: true,
         title: "Lỗi Xóa Bài Nộp",
-        message: "Không thể xóa bài nộp. Vui lòng thử lại sau!",
+        message: "Không thềExóa bài nộp. Vui lòng thử lại sau!",
       });
     }
   };
@@ -310,7 +310,7 @@ export function UserMiniTestSubmissions({
       case "reviewed":
         return "Đã chấm";
       case "pending":
-        return "Chờ chấm";
+        return "ChềEchấm";
       default:
         return "Không xác định";
     }
@@ -358,7 +358,7 @@ export function UserMiniTestSubmissions({
               <button
                 onClick={handleGoHome}
                 className="submissions-home-button"
-                title="Về trang chủ"
+                title="VềEtrang chủ"
               >
                 <Home />
               </button>
@@ -407,7 +407,7 @@ export function UserMiniTestSubmissions({
                   className="status-filter"
                 >
                   <option value="all">Tất cả trạng thái</option>
-                  <option value="pending">Chờ chấm</option>
+                  <option value="pending">ChềEchấm</option>
                   <option value="feedbacked">Đã chấm</option>
                   <option value="reviewed">Đã xem xét</option>
                 </select>
@@ -466,7 +466,7 @@ export function UserMiniTestSubmissions({
                   <div className="stat-value">
                     {submissions.filter((s) => s.status === "pending").length}
                   </div>
-                  <div className="stat-label">Chờ chấm</div>
+                  <div className="stat-label">ChềEchấm</div>
                 </div>
               </div>
 
@@ -499,8 +499,8 @@ export function UserMiniTestSubmissions({
                   {searchTerm
                     ? "Thử tìm kiếm với từ khóa khác"
                     : submissions.length === 0
-                      ? "Bạn chưa có bài nộp nào. Hãy làm bài test để bắt đầu!"
-                      : "Không có bài nộp nào phù hợp với bộ lọc"}
+                      ? "Bạn chưa có bài nộp nào. Hãy làm bài test đềEbắt đầu!"
+                      : "Không có bài nộp nào phù hợp với bềElọc"}
                 </p>
                 <button
                   onClick={fetchSubmissions}
@@ -537,7 +537,7 @@ export function UserMiniTestSubmissions({
                           </span>
                         </div>
                         <div className="detail-row">
-                          <span className="detail-label">Số câu:</span>
+                          <span className="detail-label">SềEcâu:</span>
                           <span className="detail-value">
                             {sub.total_questions}
                           </span>
@@ -592,7 +592,7 @@ export function UserMiniTestSubmissions({
                       <th className="table-header-cell">Trạng thái</th>
                       <th className="table-header-cell">Điểm</th>
                       <th className="table-header-cell">Ngày nộp</th>
-                      <th className="table-header-cell">Số câu</th>
+                      <th className="table-header-cell">SềEcâu</th>
                       <th className="table-header-cell">Thao tác</th>
                     </tr>
                   </thead>
@@ -716,7 +716,7 @@ export function UserMiniTestSubmissions({
                 onClick={() => setSelected(null)}
                 className="modal-close-button"
               >
-                ✕
+                ✁E
               </button>
             </div>
 
@@ -733,10 +733,10 @@ export function UserMiniTestSubmissions({
                   <div className="empty-answers">
                     <AlertCircle className="empty-answers-icon" />
                     <p>Không có câu trả lời nào được ghi nhận</p>
-                    <p className="empty-notes">Có thể do:</p>
+                    <p className="empty-notes">Có thềEdo:</p>
                     <ul className="empty-reasons">
                       <li>• Backend chưa xử lý đúng dữ liệu answers</li>
-                      <li>• Dữ liệu answers trong database bị lỗi</li>
+                      <li>• Dữ liệu answers trong database bềElỗi</li>
                       <li>• Frontend không parse được format của answers</li>
                     </ul>
                   </div>
@@ -1998,7 +1998,7 @@ export function UserMiniTestSubmissions({
         }
 
         .empty-reasons li::before {
-          content: '→';
+          content: 'ↁE;
           position: absolute;
           left: 0;
           color: #667eea;

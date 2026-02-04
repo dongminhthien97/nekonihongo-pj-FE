@@ -10,7 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import api from "../api/auth";
+import api from "../api/api";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
@@ -119,15 +119,15 @@ export function ExercisePage({
         } else {
           setExercises([]);
           toast(
-            "Bài tập này sẽ sớm ra mắt nhé! Mèo đang chuẩn bị rất kỹ đây 😺",
+            "Bài tập này sẽ sớm ra mắt nhé! Mèo đang chuẩn bềErất kỹ đây 😺",
             { icon: "⏳", duration: 1000 },
           );
         }
       } catch (err: any) {
-        console.error("❌ Lỗi tải bài tập:", err);
+        console.error("❁ELỗi tải bài tập:", err);
         if (err.response?.status === 401) {
           toast.error(
-            "Phiên đăng nhập hết hạn rồi... Mèo đưa bạn về đăng nhập nhé 😿",
+            "Phiên đăng nhập hết hạn rồi... Mèo đưa bạn vềEđăng nhập nhé 😿",
             { duration: 6000 },
           );
           setTimeout(() => onNavigate("login"), 3000);
@@ -150,11 +150,11 @@ export function ExercisePage({
   }, []);
 
   const handleExerciseSelect = async (exerciseId: number) => {
-    // Sử dụng toast.promise để chỉ có 1 toast duy nhất (loading → success hoặc error)
+    // Sử dụng toast.promise đềEchềEcó 1 toast duy nhất (loading ↁEsuccess hoặc error)
     await toast.promise(
       api.get(`/exercises/${exerciseId}`),
       {
-        loading: "Mèo đang chuẩn bị bài tập... 🐱",
+        loading: "Mèo đang chuẩn bềEbài tập... 🐱",
         success: (res) => {
           const exercise: Exercise = res.data;
           if (!exercise.questions || exercise.questions.length === 0) {
@@ -172,7 +172,7 @@ export function ExercisePage({
         },
         error: (err: any) => {
           if (err.message === "no_questions") {
-            return "Bài tập này chưa có câu hỏi. Mèo sẽ bổ sung sớm nhé! 😿";
+            return "Bài tập này chưa có câu hỏi. Mèo sẽ bềEsung sớm nhé! 😿";
           }
           return "Không tải được bài tập này. Mèo đang kiểm tra lại... 😿";
         },
@@ -209,7 +209,7 @@ export function ExercisePage({
       await submitExerciseResults(correctCount, shuffledQuestions.length);
     } else {
       toast(
-        "Bạn chưa đăng nhập. Kết quả sẽ không được lưu. Hãy đăng nhập để nhận điểm nhé! 😺",
+        "Bạn chưa đăng nhập. Kết quả sẽ không được lưu. Hãy đăng nhập đềEnhận điểm nhé! 😺",
         {
           icon: "🔒",
           duration: 4000,
@@ -238,10 +238,10 @@ export function ExercisePage({
 
   const getScoreMessage = (score: number, total: number) => {
     const ratio = score / total;
-    if (ratio <= 0.3) return "Cố lên nào mèo con ơi 😿";
-    if (ratio <= 0.6) return "Khá lắm rồi, cố thêm chút nữa 💪";
+    if (ratio <= 0.3) return "CềElên nào mèo con ơi 😿";
+    if (ratio <= 0.6) return "Khá lắm rồi, cềEthêm chút nữa 💪";
     if (ratio <= 0.9) return "Giỏi quá đi 😸";
-    return "Tuyệt vời! Mèo tự hào về bạn 🎉";
+    return "Tuyệt vời! Mèo tự hào vềEbạn 🎉";
   };
 
   const getScoreEmoji = (score: number, total: number) => {
@@ -273,7 +273,7 @@ export function ExercisePage({
     totalQuestions: number,
   ) => {
     if (!authUser?.id || !selectedExercise) {
-      toast.error("Không thể lưu kết quả. Vui lòng đăng nhập lại! 🔒");
+      toast.error("Không thềElưu kết quả. Vui lòng đăng nhập lại! 🔒");
       return null;
     }
 
@@ -302,7 +302,7 @@ export function ExercisePage({
           <div className="text-center">
             <div className="text-2xl font-bold mb-2">🎉 LEVEL UP! 🎉</div>
             <div className="text-lg mb-1">
-              Level {result.oldLevel} → Level {result.newLevel}
+              Level {result.oldLevel} ↁELevel {result.newLevel}
             </div>
             <div className="text-sm">
               +{result.pointsEarned} điểm • Tổng: {result.totalPoints} điểm
@@ -314,7 +314,7 @@ export function ExercisePage({
       } else {
         toast.success(
           <div className="text-center">
-            <div className="text-lg font-bold">✅ Hoàn thành bài tập!</div>
+            <div className="text-lg font-bold">✁EHoàn thành bài tập!</div>
             <div>
               +{result.pointsEarned} điểm • Tổng: {result.totalPoints} điểm
             </div>
@@ -334,7 +334,7 @@ export function ExercisePage({
       setTimeout(async () => {
         try {
           console.log("[DEBUG] Checking activity logs after 2 seconds...");
-          // Có thể gọi API để lấy logs mới nhất
+          // Có thềEgọi API đềElấy logs mới nhất
           // const logsResponse = await api.get("/admin/activity-logs");
           // console.log("[DEBUG] Latest logs:", logsResponse.data);
         } catch (logErr) {
@@ -342,11 +342,11 @@ export function ExercisePage({
         }
       }, 2000);
 
-      //Refresh full data từ backend để đồng bộ chắc chắn
+      //Refresh full data từ backend đềEđồng bềEchắc chắn
       await refreshUser();
       return result;
     } catch (error: any) {
-      console.error("❌ Lỗi khi lưu kết quả:", error);
+      console.error("❁ELỗi khi lưu kết quả:", error);
 
       // DEBUG chi tiết
       if (error.response) {
@@ -362,7 +362,7 @@ export function ExercisePage({
         toast.error("Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!");
         setTimeout(() => onNavigate("login"), 2000);
       } else {
-        toast.error("Không thể lưu kết quả bài tập. Vui lòng thử lại!");
+        toast.error("Không thềElưu kết quả bài tập. Vui lòng thử lại!");
       }
       return null;
     } finally {
@@ -372,7 +372,7 @@ export function ExercisePage({
   };
 
   if (isLoading && !selectedExercise) {
-    return <NekoLoading message="Mèo đang chuẩn bị bài tập..." />;
+    return <NekoLoading message="Mèo đang chuẩn bềEbài tập..." />;
   }
 
   return (
@@ -394,7 +394,7 @@ export function ExercisePage({
             </span>
           </div>
           <p className="header-subtitle">
-            Làm bài trắc nghiệm để củng cố{" "}
+            Làm bài trắc nghiệm đềEcủng cố{" "}
             <span className="text-highlight-pink">
               {category === "grammar" ? "ngữ pháp" : "từ vựng"}
             </span>{" "}
@@ -522,7 +522,7 @@ export function ExercisePage({
                 <span>📝 {shuffledQuestions.length} câu hỏi</span>
                 <span>•</span>
                 <span>
-                  ✅ {userAnswers.filter((a) => a !== null).length}/
+                  ✁E{userAnswers.filter((a) => a !== null).length}/
                   {shuffledQuestions.length} đã trả lời
                 </span>
               </div>
@@ -610,7 +610,7 @@ export function ExercisePage({
 
             {!isAuthenticated && (
               <div className="mt-4 text-center text-yellow-300 text-sm">
-                ⚠️ Bạn chưa đăng nhập. Kết quả sẽ không được lưu!
+                ⚠�E�EBạn chưa đăng nhập. Kết quả sẽ không được lưu!
               </div>
             )}
           </div>
@@ -636,7 +636,7 @@ export function ExercisePage({
               {!isAuthenticated && (
                 <div className="mt-4 p-3 bg-yellow-500/20 rounded-lg">
                   <p className="text-yellow-300 text-sm">
-                    ⚠️ Kết quả chưa được lưu vì bạn chưa đăng nhập
+                    ⚠�E�EKết quả chưa được lưu vì bạn chưa đăng nhập
                   </p>
                 </div>
               )}
@@ -770,7 +770,7 @@ export function ExercisePage({
   background-color: rgba(255, 255, 255, 0.3); 
   
   /* transition và transform */
-  transition: all 150ms ease-in-out; /* Giá trị mặc định cho transition */
+  transition: all 150ms ease-in-out; /* Giá trềEmặc định cho transition */
 }
 
 /* md:p-5 */
@@ -800,7 +800,7 @@ export function ExercisePage({
   /* h-6 */
   height: 1.5rem; /* 24px */
   
-  /* transition (Thêm vào để hiệu ứng scale mượt mà) */
+  /* transition (Thêm vào đềEhiệu ứng scale mượt mà) */
   transition: transform 150ms ease-in-out; 
 }
 
@@ -885,20 +885,20 @@ export function ExercisePage({
   background-color: rgba(255, 255, 255, 0.3); 
   
   /* transition */
-  transition: all 150ms ease-in-out; /* Giá trị mặc định cho transition */
+  transition: all 150ms ease-in-out; /* Giá trềEmặc định cho transition */
   
   /* transform */
-  /* Chỉ là một lớp đánh dấu, không thêm thuộc tính CSS riêng biệt */
+  /* ChềElà một lớp đánh dấu, không thêm thuộc tính CSS riêng biệt */
 }
-      /* Tiêu đề bài tập nhỏ */
+      /* Tiêu đềEbài tập nhềE*/
 .exercise-card-title {
   /* text-2xl */
   font-size: 1.5rem;
   font-weight: 800;
-  /* Dùng Gray-900 thay vì Black thuần để tinh tế hơn */
+  /* Dùng Gray-900 thay vì Black thuần đềEtinh tế hơn */
   color: #111827; 
   margin-bottom: 0.5rem;
-  /* Shadow nhẹ để nổi khối, không làm nhòe chữ */
+  /* Shadow nhẹ đềEnổi khối, không làm nhòe chữ */
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
 }
 
@@ -907,12 +907,12 @@ export function ExercisePage({
   /* text-xl */
   font-size: 1.25rem;
   line-height: 1.625;
-  /* Gray-600 giúp mắt dễ lướt qua nội dung phụ */
+  /* Gray-600 giúp mắt dềElướt qua nội dung phụ */
   color: #4b5563;
   font-weight: 400;
 }
 
-/* Badge thông tin (số câu hỏi) */
+/* Badge thông tin (sềEcâu hỏi) */
 .exercise-card-meta {
   margin-top: 0.75rem;
   display: flex;
@@ -922,7 +922,7 @@ export function ExercisePage({
   /* Màu tím thương hiệu của bạn */
   color: #7e22ce; 
   font-weight: 600;
-  /* Thêm nền nhẹ cho meta để nó chuyên nghiệp hơn */
+  /* Thêm nền nhẹ cho meta đềEnó chuyên nghiệp hơn */
   background: rgba(126, 34, 206, 0.08);
   padding: 4px 12px;
   border-radius: 8px;
@@ -935,51 +935,51 @@ export function ExercisePage({
   /* font-bold */
   font-weight: 700;
 
-  /* Giúp chữ nổi bật hơn trên nền trắng mờ */
+  /* Giúp chữ nổi bật hơn trên nền trắng mềE*/
   letter-spacing: -0.01em;
   
-  /* Tạo một lớp shadow cực mảnh để chữ không bị nhòe bởi backdrop-blur của thẻ cha */
+  /* Tạo một lớp shadow cực mảnh đềEchữ không bềEnhòe bởi backdrop-blur của thẻ cha */
   filter: drop-shadow(0 1px 1px rgba(126, 34, 206, 0.1));
 
-  /* Khi nằm trên nền tối, màu này có thể tự động sáng lên một chút (tùy chọn) */
+  /* Khi nằm trên nền tối, màu này có thềEtự động sáng lên một chút (tùy chọn) */
   transition: color 0.2s ease;
 }
 
-/* Hiệu ứng hover nhẹ nếu là liên kết hoặc số có thể tương tác */
+/* Hiệu ứng hover nhẹ nếu là liên kết hoặc sềEcó thềEtương tác */
 .text-accent-purple:hover {
   color: #9333ea; /* Purple-600 */
 }
-      /* Tiêu đề Bài tập: Sắc nét và có chiều sâu */
+      /* Tiêu đềEBài tập: Sắc nét và có chiều sâu */
 .exercise-title {
   /* text-4xl (36px) */
   font-size: 2.25rem;
   font-weight: 900;
   color:#8034eb;
 
-  /* Thay hero-text-glow bằng drop-shadow đa lớp để chữ nổi bật trên nền kính */
+  /* Thay hero-text-glow bằng drop-shadow đa lớp đềEchữ nổi bật trên nền kính */
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1)) 
           drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
   
   letter-spacing: -0.01em;
 }
 
-/* Phần mô tả: Tinh tế và dễ đọc */
+/* Phần mô tả: Tinh tế và dềEđọc */
 .exercise-meta {
   /* text-2xl (24px) */
   font-size: 1.5rem;
   margin-top: 1rem;
   
-  /* Thay text-black bằng Gray-800 để giảm độ gắt, tạo cảm giác cao cấp */
+  /* Thay text-black bằng Gray-800 đềEgiảm đềEgắt, tạo cảm giác cao cấp */
   color: #1f2937; 
   font-weight: 500;
   
-  /* Thêm độ mờ nhẹ để hài hòa với phong cách kính */
+  /* Thêm đềEmềEnhẹ đềEhài hòa với phong cách kính */
   opacity: 0.9;
 }
 
 /* Dấu chấm ngăn cách (Bullet point) */
 .separator-dot {
-  color: #ec4899; /* Màu hồng để tạo điểm nhấn đồng bộ với action-button */
+  color: #ec4899; /* Màu hồng đềEtạo điểm nhấn đồng bềEvới action-button */
   margin: 0 0.5rem;
   font-weight: 900;
 }
@@ -992,11 +992,11 @@ export function ExercisePage({
   color: #9333ea;
 
   /* drop-shadow-lg */
-  /* Tạo độ nổi khối mạnh mẽ cho icon trên nền kính */
+  /* Tạo đềEnổi khối mạnh mẽ cho icon trên nền kính */
   filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) 
           drop-shadow(0 4px 3px rgba(147, 51, 234, 0.2));
 
-  /* Đảm bảo icon SVG hiển thị mượt mà */
+  /* Đảm bảo icon SVG hiển thềEmượt mà */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1027,7 +1027,7 @@ export function ExercisePage({
     transparent
   );
 
-  /* Thêm hiệu ứng nhòe để đường kẻ trông mềm mại hơn */
+  /* Thêm hiệu ứng nhòe đềEđường kẻ trông mềm mại hơn */
   filter: blur(0.5px);
   
   /* Bo tròn nhẹ đầu đường kẻ */
@@ -1040,7 +1040,7 @@ export function ExercisePage({
   /* font-bold */
   font-weight: 700;
 
-  /* Hiệu ứng bóng chữ để nổi bật trên mọi loại nền */
+  /* Hiệu ứng bóng chữ đềEnổi bật trên mọi loại nền */
   text-shadow: 0 0 10px rgba(236, 72, 153, 0.3);
   
   /* Thêm một chút gradient nhẹ nếu muốn chữ có chiều sâu hơn */
@@ -1051,17 +1051,17 @@ export function ExercisePage({
   /* Đảm bảo chữ vẫn rõ nét */
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
 }
-      /* Tiêu đề chính sắc nét */
+      /* Tiêu đềEchính sắc nét */
 .header-title {
   /* text-5xl md:text-6xl */
   font-size: clamp(6rem, 8vw, 4rem); 
   font-weight: 900;
   color: #ffffff;
   
-  /* Bỏ hero-text-glow, thay bằng drop-shadow sắc sảo */
+  /* BềEhero-text-glow, thay bằng drop-shadow sắc sảo */
   filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
   
-  /* Thêm gradient nhẹ để tạo chiều sâu */
+  /* Thêm gradient nhẹ đềEtạo chiều sâu */
   background: linear-gradient(to bottom, #ffffff 70%, #fbcfe8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1075,7 +1075,7 @@ export function ExercisePage({
   color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
   
-  /* Đổ bóng nhẹ để đọc được trên nền gradient màu sắc */
+  /* ĐềEbóng nhẹ đềEđọc được trên nền gradient màu sắc */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   
   max-width: 42rem; /* max-w-2xl */
@@ -1091,7 +1091,7 @@ export function ExercisePage({
   animation: float-gentle 3s ease-in-out infinite;
 }
       .explanation-box {
-  /* mt-4 p-6 (Tăng padding một chút để chữ 2xl không bị ngộp) */
+  /* mt-4 p-6 (Tăng padding một chút đềEchữ 2xl không bềEngộp) */
   margin-top: 1.5rem;
   padding: 1.5rem;
 
@@ -1103,15 +1103,15 @@ export function ExercisePage({
   /* rounded-[16px] */
   border-radius: 16px;
 
-  /* border border-white/40 (Tăng độ sáng viền để tách biệt với thẻ cha) */
+  /* border border-white/40 (Tăng đềEsáng viền đềEtách biệt với thẻ cha) */
   border: 1px solid rgba(255, 255, 255, 0.4);
 
-  /* Thêm một chút shadow nội khối để tạo chiều sâu nhã nhặn */
+  /* Thêm một chút shadow nội khối đềEtạo chiều sâu nhã nhặn */
   box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3), 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .explanation-title {
-  /* Màu tím hoặc hồng từ dải màu Gradient của bạn để tạo điểm nhấn */
+  /* Màu tím hoặc hồng từ dải màu Gradient của bạn đềEtạo điểm nhấn */
   color: #9333ea; 
   font-weight: 800;
   margin-right: 0.5rem;
@@ -1121,28 +1121,28 @@ export function ExercisePage({
   /* text-2xl leading-relaxed */
   font-size: 1.5rem;
   line-height: 1.625;
-  color: #1f2937; /* Gray-800: Đủ tối để đọc văn bản dài không mỏi mắt */
+  color: #1f2937; /* Gray-800: Đủ tối đềEđọc văn bản dài không mỏi mắt */
 }
       /* Nhãn "Đáp án đúng:" */
 .label-correct-text {
   font-size: 1.5rem; /* text-2xl */
-  color: #4b5563; /* Gray-600 thay vì white/70 để rõ nét trên nền sáng */
+  color: #4b5563; /* Gray-600 thay vì white/70 đềErõ nét trên nền sáng */
   font-weight: 600;
 }
 
-/* Badge Đáp án đúng khổng lồ */
+/* Badge Đáp án đúng khổng lềE*/
 .answer-badge-3xl {
   /* text-3xl (30px) */
   font-size: 1.875rem;
   line-height: 2.25rem;
   
-  /* Cực đậm để khẳng định đáp án */
+  /* Cực đậm đềEkhẳng định đáp án */
   font-weight: 900; 
   
   /* Padding rộng hơn cho bõ với kích thước 3xl */
   padding: 0.75rem 1.75rem;
   
-  /* Bo góc lớn đồng bộ với hệ thống */
+  /* Bo góc lớn đồng bềEvới hềEthống */
   border-radius: 16px;
   
   display: inline-flex;
@@ -1152,7 +1152,7 @@ export function ExercisePage({
   background-color: rgba(34, 197, 94, 0.2);
   color: #15803d; /* Green-700 */
   
-  /* Viền và đổ bóng tạo độ nổi (Depth) */
+  /* Viền và đềEbóng tạo đềEnổi (Depth) */
   border: 2px solid rgba(34, 197, 94, 0.3);
   box-shadow: 0 10px 20px -5px rgba(34, 197, 94, 0.2);
 }
@@ -1161,7 +1161,7 @@ export function ExercisePage({
   font-size: 1.5rem;
   line-height: 2rem;
   
-  /* Tăng độ dày chữ để cân bằng với kích thước lớn */
+  /* Tăng đềEdày chữ đềEcân bằng với kích thước lớn */
   font-weight: 800; 
   
   /* Điều chỉnh lại padding cho phù hợp với chữ 2xl */
@@ -1202,7 +1202,7 @@ export function ExercisePage({
   display: inline-block;
   vertical-align: middle;
   
-  /* Thêm hiệu ứng Shadow đỏ nhạt để nổi bật trên nền Glassmorphism */
+  /* Thêm hiệu ứng Shadow đềEnhạt đềEnổi bật trên nền Glassmorphism */
   filter: drop-shadow(0 2px 4px rgba(239, 68, 68, 0.2));
 }
 
@@ -1226,25 +1226,25 @@ export function ExercisePage({
   /* text-green-500 */
   color: #22c55e;
 
-  /* Đảm bảo icon dạng SVG hiển thị đúng kích thước */
+  /* Đảm bảo icon dạng SVG hiển thềEđúng kích thước */
   display: inline-block;
   vertical-align: middle;
   
-  /* Thêm hiệu ứng Shadow mỏng để icon sắc nét trên nền kính */
+  /* Thêm hiệu ứng Shadow mỏng đềEicon sắc nét trên nền kính */
   filter: drop-shadow(0 2px 4px rgba(34, 197, 94, 0.2));
 }
       .bg-wrong-soft {
   /* bg-red-500/20 */
   background-color: rgba(239, 68, 68, 0.2);
 
-  /* Glassmorphism: Tạo độ mờ nhẹ cho phần nền đỏ */
+  /* Glassmorphism: Tạo đềEmềEnhẹ cho phần nền đềE*/
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 
-  /* Bo góc nhẹ nhàng để đồng bộ với thẻ chính */
+  /* Bo góc nhẹ nhàng đềEđồng bềEvới thẻ chính */
   border-radius: 12px;
 
-  /* Màu chữ đỏ đậm để đảm bảo độ tương phản (Accessibility) */
+  /* Màu chữ đềEđậm đềEđảm bảo đềEtương phản (Accessibility) */
   color: #b91c1c; 
   font-weight: 600;
 }
@@ -1252,15 +1252,15 @@ export function ExercisePage({
   /* bg-green-500/20 */
   background-color: rgba(34, 197, 94, 0.2);
 
-  /* Đồng bộ Glassmorphism: Làm mờ hậu cảnh nhẹ */
+  /* Đồng bềEGlassmorphism: Làm mềEhậu cảnh nhẹ */
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 
-  /* Để text bên trong dễ đọc hơn trên nền này */
+  /* ĐềEtext bên trong dềEđọc hơn trên nền này */
   color: #15803d; /* Màu xanh lá đậm (green-700) */
 }
       .index-badge {
-  /* flex-shrink-0: Đảm bảo vòng tròn không bị méo khi text dài */
+  /* flex-shrink-0: Đảm bảo vòng tròn không bềEméo khi text dài */
   flex-shrink: 0;
 
   /* w-12 h-12 (48px) */
@@ -1278,7 +1278,7 @@ export function ExercisePage({
   /* shadow-lg */
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
-  /* Style màu sắc đồng bộ (Trắng kính mờ) */
+  /* Style màu sắc đồng bềE(Trắng kính mềE */
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.4);
   
@@ -1292,13 +1292,13 @@ export function ExercisePage({
   border: 2px solid rgba(248, 113, 113, 0.5);
 
   /* shadow-[0_0_20px_rgba(239,68,68,0.3)] */
-  /* Hiệu ứng phát sáng (Glow) sắc đỏ cảnh báo nhẹ */
+  /* Hiệu ứng phát sáng (Glow) sắc đềEcảnh báo nhẹ */
   box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
 
-  /* Background trắng hồng nhạt để đồng bộ với nền kính mờ */
+  /* Background trắng hồng nhạt đềEđồng bềEvới nền kính mềE*/
   background-color: rgba(254, 242, 242, 0.8);
   
-  /* Hỗ trợ kính mờ đặc trưng */
+  /* HềEtrợ kính mềEđặc trưng */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   
@@ -1306,17 +1306,17 @@ export function ExercisePage({
 }
       .card-correct {
   /* border-green-400/50 */
-  /* Sử dụng mã HEX #4ade80 với độ mờ 0.5 */
+  /* Sử dụng mã HEX #4ade80 với đềEmềE0.5 */
   border: 2px solid rgba(74, 222, 128, 0.5);
 
   /* shadow-[0_0_20px_rgba(34,197,94,0.3)] */
   /* Hiệu ứng phát sáng (Glow) màu xanh lá dịu nhẹ */
   box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
 
-  /* Background đồng bộ (Thêm chút xanh nhạt để phân biệt) */
+  /* Background đồng bềE(Thêm chút xanh nhạt đềEphân biệt) */
   background-color: rgba(240, 253, 244, 0.8);
   
-  /* Hỗ trợ kính mờ */
+  /* HềEtrợ kính mềE*/
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   
@@ -1326,7 +1326,7 @@ export function ExercisePage({
   /* bg-white/80 */
   background-color: rgba(255, 255, 255, 0.8);
   
-  /* Hiệu ứng kính mờ đặc trưng */
+  /* Hiệu ứng kính mềEđặc trưng */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
@@ -1340,10 +1340,10 @@ export function ExercisePage({
   border-width: 2px;
   border-style: solid;
   
-  /* Màu viền mặc định (Trắng mờ để đồng bộ Glassmorphism) */
+  /* Màu viền mặc định (Trắng mềEđềEđồng bềEGlassmorphism) */
   border-color: rgba(255, 255, 255, 0.5);
 
-  /* Shadow nhẹ hơn thẻ chính để tạo phân cấp layer */
+  /* Shadow nhẹ hơn thẻ chính đềEtạo phân cấp layer */
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
 
   margin-bottom: 1rem;
@@ -1352,7 +1352,7 @@ export function ExercisePage({
 
 /* Trạng thái khi câu hỏi đó làm sai */
 .review-card.is-wrong {
-  border-color: rgba(244, 114, 114, 0.4); /* Màu đỏ hồng nhạt */
+  border-color: rgba(244, 114, 114, 0.4); /* Màu đềEhồng nhạt */
   background-color: rgba(255, 245, 245, 0.9);
 }
 
@@ -1371,7 +1371,7 @@ export function ExercisePage({
   /* mb-8 (32px) */
   margin-bottom: 2rem;
 
-  /* Thay thế hero-text-glow bằng màu trắng tinh khiết có độ sâu */
+  /* Thay thế hero-text-glow bằng màu trắng tinh khiết có đềEsâu */
   color: #ffffff;
   font-weight: 800;
   
@@ -1379,7 +1379,7 @@ export function ExercisePage({
   filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.07)) 
           drop-shadow(0 2px 2px rgba(0, 0, 0, 0.06));
 
-  /* Thêm một chút Letter Spacing để chữ sang hơn */
+  /* Thêm một chút Letter Spacing đềEchữ sang hơn */
   letter-spacing: -0.02em;
   
   /* Animation nhẹ nhàng khi xuất hiện */
@@ -1418,7 +1418,7 @@ export function ExercisePage({
   color: #1a1a1a;
   font-weight: 700;
   font-size: 1.125rem;
-  /* Thêm viền mỏng để định hình trên nền sáng */
+  /* Thêm viền mỏng đềEđịnh hình trên nền sáng */
   border: 1px solid rgba(255, 255, 255, 0.4);
 
   /* shadow-xl */
@@ -1434,7 +1434,7 @@ export function ExercisePage({
   transform: scale(1.1);
   background-color: rgba(255, 255, 255, 1);
   box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.1);
-  color: #ec4899; /* Chuyển màu chữ sang hồng khi hover để tạo điểm nhấn đồng bộ */
+  color: #ec4899; /* Chuyển màu chữ sang hồng khi hover đềEtạo điểm nhấn đồng bềE*/
 }
 
 .action-button-secondary:active {
@@ -1475,27 +1475,27 @@ export function ExercisePage({
 .action-button:active {
   transform: scale(0.95);
 }
-      /* Tiêu đề chính */
+      /* Tiêu đềEchính */
 .result-title {
   font-size: 2.25rem; /* text-4xl */
   font-weight: 800;
-  color: #1a1a1a; /* Màu xám đen đồng bộ với câu hỏi */
+  color: #1a1a1a; /* Màu xám đen đồng bềEvới câu hỏi */
   margin-bottom: 1.5rem; /* mb-6 */
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
-/* Con số điểm số - Trái tim của màn hình */
+/* Con sềEđiểm sềE- Trái tim của màn hình */
 .result-score {
   font-size: 5rem; /* text-7xl - 80px */
   font-weight: 900;
   margin-bottom: 1.5rem; /* mb-6 */
   
-  /* Tạo Gradient Pink-Purple đồng bộ */
+  /* Tạo Gradient Pink-Purple đồng bềE*/
   background: linear-gradient(135deg, #FF77BC 0%, #9333EA 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   
-  /* Đổ bóng sâu để con số nổi hẳn lên */
+  /* ĐềEbóng sâu đềEcon sềEnổi hẳn lên */
   filter: drop-shadow(0 10px 15px rgba(147, 51, 234, 0.3));
   display: inline-block;
 }
@@ -1522,7 +1522,7 @@ export function ExercisePage({
   /* animate-bounce */
   animation: bounce 1s infinite;
 
-  /* Để đồng bộ với các phần trước, hãy thêm Gradient cho chữ */
+  /* ĐềEđồng bềEvới các phần trước, hãy thêm Gradient cho chữ */
   background: linear-gradient(to bottom, #FF77BC, #9333EA);
   -webkit-background-clip: text;
   font-weight: 900; /* Extra Bold */
@@ -1544,7 +1544,7 @@ export function ExercisePage({
   /* bg-white/80 */
   background-color: rgba(255, 255, 255, 0.8);
   
-  /* Hỗ trợ hiệu ứng kính mờ (Đồng bộ với các thẻ trước) */
+  /* HềEtrợ hiệu ứng kính mềE(Đồng bềEvới các thẻ trước) */
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 
@@ -1586,7 +1586,7 @@ export function ExercisePage({
   transform: rotate(360deg) scale(1.25);
 }
 
-/* Hiệu ứng khi nút bị disabled (tùy chọn để đồng bộ) */
+/* Hiệu ứng khi nút bềEdisabled (tùy chọn đềEđồng bềE */
 .submit-button:disabled .check-icon {
   transform: none;
   opacity: 0.5;
@@ -1649,11 +1649,11 @@ export function ExercisePage({
 
 /* Trạng thái khi được chọn (Selected) */
 .selected .option-text {
-  /* Chuyển sang màu tím đậm hoặc hồng đậm để tiệp màu với Check-circle */
+  /* Chuyển sang màu tím đậm hoặc hồng đậm đềEtiệp màu với Check-circle */
   color: #6c5ce7; /* Một tông tím trung tính */
   font-weight: 700;
   opacity: 1;
-  /* Hiệu ứng đổ bóng nhẹ cho chữ nếu muốn nổi bật hơn */
+  /* Hiệu ứng đềEbóng nhẹ cho chữ nếu muốn nổi bật hơn */
   text-shadow: 0px 0px 1px rgba(108, 92, 231, 0.2);
 }
       .inner-dot {
@@ -1689,12 +1689,12 @@ export function ExercisePage({
   /* bg-white/10 */
   background-color: rgba(255, 255, 255, 0.1);
 
-  /* Giữ hình dạng tròn và kích thước cố định */
+  /* Giữ hình dạng tròn và kích thước cềEđịnh */
   border-radius: 9999px;
   width: 1.5rem;  /* 24px */
   height: 1.5rem; /* 24px */
   
-  /* Hỗ trợ kính mờ (Tùy chọn thêm để đồng bộ style) */
+  /* HềEtrợ kính mềE(Tùy chọn thêm đềEđồng bềEstyle) */
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 
@@ -1715,7 +1715,7 @@ export function ExercisePage({
   /* Đây là hiệu ứng phát sáng nhẹ (glow) màu hồng */
   box-shadow: 0 0 10px rgba(255, 199, 234, 0.5);
 
-  /* Để đảm bảo vòng tròn không bị móp khi text dài */
+  /* ĐềEđảm bảo vòng tròn không bềEmóp khi text dài */
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1742,12 +1742,12 @@ export function ExercisePage({
   /* pt-2 (8px) */
   padding-top: 0.5rem;
 
-  /* Bổ sung để hiển thị tốt trên di động */
+  /* BềEsung đềEhiển thềEtốt trên di động */
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
       .check-circle {
-  /* flex-shrink-0 (Quan trọng: giữ vòng tròn không bị méo) */
+  /* flex-shrink-0 (Quan trọng: giữ vòng tròn không bềEméo) */
   flex-shrink: 0;
 
   /* w-6 h-6 (24px x 24px) */
@@ -1778,7 +1778,7 @@ export function ExercisePage({
   transform: scale(1.1);
 }
       .exercise-card-item {
-  /* glass-card: Nền kính mờ cơ bản */
+  /* glass-card: Nền kính mềEcơ bản */
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -1817,13 +1817,13 @@ export function ExercisePage({
   /* border-transparent */
   border-color: transparent;
 
-  /* shadow-2xl (Đổ bóng cực đại) */
+  /* shadow-2xl (ĐềEbóng cực đại) */
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
   /* scale-105 (Phóng lớn 5%) */
   transform: scale(1.05);
 
-  /* Các thuộc tính hỗ trợ */
+  /* Các thuộc tính hềEtrợ */
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Hiệu ứng "nảy" nhẹ */
   cursor: pointer;
 }
@@ -1845,7 +1845,7 @@ export function ExercisePage({
   /* transition-all duration-300 */
   transition: all 0.3s ease-in-out;
 
-  /* Mặc định nên có màu để tránh bị "tàng hình" */
+  /* Mặc định nên có màu đềEtránh bềE"tàng hình" */
   background-color: rgba(255, 255, 255, 0.5);
   border-color: #e5e7eb; /* gray-200 */
   color: #1f2937; /* gray-800 */
@@ -1889,7 +1889,7 @@ export function ExercisePage({
   /* flex */
   display: flex;
 
-  /* items-start (Căn lề ở phía trên đỉnh) */
+  /* items-start (Căn lềEềEphía trên đỉnh) */
   align-items: flex-start;
 
   /* gap-4 (16px) */
@@ -1911,9 +1911,9 @@ export function ExercisePage({
   /* border border-white/20 */
   border: 1px solid rgba(255, 255, 255, 0.2);
 
-  /* Hỗ trợ hiển thị mờ (Glassmorphism) */
+  /* HềEtrợ hiển thềEmềE(Glassmorphism) */
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* Hỗ trợ Safari */
+  -webkit-backdrop-filter: blur(10px); /* HềEtrợ Safari */
 }
       .exercise-header-card {
   /* bg-white/80 */
@@ -1934,7 +1934,7 @@ export function ExercisePage({
   /* border border-white/20 */
   border: 1px solid rgba(255, 255, 255, 0.2);
 
-  /* Glassmorphism hiệu ứng mờ nền */
+  /* Glassmorphism hiệu ứng mềEnền */
   backdrop-filter: blur(16px);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
@@ -1946,7 +1946,7 @@ export function ExercisePage({
   /* transition-transform */
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
-  /* Đảm bảo icon là khối để dùng được transform */
+  /* Đảm bảo icon là khối đềEdùng được transform */
   display: inline-block;
 }
 
@@ -1982,7 +1982,7 @@ export function ExercisePage({
   outline: none;
 }
 
-/* hover:text-white & hiệu ứng bóng đổ nhẹ */
+/* hover:text-white & hiệu ứng bóng đềEnhẹ */
 .glass-button-back:hover {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.15);
@@ -2027,7 +2027,7 @@ export function ExercisePage({
   /* border border-white/20 */
   border: 1px solid rgba(255, 255, 255, 0.2);
 
-  /* Hiệu ứng bổ trợ để giống Glassmorphism thực thụ */
+  /* Hiệu ứng bềEtrợ đềEgiống Glassmorphism thực thụ */
   backdrop-filter: blur(12px);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
 }
@@ -2084,7 +2084,7 @@ export function ExercisePage({
   /* transition-all duration-300 */
   transition: all 0.3s ease-in-out;
 
-  /* Để hiệu ứng kính mờ đẹp hơn, nên thêm thuộc tính này */
+  /* ĐềEhiệu ứng kính mềEđẹp hơn, nên thêm thuộc tính này */
   backdrop-filter: blur(8px);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
@@ -2096,7 +2096,7 @@ export function ExercisePage({
   /* hover:border-white/30 */
   border-color: rgba(255, 255, 255, 0.3);
   
-  /* Thêm đổ bóng nhẹ khi hover để tăng cảm giác nổi khối */
+  /* Thêm đềEbóng nhẹ khi hover đềEtăng cảm giác nổi khối */
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
         .glass-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(20px); box-shadow: 0 8px 32px rgba(0,0,0,0.37); }
