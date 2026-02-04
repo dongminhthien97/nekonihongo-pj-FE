@@ -1,7 +1,7 @@
 // src/components/JlptKanjiPage.tsx
 import { useState, useEffect } from "react";
 import { NekoLoading } from "./NekoLoading";
-import api from "../api/api";
+import api from "../api/axios";
 import toast from "react-hot-toast";
 
 interface KanjiJlptItem {
@@ -149,7 +149,7 @@ export function JlptKanjiPage({
               disabled={selectedDay === 1}
               className="btn-nav"
             >
-              ↁENgày trước
+              →Ngày trước
             </button>
             <div className="day-indicator">
               Ngày {selectedDay} / {totalDays}
@@ -159,7 +159,7 @@ export function JlptKanjiPage({
               disabled={selectedDay === totalDays}
               className="btn-nav"
             >
-              Ngày sau ↁE
+              Ngày sau →
             </button>
           </div>
         </div>
@@ -219,7 +219,7 @@ export function JlptKanjiPage({
             <div className="neko-tooltip">
               <div className="tooltip-content">
                 Học flashcard 10 Kanji {level} ngày {selectedDay} nào mèo ơi!
-                🖌�E�🐾
+                🖌�E�🐾
               </div>
             </div>
             <div className="neko-image-wrapper">

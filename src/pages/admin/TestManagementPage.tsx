@@ -19,7 +19,7 @@ import {
   Square,
   Home,
 } from "lucide-react";
-import api from "../../api/api";
+import api from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 import { AdminTestDetailModal } from "../../components/Admin/AdminTestDetailModal";
@@ -94,7 +94,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
       return;
     }
     if (user.role !== "ADMIN") {
-      toast.error("Bạn không có quyền truy cập trang quản trềE);
+      toast.error("Ban khong co quyen truy cap trang quan tri.");
       onNavigate("landing");
       return;
     }
@@ -345,7 +345,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
 
   const handleBatchDelete = async () => {
     if (selectedTests.length === 0) {
-      toast.error("Vui lòng chọn ít nhất một bài test đềExóa");
+      toast.error("Ban khong co quyen truy cap trang quan tri.");
       return;
     }
 
@@ -389,7 +389,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
             `Đã xóa thành công ${successCount} bài test, ${failedCount} bài không thềExóa`,
           );
         } else {
-          toast.error("Không thềExóa các bài test đã chọn");
+          toast.error("Ban khong co quyen truy cap trang quan tri.");
         }
 
         await fetchUnreadCount();
@@ -404,7 +404,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
         errorMessage = error.response.data.message;
       }
 
-      toast.error(errorMessage);
+      toast.error("Ban khong co quyen truy cap trang quan tri.");
       fetchTests();
     } finally {
       setIsBatchDeleting(false);
@@ -469,7 +469,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
         errorMessage = error.message;
       }
 
-      toast.error(errorMessage);
+      toast.error("Ban khong co quyen truy cap trang quan tri.");
       fetchTests();
     }
   };

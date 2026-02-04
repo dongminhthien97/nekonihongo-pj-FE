@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { NekoLoading } from "./NekoLoading";
-import api from "../api/api";
+import api from "../api/axios";
 import { MiniTestModal } from "./MiniTestModal";
 
 const LESSONS_PER_PAGE = 12;
@@ -337,7 +337,7 @@ export function GrammarPage({
                 onClick={() => setSelectedLesson(null)}
                 className="glass-pill-button"
               >
-                ↁETất cả bài học
+                →Tất cả bài học
               </button>
             </div>
 
@@ -602,7 +602,7 @@ export function GrammarPage({
             {errorType === "server" && (
               <div className="error-hint">
                 <p>
-                  ⚠�E�E<strong>Khắc phục:</strong> Kiểm tra kết nối mạng và thử
+                  ⚠�E�E<strong>Khắc phục:</strong> Kiểm tra kết nối mạng và thử
                   lại.
                 </p>
               </div>
@@ -611,7 +611,7 @@ export function GrammarPage({
             {errorType === "timeout" && (
               <div className="error-hint">
                 <p>
-                  ⏱�E�E<strong>Timeout:</strong> Request mất quá nhiều thời gian.
+                  ⏱�E�E<strong>Timeout:</strong> Request mất quá nhiều thời gian.
                   Vui lòng thử lại.
                 </p>
               </div>

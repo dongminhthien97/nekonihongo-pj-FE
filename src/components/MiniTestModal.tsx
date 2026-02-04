@@ -9,7 +9,7 @@ import {
   GripVertical,
   AlertCircle,
 } from "lucide-react";
-import api from "../api/api";
+import api from "../api/axios";
 
 // --- INTERFACES ---
 interface Question {
@@ -54,8 +54,7 @@ const renderWithFurigana = (text: string) => {
     return <span dangerouslySetInnerHTML={{ __html: text }} />;
   }
 
-  const furiganaRegex =
-    /([\u4e00-\u9faf\u3005\u30a0-\u30ff\u3040-\u309f]+)[(�E�E([\u3040-\u309f\u30a0-\u30ff\s]+)[)�E�]/g;
+  const furiganaRegex = /([\u4e00-\u9faf\u3005\u30a0-\u30ff\u3040-\u309f]+)\(([^)]+)\)/g;
 
   const parts: JSX.Element[] = [];
   let lastIndex = 0;
@@ -97,7 +96,7 @@ const renderWithFurigana = (text: string) => {
 
 // --- HELPER: Parse Multiple Choice Options ---
 const parseMultipleChoiceOptions = (text: string) => {
-  const bracketRegex = /�E�E.*?)�E�|�E�(.*?)�E�/g;
+  const bracketRegex = /\((.*?)\)|\[(.*?)\]/g;
   const matches = [];
   let match;
 
@@ -182,7 +181,7 @@ export function MiniTestModal({
 
     if (!lessonId || lessonId <= 0 || !userId || userId <= 0) {
       if (onError) {
-        onError("ID bài học hoặc người dùng không hợp lềE, "validation");
+        onError("ID bai hoc hoac nguoi dung khong hop le", "validation");
       }
       return;
     }
@@ -218,34 +217,18 @@ export function MiniTestModal({
 
           const initialRearrange: Record<number, string[]> = {};
           formatted.forEach((q: Question) => {
-            if (
-              q.question_type === "rearrange" ||
-              q.question_type === "reorder"
-            ) {
-              const lines = q.raw_text.split("\n");
-              for (const line of lines) {
-                if (
-                  line.includes("ↁE) ||
-                  line.includes("�E�E) ||
-                  line.includes("/")
-                ) {
-                  const questionPart = line.split("ↁE)[0] || line;
-                  const words = questionPart
-                    .replace("例！E, "")
-                    .replace("侁E, "")
-                    .trim()
-                    .split(/[�E�\/]/)
-                    .map((w) => w.trim())
-                    .filter((w) => w && !w.includes("侁E) && !w.includes("ↁE));
+  if (q.question_type === "rearrange" || q.question_type === "reorder") {
+    const tokens = q.raw_text
+      .replace(/[()]/g, "")
+      .split(/[\s/]+/)
+      .map((w) => w.trim())
+      .filter(Boolean);
 
-                  if (words.length > 0) {
-                    initialRearrange[q.id] = words;
-                    break;
-                  }
-                }
-              }
-            }
-          });
+    if (tokens.length > 0) {
+      initialRearrange[q.id] = tokens;
+    }
+  }
+});
           setRearrangeItems(initialRearrange);
         } else {
           if (onError) {
@@ -329,7 +312,7 @@ export function MiniTestModal({
           });
         });
       } else if (q.question_type === "fill_blank") {
-        const blankRegex = /�E�Es*�E�|�E�{2,}|_{2,}|【\s*】|\[ \]|___+/g;
+        const blankRegex = /�E�Es*�E�|�E�{2,}|_{2,}|【\s*】|\[ \]|___+/g;
         const lines = q.raw_text.split("\n").filter((l) => l.trim());
 
         lines.forEach((line, lineIdx) => {
@@ -571,9 +554,9 @@ export function MiniTestModal({
           behavior: "smooth",
           block: "center",
         });
-        firstEmptyQuestion.classList.add("highlight-empty");
+          firstEmptyQuestion.classList.add("highlight");
         setTimeout(() => {
-          firstEmptyQuestion.classList.remove("highlight-empty");
+            firstEmptyQuestion.classList.remove("highlight");
         }, 3000);
       }
     }, 100);
@@ -639,7 +622,7 @@ export function MiniTestModal({
       <div className="question-content-container">
         {lines.map((line, lineIdx) => {
           if (question.question_type === "fill_blank") {
-            const blankRegex = /�E�Es*�E�|�E�{2,}|_{2,}|【\s*】|\[ \]|___+/g;
+            const blankRegex = /�E�Es*�E�|�E�{2,}|_{2,}|【\s*】|\[ \]|___+/g;
 
             const parts: Array<
               | { type: "text"; content: string }
@@ -818,8 +801,8 @@ export function MiniTestModal({
         <div className="test-modal">
           {/* HEADER */}
           <div className="modal-header">
-            <div className="header-left">
-              <div className="header-icon">
+              <div className="modal-header-left">
+                <div className="sparkles-badge">
                 <Sparkles className="sparkles-icon" />
               </div>
               <div>
@@ -831,7 +814,7 @@ export function MiniTestModal({
               </div>
             </div>
 
-            <div className="header-right">
+            <div className="timer-container">
               <div
                 className={`timer-display ${timeLeft < 60 ? "timer-warning" : ""} ${timeLeft < 300 ? "timer-low" : ""}`}
               >
@@ -891,24 +874,22 @@ export function MiniTestModal({
 
                         <div className="question-content">
                           <div className="instruction-hint">
-                            <HelpCircle className="hint-icon" />
-                            <div>
-                              <p className="hint-title">Hướng dẫn:</p>
-                              <p>
-                                {q.question_type === "fill_blank"
-                                  ? "Điền từ thích hợp vào ô trống."
-                                  : q.question_type === "multiple_choice"
-                                    ? "Chọn đáp án đúng trong các ngoặc tròn (...) hoặc ngoặc vuông �E�...�E�."
-                                    : q.question_type === "rearrange" ||
-                                        q.question_type === "reorder"
-                                      ? "Kéo và thả các từ đềEsắp xếp thành câu đúng."
-                                      : "Sắp xếp lại các từ/cụm từ."}
-                              </p>
-                              <p className="hint-points">
-                                (Tổng cộng: {q.points} điểm)
-                              </p>
-                            </div>
-                          </div>
+  <HelpCircle className="help-icon" />
+  <div>
+    <p className="hint-title">Hướng dẫn</p>
+    <p>
+      {q.question_type === "fill_blank"
+        ? "Điền từ thích hợp vào ô trống."
+        : q.question_type === "multiple_choice"
+          ? "Chọn đáp án đúng trong các ngoặc."
+          : q.question_type === "rearrange" || q.question_type === "reorder"
+            ? "Kéo thả các từ để sắp xếp thành câu đúng."
+            : "Sắp xếp lại các từ/cụm từ."}
+    </p>
+    <p className="hint-points">(Tổng cộng: {q.points} điểm)</p>
+  </div>
+</div>
+
 
                           {q.example && (
                             <div className="example-section">
@@ -947,7 +928,7 @@ export function MiniTestModal({
               {submitting ? (
                 <div className="submit-spinner" />
               ) : timeLeft <= 0 ? (
-                "Hết giềE
+                "Het gio"
               ) : (
                 <>
                   <span>Nộp bài</span>

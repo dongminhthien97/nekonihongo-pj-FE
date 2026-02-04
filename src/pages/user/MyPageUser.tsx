@@ -1,7 +1,7 @@
 // src/pages/User/MyPageUser.tsx
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import api from "../../api/api";
+import api from "../../api/axios";
 import toast from "react-hot-toast";
 import { NekoLoading } from "../../components/NekoLoading";
 
@@ -125,7 +125,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
             onClick={() => onNavigate("landing")}
             className="neko-btn-back"
           >
-            <span>✁E/span> Đóng
+            <span>✁E</span> Đóng
           </button>
         </header>
 
@@ -197,7 +197,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
             <div className="neko-card-simple">
               <div className="neko-card-icon">📧</div>
               <div className="neko-card-body">
-                <label>Email liên hềE/label>
+                <label>Email liên hềE</label>
                 <p>{authUser.email}</p>
               </div>
             </div>
@@ -235,7 +235,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
           <div className="neko-stats-column">
             <div className="neko-card-glass neko-level-stats">
               <div className="neko-stat-header">
-                <h3>Tiến trình Cấp đềE/h3>
+                <h3>Tiến trình Cấp đềE</h3>
                 <span className="neko-stat-value">
                   {Math.round(progressToNextLevel)}%
                 </span>

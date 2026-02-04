@@ -3,8 +3,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
-  // Use relative base so built assets resolve correctly on static hosts/subpaths.
-  base: './',
+  base: '/',
   plugins: [react()],
 
   resolve: {

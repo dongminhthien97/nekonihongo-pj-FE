@@ -1,7 +1,7 @@
 // src/pages/admin/DashboardAdmin.tsx (FULL CODE HOÀN CHềEH  EGIỮ NGUYÊN 100% UI/UX + STYLE, FIX REDIRECT LOGIN BẰNG AUTH GUARD + LOADING)
 
 import { useEffect, useState } from "react";
-import api from "../../api/api";
+import api from "../../api/axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
 
@@ -180,7 +180,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
 
     try {
       await api.delete(`/admin/users/${id}`);
-      alert("🗑�E�EXóa user thành công!");
+      alert("🗑�E�EXóa user thành công!");
       fetchUsers();
       if (selectedUser?.id === id) {
         setSelectedUser(users[0] || null);
@@ -455,7 +455,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
                   }
                   className="secondary-item"
                 >
-                  {sortOrder === "asc" ? "ↁE : "ↁE}
+                  {sortOrder === "asc" ? "ASC" : "DESC"}
                 </button>
               </div>
             </div>
@@ -591,7 +591,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
                   disabled={currentPage === 1}
                   className="step-button"
                 >
-                  ↁETrước
+                  →Trước
                 </button>
                 {[...Array(Math.min(5, totalPages))].map((_, idx) => {
                   let pageNum;
@@ -624,7 +624,7 @@ export function DashboardAdmin({ onNavigate }: DashboardAdminProps) {
                   disabled={currentPage === totalPages}
                   className="btn-nav"
                 >
-                  Sau ↁE
+                  Sau →
                 </button>
               </div>
             </div>

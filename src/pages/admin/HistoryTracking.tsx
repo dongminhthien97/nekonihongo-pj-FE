@@ -12,7 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import api from "../../api/api";
+import api from "../../api/axios";
 
 interface ActivityLog {
   id: number;

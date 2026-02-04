@@ -1,6 +1,6 @@
 // src/App.tsx – ĐÃ THÊM TRANG USER MINI TEST SUBMISSIONS
 import { useState, useEffect } from "react";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { useAuth } from "./context/AuthContext";
 import { SplashScreen } from "./components/SplashScreen";
 import { LoginPage } from "./components/LoginPage";
 import { LandingPage } from "./components/LandingPage";
@@ -340,10 +340,8 @@ function AppContent() {
   );
 }
 
-export default function App() {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  );
+export function AppShell() {
+  return <AppContent />;
 }
+
+export default AppShell;

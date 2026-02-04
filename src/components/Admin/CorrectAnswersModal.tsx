@@ -13,7 +13,7 @@ import {
   Search,
   Zap,
 } from "lucide-react";
-import api from "../../api/api";
+import api from "../../api/axios";
 import toast from "react-hot-toast";
 
 interface QuestionDetail {
@@ -211,7 +211,7 @@ export function CorrectAnswersModal({
                     Bảng <code>grammar_questions</code> không có cột{" "}
                     <code>correct_answer</code>
                   </li>
-                  <li>Hoặc cột này tồn tại nhưng API không trả vềE/li>
+                  <li>Hoặc cột này tồn tại nhưng API không trả vềE</li>
                   <li>Hoặc dữ liệu chưa được nhập vào cột này</li>
                 </ul>
               </div>

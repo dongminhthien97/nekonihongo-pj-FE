@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { NekoLoading } from "./NekoLoading";
-import api from "../api/api";
+import api from "../api/axios";
 import toast from "react-hot-toast";
 
 interface JLPTWord {
@@ -223,7 +223,7 @@ export function VocabularyJLPT({ onNavigate, level }: VocabularyJLPTProps) {
               disabled={selectedDay === 1}
               className="btn-primary"
             >
-              ↁENgày trước
+              →Ngày trước
             </button>
 
             <span className="btn-secondary">
@@ -235,7 +235,7 @@ export function VocabularyJLPT({ onNavigate, level }: VocabularyJLPTProps) {
               disabled={selectedDay === totalDays}
               className="btn-primary"
             >
-              Ngày sau ↁE
+              Ngày sau →
             </button>
           </div>
         </div>

@@ -1,7 +1,7 @@
 // VocabularyPage.tsx
 import { useState, useMemo, useEffect } from "react";
 import { Search, ChevronLeft, ChevronRight, Cat, Sparkles } from "lucide-react";
-import api from "../api/api";
+import api from "../api/axios";
 import { NekoLoading } from "./NekoLoading";
 import { NekoAlertModal } from "./NekoAlertModal";
 
@@ -64,7 +64,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
           return;
         }
 
-        // Các lỗi khác (500, mạng, v.v.) ↁEfallback local data + thông báo
+        // Các lỗi khác (500, mạng, v.v.) →fallback local data + thông báo
         setLessons(localVocabularyLessons || []);
         setError(
           "Không thềEkết nối đến server! Mèo đã tải dữ liệu mẫu cho bạn rồi",
@@ -85,7 +85,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
       setShowNoLessonModal(true);
       return;
     }
-    // === CÁEBÀI HỌC + CÁETỪ ↁEVÀO FLASHCARD NGAY! ===
+    // === CÁEBÀI HỌC + CÁETỪ →VÀO FLASHCARD NGAY! ===
     let selectedWords = [...selectedLesson.words];
 
     // Random 10 từ nếu bài có nhiều hơn 10 từ
@@ -97,18 +97,18 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
 
     // === XÁC ĐỊNH TRANG GỐC ĐềEQUAY VỀ SAU KHI HỌC XONG ===
     // Thay đổi giá trềEnày tùy theo trang bạn đang ềE
-    // - VocabularyN5 ↁE"vocabulary-n5"
-    // - GrammarN5ListPage ↁE"grammar-n5"
-    // - KanjiN5 ↁE"kanji-n5"
-    // - Exercise ↁE"exercise"
-    const originPage = "vocabulary"; // ↁEThay bằng route đúng của trang hiện tại
+    // - VocabularyN5 →"vocabulary-n5"
+    // - GrammarN5ListPage →"grammar-n5"
+    // - KanjiN5 →"kanji-n5"
+    // - Exercise →"exercise"
+    const originPage = "vocabulary"; // →Thay bằng route đúng của trang hiện tại
 
     // Lưu data flashcard chính (10 từ)
     const flashcardData = {
       lessonId: selectedLesson.id,
       lessonTitle: selectedLesson.title,
       words: selectedWords,
-      originPage: originPage, // ↁETHÊM ĐềEBIẾT QUAY VỀ ĐÂU
+      originPage: originPage, // →THÊM ĐềEBIẾT QUAY VỀ ĐÂU
     };
 
     localStorage.setItem("nekoFlashcardData", JSON.stringify(flashcardData));
@@ -118,7 +118,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
       "nekoFlashcardAllWords",
       JSON.stringify({
         words: selectedLesson.words,
-        originPage: originPage, // ↁECũng thêm đềEđồng bềE(tùy chọn)
+        originPage: originPage, // →Cũng thêm đềEđồng bềE(tùy chọn)
       }),
     );
     requestAnimationFrame(() => onNavigate("flashcard"));
@@ -136,7 +136,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
         return [];
       }
     };
-    // Vì useMemo không hềEtrợ async trực tiếp ↁEdùng trick
+    // Vì useMemo không hềEtrợ async trực tiếp →dùng trick
     let results: { word: Word; lessonId: number }[] = [];
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -342,7 +342,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
                   onClick={() => setSelectedLesson(null)}
                   className="button"
                 >
-                  ↁETất cả bài học
+                  →Tất cả bài học
                 </button>
               </div>
             </div>

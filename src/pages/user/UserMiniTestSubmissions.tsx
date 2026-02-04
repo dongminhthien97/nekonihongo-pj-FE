@@ -1,6 +1,6 @@
 // src/pages/User/UserMiniTestSubmissions.tsx
 import { useState, useEffect } from "react";
-import api from "../../api/api";
+import api from "../../api/axios";
 import toast from "react-hot-toast";
 import {
   ChevronLeft,
@@ -1998,7 +1998,7 @@ export function UserMiniTestSubmissions({
         }
 
         .empty-reasons li::before {
-          content: 'ↁE;
+          content: '→;
           position: absolute;
           left: 0;
           color: #667eea;

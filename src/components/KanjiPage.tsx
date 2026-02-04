@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Search, ChevronLeft, ChevronRight, Cat } from "lucide-react";
 import { KanjiDetailModal } from "./KanjiDetailModal";
 import { NekoLoading } from "./NekoLoading";
-import api from "../api/api";
+import api from "../api/axios";
 import { NekoAlertModal } from "./NekoAlertModal";
 
 const LESSONS_PER_PAGE = 12;
@@ -169,7 +169,7 @@ export function KanjiPage({
       });
     });
 
-    // 2. Nếu không tìm thấy từ ghép ↁEtìm theo Kanji riêng lẻ (fallback)
+    // 2. Nếu không tìm thấy từ ghép →tìm theo Kanji riêng lẻ (fallback)
     if (results.length === 0) {
       lessons.forEach((lesson) => {
         lesson.kanjiList.forEach((k) => {
@@ -472,7 +472,7 @@ export function KanjiPage({
                   onClick={() => setSelectedLesson(null)}
                   className="button"
                 >
-                  ↁETất cả bài học
+                  →Tất cả bài học
                 </button>
               </div>
             </div>

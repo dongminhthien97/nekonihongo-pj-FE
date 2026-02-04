@@ -11,7 +11,7 @@ import {
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
-import api from "../api/api";
+import api from "../api/axios";
 
 export function Navigation({
   currentPage,
@@ -544,7 +544,7 @@ export function Navigation({
   letter-spacing: 0.8px !important;
 }
 
-/* Hover ↁEđềEsáng + phát sáng neon */
+/* Hover →đềEsáng + phát sáng neon */
 .text-red-600:hover {
   color: #ef4444 !important;
   text-shadow: 
@@ -570,7 +570,7 @@ span:where(.text-red-600) {
     color: #7e22ce;                      /* text-purple-700 */
     
     /* Gradient nền */
-    background: linear-gradient(to right, #e9d5ff, #fbcfe8); /* from-purple-100 ↁEto-pink-100 */
+    background: linear-gradient(to right, #e9d5ff, #fbcfe8); /* from-purple-100 →to-pink-100 */
     
     box-shadow: 0 10px 25px -5px rgba(168, 34, 222, 0.3),
                 0 20px 40px -12px rgba(236, 72, 153, 0.25);
@@ -584,7 +584,7 @@ span:where(.text-red-600) {
 
   /* Hover  Eđậm màu hơn + phóng to */
   .btn-stay-neko:hover {
-    background: linear-gradient(to right, #ddd6fe, #f9a8d4); /* hover:from-purple-200 ↁEhover:to-pink-200 */
+    background: linear-gradient(to right, #ddd6fe, #f9a8d4); /* hover:from-purple-200 →hover:to-pink-200 */
     transform: scale(1.05);
     box-shadow: 0 20px 40px -10px rgba(168, 34, 222, 0.4),
                 0 30px 60px -15px rgba(236, 72, 153, 0.35);
@@ -617,8 +617,8 @@ span:where(.text-red-600) {
     color: white;
     text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 
-    /* Gradient đềEↁEhồng đậm */
-    background: linear-gradient(to right, #ef4444, #ec4899); /* from-red-500 ↁEto-pink-600 */
+    /* Gradient đềE→hồng đậm */
+    background: linear-gradient(to right, #ef4444, #ec4899); /* from-red-500 →to-pink-600 */
 
     box-shadow: 
       0 15px 35px -5px rgba(239, 68, 68, 0.5),
@@ -633,7 +633,7 @@ span:where(.text-red-600) {
 
   /* HOVER  EđềEhơn, đậm hơn, to hơn */
   .btn-logout-danger-neko:hover {
-    background: linear-gradient(to right, #dc2626, #db2777); /* from-red-600 ↁEto-pink-700 */
+    background: linear-gradient(to right, #dc2626, #db2777); /* from-red-600 →to-pink-700 */
     transform: scale(1.05);
     box-shadow: 
       0 25px 50px -10px rgba(239, 68, 68, 0.6),
@@ -678,7 +678,7 @@ span:where(.text-red-600) {
     text-align: center;
     margin-bottom: 1rem;                   /* mb-4 */
 
-    /* Gradient hồng ↁEtím đậm */
+    /* Gradient hồng →tím đậm */
     background: linear-gradient(to right, #ec4899, #a855f7);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -755,7 +755,7 @@ span:where(.text-red-600) {
     }
   }
 
-  /* Bonus: hover nhẹ ↁEnổi lên tí cho sang */
+  /* Bonus: hover nhẹ →nổi lên tí cho sang */
   .modal-card-neko:hover {
     transform: translateY(-6px);
     box-shadow: 

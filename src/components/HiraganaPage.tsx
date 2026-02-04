@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Cat } from "lucide-react";
 import { HiraKataDetailModal } from "./HiraKataDetailModal";
 import { NekoLoading } from "./NekoLoading";
-import api from "../api/api";
+import api from "../api/axios";
 import { NekoAlertModal } from "./NekoAlertModal";
 import { LessonSelectModal } from "./LessonSelectModal";
 
@@ -288,7 +288,7 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
                 onClick={() => setSelectedLesson(null)}
                 className="button py-3 px-8 bg-white/20 hover:bg-white/40 rounded-full text-white transition-all font-bold"
               >
-                ↁEQuay lại danh sách
+                →Quay lại danh sách
               </button>
             </div>
 

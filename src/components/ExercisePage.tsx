@@ -10,7 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import api from "../api/api";
+import api from "../api/axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
@@ -150,7 +150,7 @@ export function ExercisePage({
   }, []);
 
   const handleExerciseSelect = async (exerciseId: number) => {
-    // Sử dụng toast.promise đềEchềEcó 1 toast duy nhất (loading ↁEsuccess hoặc error)
+    // Sử dụng toast.promise đềEchềEcó 1 toast duy nhất (loading →success hoặc error)
     await toast.promise(
       api.get(`/exercises/${exerciseId}`),
       {
@@ -302,7 +302,7 @@ export function ExercisePage({
           <div className="text-center">
             <div className="text-2xl font-bold mb-2">🎉 LEVEL UP! 🎉</div>
             <div className="text-lg mb-1">
-              Level {result.oldLevel} ↁELevel {result.newLevel}
+              Level {result.oldLevel} →Level {result.newLevel}
             </div>
             <div className="text-sm">
               +{result.pointsEarned} điểm • Tổng: {result.totalPoints} điểm
@@ -610,7 +610,7 @@ export function ExercisePage({
 
             {!isAuthenticated && (
               <div className="mt-4 text-center text-yellow-300 text-sm">
-                ⚠�E�EBạn chưa đăng nhập. Kết quả sẽ không được lưu!
+                ⚠�E�EBạn chưa đăng nhập. Kết quả sẽ không được lưu!
               </div>
             )}
           </div>
@@ -636,7 +636,7 @@ export function ExercisePage({
               {!isAuthenticated && (
                 <div className="mt-4 p-3 bg-yellow-500/20 rounded-lg">
                   <p className="text-yellow-300 text-sm">
-                    ⚠�E�EKết quả chưa được lưu vì bạn chưa đăng nhập
+                    ⚠�E�EKết quả chưa được lưu vì bạn chưa đăng nhập
                   </p>
                 </div>
               )}

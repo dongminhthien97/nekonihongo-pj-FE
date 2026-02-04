@@ -1,6 +1,6 @@
 // src/components/ExerciseSelector.tsx
 import { useState, useEffect } from "react";
-import api from "../api/api";
+import api from "../api/axios";
 import toast from "react-hot-toast";
 
 interface Category {
@@ -33,7 +33,7 @@ export function ExerciseSelector({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // BềEsetIsLoading(true) ↁEkhông cần loading nữa
+        // BềEsetIsLoading(true) →không cần loading nữa
         const [catRes, levelRes] = await Promise.all([
           api.get("/categories"),
           api.get("/levels"),
@@ -41,7 +41,7 @@ export function ExerciseSelector({
 
         setCategories(catRes.data);
 
-        // Sắp xếp N5 ↁEN1 (giảm dần)
+        // Sắp xếp N5 →N1 (giảm dần)
         setLevels(
           levelRes.data.sort((a: Level, b: Level) =>
             b.level.localeCompare(a.level),
@@ -85,152 +85,148 @@ export function ExerciseSelector({
     setSelectedCategory(null);
   };
   return (
-    <div className="min-h-screen relative">
-      <main className="relative z-10 container mx-auto px-4 py-16 md:py-24 animate-fade-in">
-        {/* Tiêu đềE*/}
-        <div className="text-center mb-16 md:mb-24">
-          <h1 className="hero-section-title hero-text-glow">
-            {!selectedCategory
-              ? "Chọn loại bài tập"
-              : `Bài tập ${selectedCategory.displayName}`}
-          </h1>
-          <p className="lead-text">
-            {!selectedCategory
-              ? "Mèo đã chuẩn bềEsẵn các loại bài tập siêu hay cho bạn rồi đấy! 🐾"
-              : "Chọn cấp đềEJLPT bạn muốn luyện tập nào!"}
-          </p>
-        </div>
+  <div className="min-h-screen relative">
+    <main className="relative z-10 container mx-auto px-4 py-16 md:py-24 animate-fade-in">
+      <div className="text-center mb-16 md:mb-24">
+        <h1 className="hero-section-title hero-text-glow">
+          {!selectedCategory
+            ? "Chọn loại bài tập"
+            : `Bài tập ${selectedCategory.displayName}`}
+        </h1>
+        <p className="lead-text">
+          {!selectedCategory
+            ? "Mèo đã chuẩn bị sẵn các loại bài tập siêu hay cho bạn rồi!"
+            : "Chọn cấp độ JLPT bạn muốn luyện tập nhé!"}
+        </p>
+      </div>
 
-        {/* Bước 1: Chọn loại bài tập */}
-        {!selectedCategory && (
-          <div className="grid-container">
-            {categories.map((cat, index) => (
-              <button
-                key={cat.id}
-                onClick={() => handleCategorySelect(cat)}
-                className="glass-card group"
-                style={{ animationDelay: `${0.3 + index * 0.2}s` }}
-              >
-                <div
-                  className={`gradient-overlay ${
-                    cat.name === "VOCABULARY"
-                      ? "rainbow-gradient"
-                      : cat.name === "GRAMMAR"
-                        ? "ocean-gradient"
-                        : "nature-gradient"
-                  }`}
-                />
-                <div className="subtle-overlay">
-                  <div className="glow-orb orb-top" />
-                  <div className="glow-orb orb-bottom" />
+      {!selectedCategory && (
+        <div className="grid-container">
+          {categories.map((cat, index) => (
+            <button
+              key={cat.id}
+              onClick={() => handleCategorySelect(cat)}
+              className="glass-card group"
+              style={{ animationDelay: `${0.3 + index * 0.2}s` }}
+            >
+              <div
+                className={`gradient-overlay ${
+                  cat.name === "VOCABULARY"
+                    ? "rainbow-gradient"
+                    : cat.name === "GRAMMAR"
+                      ? "ocean-gradient"
+                      : "nature-gradient"
+                }`}
+              />
+              <div className="subtle-overlay">
+                <div className="glow-orb orb-top" />
+                <div className="glow-orb orb-bottom" />
+              </div>
+
+              <div className="relative z-10 p-10 md:p-16 text-center">
+                <div className="hero-text group-hover:scale-110 transition-transform duration-500">
+                  {cat.name === "VOCABULARY"
+                    ? "📘"
+                    : cat.name === "GRAMMAR"
+                      ? "✍️"
+                      : "🌿"}
                 </div>
 
-                <div className="relative z-10 p-10 md:p-16 text-center">
-                  <div className="hero-text group-hover:scale-110 transition-transform duration-500">
-                    {cat.name === "VOCABULARY"
-                      ? "📚"
-                      : cat.name === "GRAMMAR"
-                        ? "✍︁E
-                        : "🖌�E�E}
-                  </div>
+                <h2 className="card-title">{cat.displayName}</h2>
+                <p className="card-subtitle">Học theo cấp độ JLPT</p>
+                <p className="card-description">{cat.description}</p>
 
-                  <h2 className="card-title">{cat.displayName}</h2>
-                  <p className="card-subtitle">Học theo cấp đềEJLPT</p>
-                  <p className="card-description">{cat.description}</p>
-
-                  <div className="flex-container">
-                    <span>Bấm đềEchọn</span>
-                    <span className="moving-icon">ↁE/span>
-                  </div>
+                <div className="flex-container">
+                  <span>Bấm để chọn</span>
+                  <span className="moving-icon">→</span>
                 </div>
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Bước 2: Chọn level JLPT */}
-        {selectedCategory && (
-          <div className="max-w-6xl mx-auto">
-            <button onClick={handleBack} className="glass-button">
-              <span className="text-2xl group-hover:-translate-x-2 transition-transform">
-                ↁE
-              </span>
-              <span>Quay lại chọn loại</span>
+              </div>
             </button>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {levels.map((level, index) => {
-                const catName = selectedCategory.name.toLowerCase();
-                const levelName = level.level.toLowerCase();
-                const isAvailable =
-                  (catName === "vocabulary" && levelName === "n5") ||
-                  (catName === "grammar" && levelName === "n5") ||
-                  (catName === "kanji" && levelName === "n5");
-
-                return (
-                  <button
-                    key={level.id}
-                    onClick={() => isAvailable && handleLevelSelect(level)}
-                    disabled={!isAvailable}
-                    className={`glass-card relative overflow-hidden transition-all duration-500 ${
-                      isAvailable
-                        ? "hover:scale-105 cursor-pointer"
-                        : "opacity-70 cursor-not-allowed"
-                    }`}
-                    style={{ animationDelay: `${index * 0.15}s` }}
-                  >
-                    <div className="relative z-10 p-8 text-center">
-                      <div className="text-6xl mb-4">
-                        {isAvailable ? "🎯" : "🔒"}
-                      </div>
-                      <h3 className="text-3xl font-black text-white mb-2 drop-shadow-lg">
-                        {level.displayName}
-                      </h3>
-                      <p className="text-xl text-white/90 mb-6">
-                        {level.level === "N5"
-                          ? "Cơ bản nhất"
-                          : level.level === "N4"
-                            ? "Nền tảng vững"
-                            : level.level === "N3"
-                              ? "Trung cấp"
-                              : level.level === "N2"
-                                ? "Nâng cao"
-                                : "Thành thạo"}
-                      </p>
-                      <div className="text-lg font-bold text-white">
-                        {isAvailable ? "Bắt đầu ngay ↁE : "Sắp ra mắt..."}
-                      </div>
-                    </div>
-
-                    {!isAvailable && (
-                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-20">
-                        <p className="text-2xl text-white font-bold animate-pulse">
-                          Coming Soon ✨
-                        </p>
-                      </div>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Footer dềEthương */}
-        <div
-          className="footer-container text-center"
-          style={{ animationDelay: "0.8s" }}
-        >
-          <p className="accent-text">
-            Dù bạn chọn loại bài nào, mèo cũng sẽ đồng hành cùng bạn đến cùng
-            nhé! 💕
-          </p>
-          <div className="bouncing-icon">🐾</div>
+          ))}
         </div>
-      </main>
+      )}
 
-      {/* Giữ nguyên CSS đẹp lung linh như cũ */}
-      <style>{`
+      {selectedCategory && (
+        <div className="max-w-6xl mx-auto">
+          <button
+            onClick={handleBack}
+            className="glass-button"
+          >
+            <span className="text-2xl group-hover:-translate-x-2 transition-transform">
+              ←
+            </span>
+            <span>Quay lại chọn loại</span>
+          </button>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {levels.map((level, index) => {
+              const catName = selectedCategory.name.toLowerCase();
+              const levelName = level.level.toLowerCase();
+              const isAvailable =
+                (catName === "vocabulary" && levelName === "n5") ||
+                (catName === "grammar" && levelName === "n5") ||
+                (catName === "kanji" && levelName === "n5");
+
+              return (
+                <button
+                  key={level.id}
+                  onClick={() => isAvailable && handleLevelSelect(level)}
+                  disabled={!isAvailable}
+                  className={`glass-card relative overflow-hidden transition-all duration-500 ${
+                    isAvailable
+                      ? "hover:scale-105 cursor-pointer"
+                      : "opacity-70 cursor-not-allowed"
+                  }`}
+                  style={{ animationDelay: `${index * 0.15}s` }}
+                >
+                  <div className="relative z-10 p-8 text-center">
+                    <div className="text-6xl mb-4">
+                      {isAvailable ? "✨" : "⏳"}
+                    </div>
+                    <h3 className="text-3xl font-black text-white mb-2 drop-shadow-lg">
+                      {level.displayName}
+                    </h3>
+                    <p className="text-xl text-white/90 mb-6">
+                      {level.level === "N5"
+                        ? "Cơ bản nhất"
+                        : level.level === "N4"
+                          ? "Nâng tầm"
+                          : level.level === "N3"
+                            ? "Trung cấp"
+                            : level.level === "N2"
+                              ? "Nâng cao"
+                              : "Thành thạo"}
+                    </p>
+                    <div className="text-lg font-bold text-white">
+                      {isAvailable ? "Bắt đầu ngay →" : "Sắp ra mắt..."}
+                    </div>
+                  </div>
+
+                  {!isAvailable && (
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-20">
+                      <p className="text-2xl text-white font-bold animate-pulse">
+                        Coming Soon
+                      </p>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      <div
+        className="footer-container text-center"
+        style={{ animationDelay: "0.8s" }}
+      >
+        <p className="accent-text">
+          Dù bạn chọn loại bài nào, mèo cũng sẽ đồng hành cùng bạn tới cùng nhé!
+        </p>
+        <div className="bouncing-icon">🐾</div>
+      </div>
+    </main>
+<style>{`
       /* Dải màu cho Vocabulary */
 .rainbow-gradient {
   background: linear-gradient(135deg, #f472b6, #a855f7); /* Pink to Purple */

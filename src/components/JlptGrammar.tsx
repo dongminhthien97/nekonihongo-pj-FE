@@ -1,7 +1,7 @@
 // src/pages/JlptGrammar.tsx
 import { useState, useEffect } from "react";
 import { NekoLoading } from "./NekoLoading";
-import api from "../api/api";
+import api from "../api/axios";
 import toast from "react-hot-toast";
 
 interface GrammarPattern {
@@ -139,7 +139,7 @@ export function JlptGrammar({ level, onNavigate }: JlptGrammarProps) {
               disabled={selectedDay === 1}
               className="btn-primary"
             >
-              ↁENgày trước
+              →Ngày trước
             </button>
 
             <span className="btn-secondary">
@@ -152,7 +152,7 @@ export function JlptGrammar({ level, onNavigate }: JlptGrammarProps) {
               disabled={selectedDay === totalDays}
               className="btn-primary"
             >
-              Ngày sau ↁE
+              Ngày sau →
             </button>
           </div>
         </div>
