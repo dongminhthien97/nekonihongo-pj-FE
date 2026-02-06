@@ -54,7 +54,8 @@ const renderWithFurigana = (text: string) => {
     return <span dangerouslySetInnerHTML={{ __html: text }} />;
   }
 
-  const furiganaRegex = /([\u4e00-\u9faf\u3005\u30a0-\u30ff\u3040-\u309f]+)\(([^)]+)\)/g;
+  const furiganaRegex =
+    /([\u4e00-\u9faf\u3005\u30a0-\u30ff\u3040-\u309f]+)[(（]([\u3040-\u309f\u30a0-\u30ff\s]+)[)）]/g;
 
   const parts: JSX.Element[] = [];
   let lastIndex = 0;
@@ -96,7 +97,7 @@ const renderWithFurigana = (text: string) => {
 
 // --- HELPER: Parse Multiple Choice Options ---
 const parseMultipleChoiceOptions = (text: string) => {
-  const bracketRegex = /\((.*?)\)|\[(.*?)\]/g;
+  const bracketRegex = /（(.*?)）|［(.*?)］/g;
   const matches = [];
   let match;
 
@@ -104,7 +105,7 @@ const parseMultipleChoiceOptions = (text: string) => {
     const content = match[1] || match[2];
     if (content) {
       const options = content
-        .split(/[、E]/)
+        .split(/[、,]/)
         .map((opt) => opt.trim())
         .filter(Boolean);
       if (options.length >= 2) {
@@ -120,7 +121,6 @@ const parseMultipleChoiceOptions = (text: string) => {
 
   return matches;
 };
-
 
 const buildAnswerKey = (lineIdx: number, itemIdx: number) =>
   `${lineIdx}-${itemIdx}`;
@@ -138,7 +138,7 @@ export function MiniTestModal({
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [answers, setAnswers] = useState<
-    Record<number, Record<string, string>>
+    Record<number, Record<number, string>>
   >({});
   const [rearrangeItems, setRearrangeItems] = useState<
     Record<number, string[]>
@@ -156,7 +156,7 @@ export function MiniTestModal({
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const [draftAnswers, setDraftAnswers] = useState<
-    Record<number, Record<string, string>>
+    Record<number, Record<number, string>>
   >({});
 
   // Reset states khi modal đóng
@@ -220,25 +220,37 @@ export function MiniTestModal({
           setQuestions(formatted);
 
           const initialRearrange: Record<number, string[]> = {};
-          const initialAnswers: Record<number, Record<string, string>> = {};
-
           formatted.forEach((q: Question) => {
-            if (q.question_type === "rearrange" || q.question_type === "reorder") {
-              const tokens = q.raw_text
-                .replace(/[()]/g, "")
-                .split(/[\s/]+/)
-                .map((w) => w.trim())
-                .filter(Boolean);
+            if (
+              q.question_type === "rearrange" ||
+              q.question_type === "reorder"
+            ) {
+              const lines = q.raw_text.split("\n");
+              for (const line of lines) {
+                if (
+                  line.includes("→") ||
+                  line.includes("／") ||
+                  line.includes("/")
+                ) {
+                  const questionPart = line.split("→")[0] || line;
+                  const words = questionPart
+                    .replace("例：", "")
+                    .replace("例", "")
+                    .trim()
+                    .split(/[／\/]/)
+                    .map((w) => w.trim())
+                    .filter((w) => w && !w.includes("例") && !w.includes("→"));
 
-              if (tokens.length > 0) {
-                initialRearrange[q.id] = tokens;
-                initialAnswers[q.id] = { 0: tokens.join(" ") };
+                  if (words.length > 0) {
+                    initialRearrange[q.id] = words;
+                    break;
+                  }
+                }
               }
             }
           });
 
           setRearrangeItems(initialRearrange);
-          setAnswers(initialAnswers);
         } else {
           if (onError) {
             onError(
@@ -389,7 +401,11 @@ export function MiniTestModal({
   };
 
   // --- HANDLERS ---
-  const handleAnswerChange = (qId: number, index: string | number, value: string) => {
+  const handleAnswerChange = (
+    qId: number,
+    index: number,
+    value: string,
+  ) => {
     setAnswers((prev) => {
       const currentQuestionAnswers = { ...(prev[qId] || {}) };
       return {
@@ -563,9 +579,9 @@ export function MiniTestModal({
           behavior: "smooth",
           block: "center",
         });
-          firstEmptyQuestion.classList.add("highlight");
+        firstEmptyQuestion.classList.add("highlight-empty");
         setTimeout(() => {
-            firstEmptyQuestion.classList.remove("highlight");
+          firstEmptyQuestion.classList.remove("highlight-empty");
         }, 3000);
       }
     }, 100);
@@ -631,11 +647,11 @@ export function MiniTestModal({
       <div className="question-content-container">
         {lines.map((line, lineIdx) => {
           if (question.question_type === "fill_blank") {
-            const blankRegex = /�E�Es*�E�|�E�{2,}|_{2,}|【\s*】|\[ \]|___+/g;
+            const blankRegex = /（\s*）|＿{2,}|_{2,}|【\s*】|\[ \]|___+/g;
 
             const parts: Array<
               | { type: "text"; content: string }
-              | { type: "input"; index: string; content: string }
+              | { type: "input"; index: number; content: string }
             > = [];
 
             let match;
@@ -652,7 +668,7 @@ export function MiniTestModal({
                 });
               }
 
-              const uniqueIndex = buildAnswerKey(lineIdx, blankCount);
+              const uniqueIndex = parseInt(`${question.id}${lineIdx}${blankCount}`);
 
               parts.push({
                 type: "input",
@@ -672,14 +688,21 @@ export function MiniTestModal({
             }
 
             if (!parts.some((part) => part.type === "input")) {
-              const fallbackKey = buildAnswerKey(lineIdx, 0);
+              const fallbackKey = parseInt(`${question.id}${lineIdx}0`);
               return (
-                <div key={lineIdx} className="fill-blank-line fill-blank-fallback">
+                <div
+                  key={lineIdx}
+                  className="fill-blank-line fill-blank-fallback"
+                >
                   <div>{renderWithFurigana(line)}</div>
                   <textarea
                     value={answers[question.id]?.[fallbackKey] || ""}
                     onChange={(e) =>
-                      handleAnswerChange(question.id, fallbackKey, e.target.value)
+                      handleAnswerChange(
+                        question.id,
+                        fallbackKey,
+                        e.target.value,
+                      )
                     }
                     className="blank-input-field blank-textarea-field"
                     placeholder="Nhập câu trả lời..."
@@ -751,7 +774,7 @@ export function MiniTestModal({
                 );
               }
 
-              const uniqueChoiceIndex = buildAnswerKey(lineIdx, choiceIndex);
+              const uniqueChoiceIndex = parseInt(`${question.id}${lineIdx}${choiceIndex}`);
               const currentVal = answers[question.id]?.[uniqueChoiceIndex];
 
               elements.push(
@@ -824,8 +847,8 @@ export function MiniTestModal({
         <div className="test-modal">
           {/* HEADER */}
           <div className="modal-header">
-              <div className="modal-header-left">
-                <div className="sparkles-badge">
+            <div className="header-left">
+              <div className="header-icon">
                 <Sparkles className="sparkles-icon" />
               </div>
               <div>
@@ -837,7 +860,7 @@ export function MiniTestModal({
               </div>
             </div>
 
-            <div className="timer-container">
+            <div className="header-right">
               <div
                 className={`timer-display ${timeLeft < 60 ? "timer-warning" : ""} ${timeLeft < 300 ? "timer-low" : ""}`}
               >
@@ -897,22 +920,24 @@ export function MiniTestModal({
 
                         <div className="question-content">
                           <div className="instruction-hint">
-  <HelpCircle className="help-icon" />
-  <div>
-    <p className="hint-title">Hướng dẫn</p>
-    <p>
-      {q.question_type === "fill_blank"
-        ? "Điền từ thích hợp vào ô trống."
-        : q.question_type === "multiple_choice"
-          ? "Chọn đáp án đúng trong các ngoặc."
-          : q.question_type === "rearrange" || q.question_type === "reorder"
-            ? "Kéo thả các từ để sắp xếp thành câu đúng."
-            : "Sắp xếp lại các từ/cụm từ."}
-    </p>
-    <p className="hint-points">(Tổng cộng: {q.points} điểm)</p>
-  </div>
-</div>
-
+                            <HelpCircle className="hint-icon" />
+                            <div>
+                              <p className="hint-title">Hướng dẫn</p>
+                              <p>
+                                {q.question_type === "fill_blank"
+                                  ? "Điền từ thích hợp vào ô trống."
+                                  : q.question_type === "multiple_choice"
+                                    ? "Chọn đáp án đúng trong các ngoặc."
+                                    : q.question_type === "rearrange" ||
+                                        q.question_type === "reorder"
+                                      ? "Kéo thả các từ để sắp xếp thành câu đúng."
+                                      : "Sắp xếp lại các từ/cụm từ."}
+                              </p>
+                              <p className="hint-points">
+                                (Tổng cộng: {q.points} điểm)
+                              </p>
+                            </div>
+                          </div>
 
                           {q.example && (
                             <div className="example-section">
