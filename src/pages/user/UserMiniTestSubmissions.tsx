@@ -152,7 +152,7 @@ export function UserMiniTestSubmissions({
                 setErrorModal({
                   open: true,
                   title: "Lỗi Parse Dữ Liệu",
-                  message: "Không thềEphân tích dữ liệu câu trả lời từ server.",
+                  message: "Không thể phân tích dữ liệu câu trả lời từ server.",
                 });
               }
             } else if (typeof s.answers === "object" && s.answers !== null) {
@@ -233,7 +233,7 @@ export function UserMiniTestSubmissions({
             open: true,
             title: "Không tìm thấy endpoint",
             message:
-              "Endpoint API không tồn tại hoặc bềElỗi. Vui lòng thử lại sau!",
+              "Endpoint API không tồn tại hoặc bị lỗi. Vui lòng thử lại sau!",
           });
         } else if (err.response.status === 500) {
           setErrorModal({
@@ -248,7 +248,7 @@ export function UserMiniTestSubmissions({
           open: true,
           title: "Lỗi Kết Nối",
           message:
-            "Không thềEkết nối đến server! Vui lòng kiểm tra kết nối mạng.",
+            "Không thể kết nối đến server! Vui lòng kiểm tra kết nối mạng.",
         });
       } else {
         setDebugInfo(`Lỗi: ${err.message}`);
@@ -287,7 +287,7 @@ export function UserMiniTestSubmissions({
       setErrorModal({
         open: true,
         title: "Lỗi Xóa Bài Nộp",
-        message: "Không thềExóa bài nộp. Vui lòng thử lại sau!",
+        message: "Không thể xóa bài nộp. Vui lòng thử lại sau!",
       });
     }
   };
@@ -310,7 +310,7 @@ export function UserMiniTestSubmissions({
       case "reviewed":
         return "Đã chấm";
       case "pending":
-        return "ChềEchấm";
+        return "Chờ chấm";
       default:
         return "Không xác định";
     }
@@ -358,7 +358,7 @@ export function UserMiniTestSubmissions({
               <button
                 onClick={handleGoHome}
                 className="submissions-home-button"
-                title="VềEtrang chủ"
+                title="Về trang chủ"
               >
                 <Home />
               </button>
@@ -407,7 +407,7 @@ export function UserMiniTestSubmissions({
                   className="status-filter"
                 >
                   <option value="all">Tất cả trạng thái</option>
-                  <option value="pending">ChềEchấm</option>
+                  <option value="pending">Chờ chấm</option>
                   <option value="feedbacked">Đã chấm</option>
                   <option value="reviewed">Đã xem xét</option>
                 </select>
@@ -466,7 +466,7 @@ export function UserMiniTestSubmissions({
                   <div className="stat-value">
                     {submissions.filter((s) => s.status === "pending").length}
                   </div>
-                  <div className="stat-label">ChềEchấm</div>
+                  <div className="stat-label">Chờ chấm</div>
                 </div>
               </div>
 
@@ -500,7 +500,7 @@ export function UserMiniTestSubmissions({
                     ? "Thử tìm kiếm với từ khóa khác"
                     : submissions.length === 0
                       ? "Bạn chưa có bài nộp nào. Hãy làm bài test đềEbắt đầu!"
-                      : "Không có bài nộp nào phù hợp với bềElọc"}
+                      : "Không có bài nộp nào phù hợp với bộ lọc"}
                 </p>
                 <button
                   onClick={fetchSubmissions}
@@ -733,10 +733,10 @@ export function UserMiniTestSubmissions({
                   <div className="empty-answers">
                     <AlertCircle className="empty-answers-icon" />
                     <p>Không có câu trả lời nào được ghi nhận</p>
-                    <p className="empty-notes">Có thềEdo:</p>
+                    <p className="empty-notes">Có thể do:</p>
                     <ul className="empty-reasons">
                       <li>• Backend chưa xử lý đúng dữ liệu answers</li>
-                      <li>• Dữ liệu answers trong database bềElỗi</li>
+                      <li>• Dữ liệu answers trong database bị lỗi</li>
                       <li>• Frontend không parse được format của answers</li>
                     </ul>
                   </div>

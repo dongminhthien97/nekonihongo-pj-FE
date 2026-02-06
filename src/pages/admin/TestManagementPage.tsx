@@ -94,7 +94,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
       return;
     }
     if (user.role !== "ADMIN") {
-      toast.error("Ban khong co quyen truy cap trang quan tri.");
+      toast.error("Bạn không có quyền truy cập trang quản trị. 😿");
       onNavigate("landing");
       return;
     }
@@ -345,13 +345,13 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
 
   const handleBatchDelete = async () => {
     if (selectedTests.length === 0) {
-      toast.error("Ban khong co quyen truy cap trang quan tri.");
+      toast.error("Hãy chọn ít nhất 1 bài test để xóa. 😿");
       return;
     }
 
     if (
       !window.confirm(
-        `Bạn có chắc muốn xóa ${selectedTests.length} bài test đã chọn? Hành động này không thềEhoàn tác.`,
+        `Bạn có chắc muốn xóa ${selectedTests.length} bài test đã chọn? Hành động này không thể hoàn tác.`,
       )
     ) {
       return;
@@ -386,10 +386,10 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
           toast.success(`Đã xóa thành công ${successCount} bài test`);
         } else if (successCount > 0 && failedCount > 0) {
           toast.success(
-            `Đã xóa thành công ${successCount} bài test, ${failedCount} bài không thềExóa`,
+            `Đã xóa thành công ${successCount} bài test, ${failedCount} bài không thể xóa`,
           );
         } else {
-          toast.error("Ban khong co quyen truy cap trang quan tri.");
+          toast.error("Không thể xóa các bài test này. Vui lòng thử lại sau. 😿");
         }
 
         await fetchUnreadCount();
@@ -399,12 +399,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
         );
       }
     } catch (error: any) {
-      let errorMessage = "Có lỗi xảy ra khi xóa nhiều bài test";
-      if (error.response?.data?.message) {
-        errorMessage = error.response.data.message;
-      }
-
-      toast.error("Ban khong co quyen truy cap trang quan tri.");
+      toast.error("Lỗi khi xóa hàng loạt bài test. 😿");
       fetchTests();
     } finally {
       setIsBatchDeleting(false);
@@ -414,7 +409,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
   const handleDeleteTest = async (testId: number) => {
     if (
       !window.confirm(
-        "Bạn có chắc muốn xóa bài test này? Hành động này không thềEhoàn tác.",
+        "Bạn có chắc muốn xóa bài test này? Hành động này không thể hoàn tác.",
       )
     ) {
       return;
@@ -448,28 +443,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
         );
       }
     } catch (error: any) {
-      let errorMessage = "Có lỗi xảy ra khi xóa bài test";
-
-      if (error.response) {
-        if (error.response.status === 403) {
-          errorMessage = "Không có quyền xóa bài test này";
-        } else if (error.response.status === 404) {
-          errorMessage = "Bài test không tồn tại hoặc đã bềExóa";
-          setTests((prevTests) =>
-            prevTests.filter((test) => test.id !== testId),
-          );
-          setFilteredTests((prevTests) =>
-            prevTests.filter((test) => test.id !== testId),
-          );
-          setSelectedTests((prev) => prev.filter((id) => id !== testId));
-        } else {
-          errorMessage = `Lỗi ${error.response.status}: ${error.response.data?.message || error.response.data?.error || "Không rõ lỗi"}`;
-        }
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-
-      toast.error("Ban khong co quyen truy cap trang quan tri.");
+      toast.error("Lỗi khi xóa bài test. 😿");
       fetchTests();
     }
   };
@@ -542,7 +516,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
       test.score !== null && test.score !== undefined
         ? test.score.toString().replace(".", ",")
         : "Chưa chấm",
-      test.status === "pending" ? "ChềEduyệt" : "Đã phản hồi",
+      test.status === "pending" ? "Chờ duyệt" : "Đã phản hồi",
       formatDateForCSV(test.submittedAt),
       test.feedbackAt ? formatDateForCSV(test.feedbackAt) : "Chưa phản hồi",
       test.timeSpent ? Math.round(test.timeSpent / 60) : "0",
@@ -676,7 +650,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
             <div className="stat-card pending">
               <div className="stat-content">
                 <div>
-                  <p className="stat-label">ChềEduyệt</p>
+                  <p className="stat-label">Chờ duyệt</p>
                   <p className="stat-value">
                     {tests.filter((t) => t.status === "pending").length}
                   </p>
@@ -714,7 +688,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
                 onClick={() => setFilter("pending")}
               >
                 <Clock size={14} />
-                ChềEduyệt ({tests.filter((t) => t.status === "pending").length})
+                Chờ duyệt ({tests.filter((t) => t.status === "pending").length})
               </button>
               <button
                 className={`filter-tab ${filter === "feedbacked" ? "active" : ""}`}
@@ -756,7 +730,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
                       className="clear-selection"
                       onClick={() => setSelectedTests([])}
                     >
-                      BềEchọn tất cả
+                      Bỏ chọn tất cả
                     </button>
                   </div>
                 </div>
@@ -850,7 +824,7 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
                               {test.status === "pending" ? (
                                 <>
                                   <Clock size={12} />
-                                  ChềEduyệt
+                                  Chờ duyệt
                                 </>
                               ) : (
                                 <>
@@ -954,12 +928,12 @@ export function TestManagementPage({ onNavigate }: TestManagementPageProps) {
               <h3>Không tìm thấy bài test nào</h3>
               <p>
                 {search
-                  ? "Thử tìm kiếm với từ khóa khác hoặc xóa bềElọc tìm kiếm"
+                  ? "Thử tìm kiếm với từ khóa khác hoặc xóa bộ lọc tìm kiếm"
                   : "Học viên chưa nộp bài test nào cho các bài học ngữ pháp"}
               </p>
               {search && (
                 <button className="clear-search" onClick={() => setSearch("")}>
-                  Xóa bềElọc tìm kiếm
+                  Xóa bộ lọc tìm kiếm
                 </button>
               )}
             </div>

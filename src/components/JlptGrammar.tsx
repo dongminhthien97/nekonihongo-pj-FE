@@ -118,7 +118,7 @@ export function JlptGrammar({ level, onNavigate }: JlptGrammarProps) {
 
   if (isLoading)
     return (
-      <NekoLoading message={`Mèo đang chuẩn bềEngữ pháp ${levelUpper}...`} />
+      <NekoLoading message={`Mèo đang chuẩn bị ngữ pháp ${levelUpper}...`} />
     );
 
   return (

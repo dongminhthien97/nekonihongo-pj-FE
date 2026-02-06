@@ -119,7 +119,7 @@ export function ExercisePage({
         } else {
           setExercises([]);
           toast(
-            "Bài tập này sẽ sớm ra mắt nhé! Mèo đang chuẩn bềErất kỹ đây 😺",
+            "Bài tập này sẽ sớm ra mắt nhé! Mèo đang chuẩn bị rất kỹ đây 😺",
             { icon: "⏳", duration: 1000 },
           );
         }
@@ -127,7 +127,7 @@ export function ExercisePage({
         console.error("❁ELỗi tải bài tập:", err);
         if (err.response?.status === 401) {
           toast.error(
-            "Phiên đăng nhập hết hạn rồi... Mèo đưa bạn vềEđăng nhập nhé 😿",
+            "Phiên đăng nhập hết hạn rồi... Mèo đưa bạn về đăng nhập nhé 😿",
             { duration: 6000 },
           );
           setTimeout(() => onNavigate("login"), 3000);
@@ -154,7 +154,7 @@ export function ExercisePage({
     await toast.promise(
       api.get(`/exercises/${exerciseId}`),
       {
-        loading: "Mèo đang chuẩn bềEbài tập... 🐱",
+        loading: "Mèo đang chuẩn bị bài tập... 🐱",
         success: (res) => {
           const exercise: Exercise = res.data;
           if (!exercise.questions || exercise.questions.length === 0) {
@@ -172,7 +172,7 @@ export function ExercisePage({
         },
         error: (err: any) => {
           if (err.message === "no_questions") {
-            return "Bài tập này chưa có câu hỏi. Mèo sẽ bềEsung sớm nhé! 😿";
+            return "Bài tập này chưa có câu hỏi. Mèo sẽ bổ sung sớm nhé! 😿";
           }
           return "Không tải được bài tập này. Mèo đang kiểm tra lại... 😿";
         },
@@ -238,8 +238,8 @@ export function ExercisePage({
 
   const getScoreMessage = (score: number, total: number) => {
     const ratio = score / total;
-    if (ratio <= 0.3) return "CềElên nào mèo con ơi 😿";
-    if (ratio <= 0.6) return "Khá lắm rồi, cềEthêm chút nữa 💪";
+    if (ratio <= 0.3) return "Cố lên nào mèo con ơi 😿";
+    if (ratio <= 0.6) return "Khá lắm rồi, cố lên chút nữa 💪";
     if (ratio <= 0.9) return "Giỏi quá đi 😸";
     return "Tuyệt vời! Mèo tự hào vềEbạn 🎉";
   };
@@ -273,7 +273,7 @@ export function ExercisePage({
     totalQuestions: number,
   ) => {
     if (!authUser?.id || !selectedExercise) {
-      toast.error("Không thềElưu kết quả. Vui lòng đăng nhập lại! 🔒");
+      toast.error("Không thể lưu kết quả. Vui lòng đăng nhập lại! 🔒");
       return null;
     }
 
@@ -334,7 +334,7 @@ export function ExercisePage({
       setTimeout(async () => {
         try {
           console.log("[DEBUG] Checking activity logs after 2 seconds...");
-          // Có thềEgọi API đềElấy logs mới nhất
+          // Có thể gọi API để lấy logs mới nhất
           // const logsResponse = await api.get("/admin/activity-logs");
           // console.log("[DEBUG] Latest logs:", logsResponse.data);
         } catch (logErr) {
@@ -342,11 +342,11 @@ export function ExercisePage({
         }
       }, 2000);
 
-      //Refresh full data từ backend đềEđồng bềEchắc chắn
+      //Refresh full data từ backend đồng bộ chắc chắn
       await refreshUser();
       return result;
     } catch (error: any) {
-      console.error("❁ELỗi khi lưu kết quả:", error);
+      console.error("❁Lỗi khi lưu kết quả:", error);
 
       // DEBUG chi tiết
       if (error.response) {
@@ -362,7 +362,7 @@ export function ExercisePage({
         toast.error("Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!");
         setTimeout(() => onNavigate("login"), 2000);
       } else {
-        toast.error("Không thềElưu kết quả bài tập. Vui lòng thử lại!");
+        toast.error("Không thể lưu kết quả bài tập. Vui lòng thử lại!");
       }
       return null;
     } finally {
@@ -372,7 +372,7 @@ export function ExercisePage({
   };
 
   if (isLoading && !selectedExercise) {
-    return <NekoLoading message="Mèo đang chuẩn bềEbài tập..." />;
+    return <NekoLoading message="Mèo đang chuẩn bị bài tập..." />;
   }
 
   return (
@@ -610,7 +610,7 @@ export function ExercisePage({
 
             {!isAuthenticated && (
               <div className="mt-4 text-center text-yellow-300 text-sm">
-                ⚠�E�EBạn chưa đăng nhập. Kết quả sẽ không được lưu!
+                Bạn chưa đăng nhập. Kết quả sẽ không được lưu!
               </div>
             )}
           </div>
@@ -636,7 +636,7 @@ export function ExercisePage({
               {!isAuthenticated && (
                 <div className="mt-4 p-3 bg-yellow-500/20 rounded-lg">
                   <p className="text-yellow-300 text-sm">
-                    ⚠�E�EKết quả chưa được lưu vì bạn chưa đăng nhập
+                    Kết quả chưa được lưu vì bạn chưa đăng nhập
                   </p>
                 </div>
               )}
@@ -941,11 +941,11 @@ export function ExercisePage({
   /* Tạo một lớp shadow cực mảnh đềEchữ không bềEnhòe bởi backdrop-blur của thẻ cha */
   filter: drop-shadow(0 1px 1px rgba(126, 34, 206, 0.1));
 
-  /* Khi nằm trên nền tối, màu này có thềEtự động sáng lên một chút (tùy chọn) */
+  /* Khi nằm trên nền tối, màu này có thể tự động sáng lên một chút (tùy chọn) */
   transition: color 0.2s ease;
 }
 
-/* Hiệu ứng hover nhẹ nếu là liên kết hoặc sềEcó thềEtương tác */
+/* Hiệu ứng hover nhẹ nếu là liên kết hoặc sẽ có thể tương tác */
 .text-accent-purple:hover {
   color: #9333ea; /* Purple-600 */
 }
@@ -996,7 +996,7 @@ export function ExercisePage({
   filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) 
           drop-shadow(0 4px 3px rgba(147, 51, 234, 0.2));
 
-  /* Đảm bảo icon SVG hiển thềEmượt mà */
+  /* Đảm bảo icon SVG hiển thị mượt mà */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1226,7 +1226,7 @@ export function ExercisePage({
   /* text-green-500 */
   color: #22c55e;
 
-  /* Đảm bảo icon dạng SVG hiển thềEđúng kích thước */
+  /* Đảm bảo icon dạng SVG hiển thị đúng kích thước */
   display: inline-block;
   vertical-align: middle;
   
@@ -1689,7 +1689,7 @@ export function ExercisePage({
   /* bg-white/10 */
   background-color: rgba(255, 255, 255, 0.1);
 
-  /* Giữ hình dạng tròn và kích thước cềEđịnh */
+  /* Giữ hình dạng tròn và kích thước cố định */
   border-radius: 9999px;
   width: 1.5rem;  /* 24px */
   height: 1.5rem; /* 24px */
@@ -1742,7 +1742,7 @@ export function ExercisePage({
   /* pt-2 (8px) */
   padding-top: 0.5rem;
 
-  /* BềEsung đềEhiển thềEtốt trên di động */
+  /* Bổ sung để hiển thị tốt trên di động */
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -1911,7 +1911,7 @@ export function ExercisePage({
   /* border border-white/20 */
   border: 1px solid rgba(255, 255, 255, 0.2);
 
-  /* HềEtrợ hiển thềEmềE(Glassmorphism) */
+  /* Hỗ trợ hiển thị mờ (Glassmorphism) */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px); /* HềEtrợ Safari */
 }

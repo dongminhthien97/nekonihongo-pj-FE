@@ -42,7 +42,7 @@ export function Navigation({
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [feedbackCount, setFeedbackCount] = useState(0);
 
-  // Fetch sềEbài mini test đã feedback khi user đăng nhập
+  // Fetch số bài mini test đã feedback khi user đăng nhập
   useEffect(() => {
     if (user?.role === "USER") {
       const fetchFeedbackCount = async () => {
@@ -50,7 +50,7 @@ export function Navigation({
           const res = await api.get("/user/mini-test/feedback-count");
           setFeedbackCount(res.data.count || 0);
         } catch (err) {
-          console.error("Lỗi lấy sềEfeedback:", err);
+          console.error("Lỗi lấy feedback:", err);
         }
       };
       fetchFeedbackCount();
@@ -146,7 +146,7 @@ export function Navigation({
               );
             })}
 
-            {/* BELL NOTIFICATION CHO USER (chềEhiện khi là USER và có feedback mới) */}
+            {/* BELL NOTIFICATION CHO USER (chỉ hiện khi là USER và có feedback mới) */}
             {user.role === "USER" && (
               <div className="relative ml-4">
                 <button
@@ -258,7 +258,7 @@ export function Navigation({
       )}
       <style>{`
       .badge-error-pulse {
-  /* VềEtrí tuyệt đối */
+  /* Vị trí tuyệt đối */
   position: absolute;
   top: -0.25rem;    /* tương ứng -top-1 (1 * 0.25rem = 4px) */
   right: -0.25rem;  /* tương ứng -right-1 */
@@ -274,7 +274,7 @@ export function Navigation({
   font-size: 0.75rem;        /* tương ứng text-xs (12px) */
   font-weight: 700;          /* tương ứng font-bold */
 
-  /* Căn giữa sềEnội dung bên trong */
+  /* Căn giữa nội dung bên trong */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -522,7 +522,7 @@ export function Navigation({
   
   /* border-b */
   border-bottom-width: 1px;
-  border-style: solid; /* Cần thiết đềEviền hiển thềE*/
+  border-style: solid; /* Cần thiết để viền hiển thị */
   
   /* border-[#FFC7EA]/20 (Màu hồng nhạt #FFC7EA) */
   border-bottom-color: rgba(255, 199, 234, 0.2); /* Viền dưới hồng nhạt mềE20% */

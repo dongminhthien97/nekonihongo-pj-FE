@@ -1,6 +1,6 @@
 // VocabularyPage.tsx
 import { useState, useMemo, useEffect } from "react";
-import { Search, ChevronLeft, ChevronRight, Cat, Sparkles } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Cat } from "lucide-react";
 import api from "../api/axios";
 import { NekoLoading } from "./NekoLoading";
 import { NekoAlertModal } from "./NekoAlertModal";
@@ -37,14 +37,14 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   const LESSONS_PER_PAGE = 12;
   const WORDS_PER_PAGE = 12;
 
-  // LẤY DỮ LIềE THẬT TỪ BACKEND
+  // LẤY DỮ LIỆU THẬT TỪ BACKEND
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await api.get("/vocabulary/lessons");
         const serverLessons = res.data.data || [];
 
-        // Đảm bảo loading hiện ít nhất 1.5 giây  Etrải nghiệm mượt mà, sang trọng
+        // Đảm bảo loading hiện ít nhất 0.6 giây - trải nghiệm mượt mà, sang trọng
         await new Promise((resolve) => setTimeout(resolve, 600));
 
         setLessons(serverLessons);
@@ -52,14 +52,14 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
         console.error("Lỗi khi tải từ vựng:", err);
 
         if (err.response?.status === 401) {
-          alert("Phiên đăng nhập hết hạn! Mèo đưa bạn vềEtrang đăng nhập nhé");
+          alert("Phiên đăng nhập hết hạn! Mèo đưa bạn về trang đăng nhập nhé");
 
           // Xóa hết dữ liệu đăng nhập
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("nekoUser");
 
-          // Chuyển vềElogin
+          // Chuyển về login
           onNavigate("login");
           return;
         }
@@ -67,7 +67,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
         // Các lỗi khác (500, mạng, v.v.) →fallback local data + thông báo
         setLessons(localVocabularyLessons || []);
         setError(
-          "Không thềEkết nối đến server! Mèo đã tải dữ liệu mẫu cho bạn rồi",
+          "Không thể kết nối đến server! Mèo đã tải dữ liệu mẫu cho bạn rồi",
         );
       } finally {
         // Đảm bảo loading tắt sau đúng 1.5s dù có lỗi hay không
@@ -85,7 +85,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
       setShowNoLessonModal(true);
       return;
     }
-    // === CÁEBÀI HỌC + CÁETỪ →VÀO FLASHCARD NGAY! ===
+    // === CÁC BÀI HỌC + CÁC TỪ -> VÀO FLASHCARD NGAY! ===
     let selectedWords = [...selectedLesson.words];
 
     // Random 10 từ nếu bài có nhiều hơn 10 từ
@@ -95,8 +95,8 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
         .slice(0, 10);
     }
 
-    // === XÁC ĐỊNH TRANG GỐC ĐềEQUAY VỀ SAU KHI HỌC XONG ===
-    // Thay đổi giá trềEnày tùy theo trang bạn đang ềE
+    // === XÁC ĐỊNH TRANG GỐC ĐỂ QUAY VỀ SAU KHI HỌC XONG ===
+    // Thay đổi giá trị này tùy theo trang bạn đang ở
     // - VocabularyN5 →"vocabulary-n5"
     // - GrammarN5ListPage →"grammar-n5"
     // - KanjiN5 →"kanji-n5"
@@ -108,17 +108,17 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
       lessonId: selectedLesson.id,
       lessonTitle: selectedLesson.title,
       words: selectedWords,
-      originPage: originPage, // →THÊM ĐềEBIẾT QUAY VỀ ĐÂU
+      originPage: originPage, // -> THÊM ĐỂ BIẾT QUAY VỀ ĐÂU
     };
 
     localStorage.setItem("nekoFlashcardData", JSON.stringify(flashcardData));
 
-    // Lưu tất cả từ trong bài đềEhọc tiếp (nếu cần)
+    // Lưu tất cả từ trong bài để học tiếp (nếu cần)
     localStorage.setItem(
       "nekoFlashcardAllWords",
       JSON.stringify({
         words: selectedLesson.words,
-        originPage: originPage, // →Cũng thêm đềEđồng bềE(tùy chọn)
+        originPage: originPage, // -> Cũng thêm để đồng bộ (tùy chọn)
       }),
     );
     requestAnimationFrame(() => onNavigate("flashcard"));
@@ -126,17 +126,8 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   // TÌM KIẾM THẬT TỪ BACKEND
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
-    const fetchSearch = async () => {
-      try {
-        const res = await api.get(
-          `/vocabulary/search?q=${encodeURIComponent(searchQuery)}`,
-        );
-        return res.data.data || [];
-      } catch {
-        return [];
-      }
-    };
-    // Vì useMemo không hềEtrợ async trực tiếp →dùng trick
+    
+    // Vì useMemo không hỗ trợ async trực tiếp -> dùng trick
     let results: { word: Word; lessonId: number }[] = [];
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -191,9 +182,9 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
         {/* Header + Search */}
         <div className="text-center mb-12">
           <h1 className="relative z-10 mb-12 md:mb-16">
-            {/* KHUNG ĐEN MềE+ VIỀN NEON + TRONG SUỐT CÁETHềEĐIỀU CHềEH */}
+            {/* KHUNG ĐEN MỜ + VIỀN NEON + TRONG SUỐT CÁCH THỂ ĐIỀU CHỈNH */}
             <div className="absolute inset-0 -z-10 rounded-3xl" />
-            {/* CHỮ CHÍNH  EĐEN ĐẬM + GLOW TRẮNG */}
+            {/* CHỮ CHÍNH - ĐEN ĐẬM + GLOW TRẮNG */}
             <span className="hero-section-title hero-text-glow">
               Từ Vựng Tiếng Nhật
             </span>
@@ -805,7 +796,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
     0 0 15px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 20px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
     
-    /* Có thềEthêm các màu khác nếu muốn đầy đủ dải cầu vồng */
+    /* Có thể thêm các màu khác nếu muốn đầy đủ dải cầu vồng */
 }
       .full-gradient-hover-effect {
   /* absolute */
@@ -1080,13 +1071,13 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   
   /* animate-border-spin (CSS Tùy chỉnh: Tạo keyframes và áp dụng) */
   animation: border-spin 3s linear infinite; 
-  z-index: -1; /* Thường được dùng đềEđặt lớp này dưới nội dung chính */
+  z-index: -1; /* Thường được dùng để đặt lớp này dưới nội dung chính */
 }
 
 /* group-focus-within:opacity-100 (Sử dụng selector lồng nhau) */
 /* Áp dụng cho phần tử mẹ có class 'group' và bên trong nó có phần tử đang focus */
 .group:focus-within .gradient-border-effect,
-.gradient-border-effect:focus { /* ChềEsử dụng focus trực tiếp nếu không phải group */
+.gradient-border-effect:focus { /* Chỉ sử dụng focus trực tiếp nếu không phải group */
   opacity: 1;
 }
 
@@ -1123,13 +1114,13 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   /* text-white */
   color: #ffffff; 
   
-  /* drop-shadow-2xl (Giá trềEgần đúng, có thềEphức tạp hơn) */
+  /* drop-shadow-2xl (Giá trị gần đúng, có thể phức tạp hơn) */
   filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15)) drop-shadow(0 10px 10px rgba(0, 0, 0, 0.04));
   
   /* -translate-y-3 */
   transform: translateY(-0.75rem); /* -12px */
   
-  /* text-6xl (Giá trềEmặc định cho text-6xl) */
+  /* text-6xl (Giá trị mặc định cho text-6xl) */
   font-size: 3.75rem; /* 60px */
   line-height: 1; 
   
@@ -1140,8 +1131,8 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Kích thước text cho màn hình nhềE(sm:text-6xl) */
-/* Cùng giá trềEmặc định, không cần media query */
+/* Kích thước text cho màn hình nhỏ (sm:text-6xl) */
+/* Cùng giá trị mặc định, không cần media query */
 
 /* Thiết lập cho màn hình trung bình (md) - min-width: 768px */
 @media (min-width: 768px) {
@@ -1227,7 +1218,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   background-color: rgba(255, 255, 255, 0.3); 
   
   /* transition và transform */
-  transition: all 150ms ease-in-out; /* Giá trềEmặc định cho transition */
+  transition: all 150ms ease-in-out; /* Giá trị mặc định cho transition */
 }
 
 /* md:p-5 */
@@ -1257,7 +1248,7 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   /* h-6 */
   height: 1.5rem; /* 24px */
   
-  /* transition (Thêm vào đềEhiệu ứng scale mượt mà) */
+  /* transition (Thêm vào để hiệu ứng scale mượt màng) */
   transition: transform 150ms ease-in-out; 
 }
 
@@ -1312,10 +1303,10 @@ export function VocabularyPage({ onNavigate }: VocabularyPageProps) {
   background-color: rgba(255, 255, 255, 0.3); 
   
   /* transition */
-  transition: all 150ms ease-in-out; /* Giá trềEmặc định cho transition */
+  transition: all 150ms ease-in-out; /* Giá trị mặc định cho transition */
   
   /* transform */
-  /* ChềElà một lớp đánh dấu, không thêm thuộc tính CSS riêng biệt */
+  /* Chỉ là một lớp đánh dấu, không thêm thuộc tính CSS riêng biệt */
 }
   .button {
   /* px-8 py-4 -> padding: 1rem top/bottom, 2rem left/right */

@@ -30,13 +30,11 @@ const LESSONS_PER_PAGE = 12;
 const CHARACTERS_PER_PAGE = 12;
 
 export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
-  const [katakanaList, setKatakanaList] = useState<Katakana[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   const [lessonPage, setLessonPage] = useState(1);
   const [characterPage, setCharacterPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
   const [selectedCharacter, setSelectedCharacter] = useState<Katakana | null>(
     null,
   );
@@ -67,13 +65,10 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
           }));
 
           await new Promise((resolve) => setTimeout(resolve, 600));
-          setKatakanaList(normalizedData);
           setLessons(createLessons(normalizedData));
-        } else {
-          setError("Không thềEđọc dữ liệu từ server.");
         }
       } catch (err: any) {
-        setError("Lỗi kết nối server.");
+        console.error("Lỗi kết nối server:", err);
       } finally {
         setTimeout(() => setIsLoading(false), 600);
       }
@@ -93,11 +88,11 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
       "Hàng YA",
       "Hàng RA",
       "Hàng WA",
-      "Hàng GA (めE",
-      "Hàng ZA (めE",
-      "Hàng DA (めE",
-      "Hàng BA (めE",
-      "Hàng PA (めE",
+      "Hàng GA",
+      "Hàng ZA",
+      "Hàng DA",
+      "Hàng BA",
+      "Hàng PA",
       "Âm ghép (Yoon)",
     ];
 
@@ -184,7 +179,16 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
   );
 
   if (isLoading)
-    return <NekoLoading message="Mèo đang chuẩn bềEbảng chữ Katakana..." />;
+    return <NekoLoading message="Mèo đang chuẩn bị bảng chữ Katakana..." />;
+
+  if (lessons.length === 0)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-3xl font-bold text-red-400">
+          Không thể tải dữ liệu Katakana. 😿
+        </p>
+      </div>
+    );
 
   return (
     <div className="min-h-screen">
@@ -369,7 +373,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
         isOpen={showNoLessonModal}
         onClose={() => setShowNoLessonModal(false)}
         title="Meow meow..."
-        message="Hãy chọn ít nhất 1 bài đềEôn flashcard Katakana nhé!"
+        message="Hãy chọn ít nhất 1 bài để ôn flashcard Katakana nhé!"
       />
 
       {/* TOÀN BềESTYLE TỪ HIRAGANAPAGE  EĐỒNG BềE100% */}
@@ -404,7 +408,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
           transform: scale(1.1) rotate(12deg);
         }
 
-             /* Mặc định cho thiết bềEdi động (grid-cols-2) */
+             /* Mặc định cho thiết bị di động (grid-cols-2) */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -430,8 +434,8 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
   justify-content: center;
 }
 .header-wrapper {
-  transform: translateY(-20px); /* Điều chỉnh sềEnày (ví dụ -30px, -40px) đềEđẩy cao hơn */
-  transition: transform 0.3s ease; /* Hiệu ứng mượt nếu tiêu đềEthay đổi */
+  transform: translateY(-20px); /* Điều chỉnh số này (ví dụ -30px, -40px) để đẩy cao hơn */
+  transition: transform 0.3s ease; /* Hiệu ứng mượt nếu tiêu đề thay đổi */
 }
       .circular-gradient-hover-glow {
   position: absolute;
@@ -562,10 +566,10 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
 /* Định nghĩa keyframes cho hiệu ứng pulse */
 @keyframes pulse {
   0%, 100% {
-    opacity: 1; /* Bắt đầu và kết thúc với đềEmềEđầy đủ */
+    opacity: 1; /* Bắt đầu và kết thúc với độ mờ đầy đủ */
   }
   50% {
-    opacity: 0.4; /* Giảm đềEmềExuống 40% ềEgiữa chu kỳ */
+    opacity: 0.4; /* Giảm độ mờ xuống 40% ở giữa chu kỳ */
   }
 }
       .bold-subheading-style {
@@ -590,7 +594,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
   position: relative;
   
   /* bg-white/80 */
-  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mềE80% */
+  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mờ 80% */
   
   /* rounded-[32px] */
   border-radius: 2rem; /* 32px */
@@ -676,7 +680,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
       .glassmorphism-card {
   /* bg-white */
   background-color: #ffffff;
-  /* rounded-[32px] (Ưu tiên giá trềEtùy chỉnh này) */
+  /* rounded-[32px] (Ưu tiên giá trị tùy chỉnh này) */
   border-radius: 2rem; /* 32px */
   
   /* p-8 */
@@ -718,11 +722,11 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
   margin-top: 0.5rem; /* 8px */
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Sử dụng text-shadow đềEtạo hiệu ứng glow */
+  /* Sử dụng text-shadow để tạo hiệu ứng glow */
   text-shadow: 
-    /* Lớp bóng mềEtrắng làm nền đềEchữ sáng hơn */
+    /* Lớp bóng mờ trắng làm nền để chữ sáng hơn */
     0 0 3px rgba(255, 255, 255, 0.9),
-    /* Các lớp bóng mềEmàu neon chính */
+    /* Các lớp bóng mờ màu neon chính */
     0 0 8px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 12px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 16px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
@@ -739,16 +743,16 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
   color: #ffffff; 
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Tập trung vào các lớp bóng mềEmàu neon đềElàm nổi bật chữ trắng */
+  /* Tập trung vào các lớp bóng mờ màu neon để làm nổi bật chữ trắng */
   text-shadow: 
-    /* Lớp bóng mềEtrắng nhẹ làm nền */
+    /* Lớp bóng mờ trắng nhẹ làm nền */
     0 0 4px rgba(255, 255, 255, 0.8),
-    /* Các lớp bóng mềEmàu neon chính */
+    /* Các lớp bóng mờ màu neon chính */
     0 0 10px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 15px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 20px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
     
-  /* drop-shadow-lg bềEloại bềEdo không phù hợp với hiệu ứng glow của chữ trắng */
+  /* drop-shadow-lg loại bỏ do không phù hợp với hiệu ứng glow của chữ trắng */
   filter: none; /* Đảm bảo không có drop-shadow */
 }
       
@@ -764,11 +768,11 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
   margin-top: 0.25rem; /* 4px */
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Sử dụng text-shadow đềEtạo hiệu ứng glow */
+  /* Sử dụng text-shadow để tạo hiệu ứng glow */
   text-shadow: 
-    /* Lớp bóng mềEtrắng làm nền */
+    /* Lớp bóng mờ trắng làm nền */
     0 0 2px rgba(255, 255, 255, 0.8),
-    /* Các lớp bóng mềEmàu neon */
+    /* Các lớp bóng mờ màu neon */
     0 0 5px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 8px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 12px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
@@ -785,16 +789,16 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
   color: #ffffff; /* Giữ nguyên màu chữ trắng */
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Sử dụng text-shadow đềEtạo hiệu ứng glow, không dùng filter: drop-shadow */
+  /* Sử dụng text-shadow để tạo hiệu ứng glow, không dùng filter: drop-shadow */
   text-shadow: 
-    /* Lớp bóng mềEtrắng làm nền */
+    /* Lớp bóng mờ trắng làm nền */
     0 0 4px rgba(255, 255, 255, 0.8),
-    /* Các lớp bóng mềEmàu neon */
+    /* Các lớp bóng mờ màu neon */
     0 0 10px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 15px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 20px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
     
-    /* Có thềEthêm các màu khác nếu muốn đầy đủ dải cầu vồng */
+    /* Có thể thêm các màu khác nếu muốn đầy đủ dải cầu vồng */
 }
       .full-gradient-hover-effect {
   /* absolute */
@@ -834,7 +838,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
   position: relative;
   
   /* bg-white/80 */
-  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mềE80% */
+  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mờ 80% */
   
   /* border */
   border-width: 1px; 
@@ -871,7 +875,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
     /* shadow-2xl */
     0 25px 50px -12px rgba(0, 0, 0, 0.25), 
     /* hover:shadow-pink-500/30 */
-    0 0 15px rgba(236, 72, 153, 0.3); /* Giá trềEgần đúng cho shadow màu hồng */
+    0 0 15px rgba(236, 72, 153, 0.3); /* Giá trị gần đúng cho shadow màu hồng */
 }
       .transparent-search-input {
   /* w-full */
@@ -1112,7 +1116,7 @@ export function KatakanaPage({ onNavigate }: KatakanaPageProps) {
   /* text-white */
   color: #ffffff; 
   
-  /* drop-shadow-2xl (Giá trềEgần đúng, có thềEphức tạp hơn) */
+  /* drop-shadow-2xl (Giá trị gần đúng, có thể phức tạp hơn) */
   filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15)) drop-shadow(0 10px 10px rgba(0, 0, 0, 0.04));
   
   /* -translate-y-3 */

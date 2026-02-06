@@ -30,13 +30,11 @@ const LESSONS_PER_PAGE = 12;
 const CHARACTERS_PER_PAGE = 12;
 
 export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
-  const [hiraganaList, setHiraganaList] = useState<Hiragana[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   const [lessonPage, setLessonPage] = useState(1);
   const [characterPage, setCharacterPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
   const [selectedCharacter, setSelectedCharacter] = useState<Hiragana | null>(
     null,
   );
@@ -67,13 +65,10 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
           }));
 
           await new Promise((resolve) => setTimeout(resolve, 600));
-          setHiraganaList(normalizedData);
           setLessons(createLessons(normalizedData));
-        } else {
-          setError("Không thềEđọc dữ liệu từ server.");
         }
       } catch (err: any) {
-        setError("Lỗi kết nối server.");
+        console.error("Lỗi kết nối server:", err);
       } finally {
         setTimeout(() => setIsLoading(false), 600);
       }
@@ -93,11 +88,11 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
       "Hàng YA",
       "Hàng RA",
       "Hàng WA",
-      "Hàng GA (めE",
-      "Hàng ZA (めE",
-      "Hàng DA (めE",
-      "Hàng BA (めE",
-      "Hàng PA (めE",
+      "Hàng GA",
+      "Hàng ZA",
+      "Hàng DA",
+      "Hàng BA",
+      "Hàng PA",
       "Âm ghép (Yoon)",
     ];
 
@@ -152,20 +147,20 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
     // 2. Gom tất cả ký tự lại
     const rawCharacters = selectedLessons.flatMap((l) => l.characters);
 
-    // 3. FIX TRIềE ĐềE Lọc dựa trên mặt chữ (char.character)
-    // Thay vì dùng char.id, dùng char.character sẽ loại bềEchữ "ぁE trùng lặp
-    // kềEcả khi chúng có ID khác nhau trong database.
+    // 3. FIX TRIỆT ĐỂ: Lọc dựa trên mặt chữ (char.character)
+    // Thay vì dùng char.id, dùng char.character sẽ loại bỏ chữ trùng lặp
+    // kể cả khi chúng có ID khác nhau trong database.
     const uniqueCharacters = Array.from(
       new Map(rawCharacters.map((char) => [char.character, char])).values(),
     );
 
-    // 4. Trộn ngẫu nhiên (Dùng spread đềEđảm bảo tạo mảng mới)
+    // 4. Trộn ngẫu nhiên (Dùng spread để đảm bảo tạo mảng mới)
     const shuffled = [...uniqueCharacters].sort(() => Math.random() - 0.5);
 
-    // 5. Chuẩn bềEdữ liệu lưu trữ
+    // 5. Chuẩn bị dữ liệu lưu trữ
     const flashcardData = {
       type: "hiragana",
-      // Hiển thềEtiêu đềEchính xác sềElượng thực tế sau khi lọc
+      // Hiển thị tiêu đề chính xác số lượng thực tế sau khi lọc
       lessonTitle: `Ôn ${selectedLessonIds.size} bài (${uniqueCharacters.length} ký tự)`,
       characters: shuffled,
     };
@@ -196,7 +191,16 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
   );
 
   if (isLoading)
-    return <NekoLoading message="Mèo đang chuẩn bềEbảng chữ cái..." />;
+    return <NekoLoading message="Mèo đang chuẩn bị bảng chữ cái..." />;
+
+  if (lessons.length === 0)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-3xl font-bold text-red-400">
+          Không thể tải dữ liệu Hiragana. 😿
+        </p>
+      </div>
+    );
 
   return (
     <div className="min-h-screen">
@@ -338,7 +342,7 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
         )}
       </main>
 
-      {/* MÁE BAY  EBẤM MềEMODAL CHỌN LESSON */}
+      {/* MÁY BAY MODAL CHỌN LESSON */}
       <div className="fixed bottom-10 right-10 z-50 hidden lg:block">
         <div
           className="relative group cursor-pointer"
@@ -346,7 +350,7 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
         >
           <div className="tooltip-slide-out">
             <div className="colored-border-label">
-              <p className="text-xl font-bold">Chọn bài đềEôn Flashcard! 🐾</p>
+              <p className="text-xl font-bold">Chọn bài để ôn Flashcard! 🐾</p>
               <div className="absolute bottom-0 right-8 translate-y-full">
                 <div className="triangle-down-pink"></div>
               </div>
@@ -385,11 +389,11 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
         isOpen={showNoLessonModal}
         onClose={() => setShowNoLessonModal(false)}
         title="Meow meow..."
-        message="Hãy chọn ít nhất 1 bài đềEôn flashcard nhé!"
+        message="Hãy chọn ít nhất 1 bài để ôn flashcard nhé!"
       />
       {/* STYLE COPIED FROM VOCABULARYPAGE */}
       <style>{`
-      /* Mặc định cho thiết bềEdi động (grid-cols-2) */
+      /* Mặc định cho thiết bị di động (grid-cols-2) */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -415,8 +419,8 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
   justify-content: center;
 }
 .header-wrapper {
-  transform: translateY(-20px); /* Điều chỉnh sềEnày (ví dụ -30px, -40px) đềEđẩy cao hơn */
-  transition: transform 0.3s ease; /* Hiệu ứng mượt nếu tiêu đềEthay đổi */
+  transform: translateY(-20px); /* Điều chỉnh số này (ví dụ -30px, -40px) để đẩy cao hơn */
+  transition: transform 0.3s ease; /* Hiệu ứng mượt nếu tiêu đề thay đổi */
 }
       .circular-gradient-hover-glow {
   position: absolute;
@@ -547,10 +551,10 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
 /* Định nghĩa keyframes cho hiệu ứng pulse */
 @keyframes pulse {
   0%, 100% {
-    opacity: 1; /* Bắt đầu và kết thúc với đềEmềEđầy đủ */
+    opacity: 1; /* Bắt đầu và kết thúc với độ mờ đầy đủ */
   }
   50% {
-    opacity: 0.4; /* Giảm đềEmềExuống 40% ềEgiữa chu kỳ */
+    opacity: 0.4; /* Giảm độ mờ xuống 40% ở giữa chu kỳ */
   }
 }
       .bold-subheading-style {
@@ -575,7 +579,7 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
   position: relative;
   
   /* bg-white/80 */
-  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mềE80% */
+  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mờ 80% */
   
   /* rounded-[32px] */
   border-radius: 2rem; /* 32px */
@@ -661,7 +665,7 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
       .glassmorphism-card {
   /* bg-white */
   background-color: #ffffff;
-  /* rounded-[32px] (Ưu tiên giá trềEtùy chỉnh này) */
+  /* rounded-[32px] (Ưu tiên giá trị tùy chỉnh này) */
   border-radius: 2rem; /* 32px */
   
   /* p-8 */
@@ -703,11 +707,11 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
   margin-top: 0.5rem; /* 8px */
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Sử dụng text-shadow đềEtạo hiệu ứng glow */
+  /* Sử dụng text-shadow để tạo hiệu ứng glow */
   text-shadow: 
-    /* Lớp bóng mềEtrắng làm nền đềEchữ sáng hơn */
+    /* Lớp bóng mờ trắng làm nền để chữ sáng hơn */
     0 0 3px rgba(255, 255, 255, 0.9),
-    /* Các lớp bóng mềEmàu neon chính */
+    /* Các lớp bóng mờ màu neon chính */
     0 0 8px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 12px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 16px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
@@ -724,16 +728,16 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
   color: #ffffff; 
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Tập trung vào các lớp bóng mềEmàu neon đềElàm nổi bật chữ trắng */
+  /* Tập trung vào các lớp bóng mờ màu neon để làm nổi bật chữ trắng */
   text-shadow: 
-    /* Lớp bóng mềEtrắng nhẹ làm nền */
+    /* Lớp bóng mờ trắng nhẹ làm nền */
     0 0 4px rgba(255, 255, 255, 0.8),
-    /* Các lớp bóng mềEmàu neon chính */
+    /* Các lớp bóng mờ màu neon chính */
     0 0 10px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 15px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 20px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
     
-  /* drop-shadow-lg bềEloại bềEdo không phù hợp với hiệu ứng glow của chữ trắng */
+  /* drop-shadow-lg loại bỏ do không phù hợp với hiệu ứng glow của chữ trắng */
   filter: none; /* Đảm bảo không có drop-shadow */
 }
       
@@ -749,11 +753,11 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
   margin-top: 0.25rem; /* 4px */
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Sử dụng text-shadow đềEtạo hiệu ứng glow */
+  /* Sử dụng text-shadow để tạo hiệu ứng glow */
   text-shadow: 
-    /* Lớp bóng mềEtrắng làm nền */
+    /* Lớp bóng mờ trắng làm nền */
     0 0 2px rgba(255, 255, 255, 0.8),
-    /* Các lớp bóng mềEmàu neon */
+    /* Các lớp bóng mờ màu neon */
     0 0 5px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 8px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 12px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
@@ -770,16 +774,16 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
   color: #ffffff; /* Giữ nguyên màu chữ trắng */
   
   /* text-glow-rainbow (CSS Tùy chỉnh: Hiệu ứng phát sáng cầu vồng rực rỡ) */
-  /* Sử dụng text-shadow đềEtạo hiệu ứng glow, không dùng filter: drop-shadow */
+  /* Sử dụng text-shadow để tạo hiệu ứng glow, không dùng filter: drop-shadow */
   text-shadow: 
-    /* Lớp bóng mềEtrắng làm nền */
+    /* Lớp bóng mờ trắng làm nền */
     0 0 4px rgba(255, 255, 255, 0.8),
-    /* Các lớp bóng mềEmàu neon */
+    /* Các lớp bóng mờ màu neon */
     0 0 10px rgba(255, 0, 150, 0.9),  /* Hồng đậm (Fuschia) */
     0 0 15px rgba(147, 51, 234, 0.9),  /* Tím (Violet) */
     0 0 20px rgba(6, 182, 212, 0.9);   /* Xanh ngọc (Cyan) */
     
-    /* Có thềEthêm các màu khác nếu muốn đầy đủ dải cầu vồng */
+    /* Có thể thêm các màu khác nếu muốn đầy đủ dải cầu vồng */
 }
       .full-gradient-hover-effect {
   /* absolute */
@@ -819,7 +823,7 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
   position: relative;
   
   /* bg-white/80 */
-  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mềE80% */
+  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mờ 80% */
   
   /* border */
   border-width: 1px; 
@@ -856,7 +860,7 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
     /* shadow-2xl */
     0 25px 50px -12px rgba(0, 0, 0, 0.25), 
     /* hover:shadow-pink-500/30 */
-    0 0 15px rgba(236, 72, 153, 0.3); /* Giá trềEgần đúng cho shadow màu hồng */
+    0 0 15px rgba(236, 72, 153, 0.3); /* Giá trị gần đúng cho shadow màu hồng */
 }
       .transparent-search-input {
   /* w-full */
@@ -891,12 +895,12 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
 
 /* focus:outline-none */
 .transparent-search-input:focus {
-  outline: 0; /* Loại bềEviền focus mặc định của trình duyệt */
+  outline: 0; /* Loại bỏ viền focus mặc định của trình duyệt */
 }
 
 /* placeholder:text-white/70 và placeholder:font-bold */
 .transparent-search-input::placeholder {
-  color: rgba(255, 255, 255, 0.7); /* Màu trắng mềE70% */
+  color: rgba(255, 255, 255, 0.7); /* Màu trắng mờ 70% */
   font-weight: 700; /* In đậm */
 }
       .element-overlay-positioned {
@@ -980,7 +984,7 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
   overflow: hidden; 
 }
 
-/* LƯU ÁEQUAN TRỌNG VỀ backdrop-filter:
+/* LƯU Ý QUAN TRỌNG VỀ backdrop-filter:
 ĐềEđảm bảo backdrop-filter hoạt động, phần tử này phải có đềEtrong suốt (opacity < 1) hoặc màu nền sử dụng rgba() (như bg-black/50 đã làm).
 */
       .pulsing-gradient-aura {
@@ -1097,7 +1101,7 @@ export function HiraganaPage({ onNavigate }: HiraganaPageProps) {
   /* text-white */
   color: #ffffff; 
   
-  /* drop-shadow-2xl (Giá trềEgần đúng, có thềEphức tạp hơn) */
+  /* drop-shadow-2xl (Giá trị gần đúng, có thể phức tạp hơn) */
   filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15)) drop-shadow(0 10px 10px rgba(0, 0, 0, 0.04));
   
   /* -translate-y-3 */

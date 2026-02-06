@@ -31,23 +31,23 @@ export function VocabularyJLPT({ onNavigate, level }: VocabularyJLPTProps) {
 
   // Level configuration
   const levelConfig = {
-    N5: { title: "JLPT N5", wordsPerDay: 10, description: "Trình đềEsơ cấp" },
+    N5: { title: "JLPT N5", wordsPerDay: 10, description: "Trình độ sơ cấp" },
     N4: {
       title: "JLPT N4",
       wordsPerDay: 15,
-      description: "Trình đềEsơ trung cấp",
+      description: "Trình độ sơ trung cấp",
     },
     N3: {
       title: "JLPT N3",
       wordsPerDay: 20,
-      description: "Trình đềEtrung cấp",
+      description: "Trình độ trung cấp",
     },
     N2: {
       title: "JLPT N2",
       wordsPerDay: 25,
-      description: "Trình đềEthượng trung cấp",
+      description: "Trình độ thượng trung cấp",
     },
-    N1: { title: "JLPT N1", wordsPerDay: 30, description: "Trình đềEcao cấp" },
+    N1: { title: "JLPT N1", wordsPerDay: 30, description: "Trình độ cao cấp" },
   };
 
   // Set level title based on prop
@@ -81,7 +81,7 @@ export function VocabularyJLPT({ onNavigate, level }: VocabularyJLPTProps) {
         setTotalCount(count);
       } catch (err: any) {
         console.error(`Lỗi tải ${level}:`, err);
-        setError(`Không tải được từ vựng ${level}. Mèo đang cềEgắng...`);
+        setError(`Không tải được từ vựng ${level}. Mèo đang cố gắng...`);
       } finally {
         setTimeout(() => {
           setIsLoading(false);
@@ -117,7 +117,7 @@ export function VocabularyJLPT({ onNavigate, level }: VocabularyJLPTProps) {
 
   const handleStartFlashcardDay = () => {
     if (currentDayWords.length === 0) {
-      toast(`Ngày này chưa có từ đềEhọc flashcard! 😿`, { icon: "😿" });
+      toast(`Ngày này chưa có từ để học flashcard! 😿`, { icon: "😿" });
       return;
     }
 
@@ -169,7 +169,7 @@ export function VocabularyJLPT({ onNavigate, level }: VocabularyJLPTProps) {
 
   if (isLoading)
     return (
-      <NekoLoading message={`Mèo đang chuẩn bềEtừ vựng ${levelTitle}...`} />
+      <NekoLoading message={`Mèo đang chuẩn bị từ vựng ${levelTitle}...`} />
     );
 
   if (error)
@@ -192,7 +192,7 @@ export function VocabularyJLPT({ onNavigate, level }: VocabularyJLPTProps) {
         <div className="text-center mb-6">
           <p className="white-rainbow-glow-bold">{config.description}</p>
           <p className="small-rainbow-glow">
-            Học theo ngày  E{currentWordsPerDay} từ mỗi ngày
+            Học theo ngày - {currentWordsPerDay} từ mỗi ngày
           </p>
         </div>
 

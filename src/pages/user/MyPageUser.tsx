@@ -44,7 +44,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
         const res = await api.get("/user/mini-test/feedback-count");
         setFeedbackCount(res.data.count || 0);
       } catch (err) {
-        console.error("Lỗi lấy sềEfeedback:", err);
+        console.error("Lỗi lấy feedback:", err);
       }
     };
     fetchFeedbackCount();
@@ -59,7 +59,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
   }
 
   if (authLoading || localLoading) {
-    return <NekoLoading message="Mèo đang chuẩn bềEMyPage cho bạn... 😻" />;
+    return <NekoLoading message="Mèo đang chuẩn bị MyPage cho bạn... 😻" />;
   }
 
   // --- LOGIC TÍNH TOÁN (Giữ nguyên) ---
@@ -95,7 +95,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
 
   const handleAvatarUpdate = async () => {
     if (!avatarUrl.trim()) {
-      toast.error("Vui lòng nhập URL hợp lềE 😿");
+      toast.error("Vui lòng nhập URL hợp lệ 😿");
       return;
     }
     try {
@@ -109,7 +109,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
       toast.success("Cập nhật avatar thành công! 😻");
       setIsEditingAvatar(false);
     } catch (err) {
-      toast.error("Không thềEcập nhật avatar 😿");
+      toast.error("Không thể cập nhật avatar 😿");
     }
   };
 
@@ -119,13 +119,13 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
         {/* TOP BAR */}
         <header className="neko-top-bar">
           <h1 className="neko-page-title">
-            マイペ�Eジ <span className="sakura">🌸</span>
+            マイページ <span className="sakura">🌸</span>
           </h1>
           <button
             onClick={() => onNavigate("landing")}
             className="neko-btn-back"
           >
-            <span>✁E</span> Đóng
+            <span>🔙</span> Đóng
           </button>
         </header>
 
@@ -145,7 +145,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
                 className="neko-edit-badge"
                 onClick={() => setIsEditingAvatar(true)}
               >
-                ✏︁E
+                ✏️
               </button>
             </div>
 
@@ -182,10 +182,10 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
             <div className="neko-user-badges">
               <span className="neko-badge-role">
                 {authUser.role === "ADMIN"
-                  ? "🛡�E�EQuản trềEviên"
+                  ? "🛡️ Quản trị viên"
                   : "🐾 Học viên Neko"}
               </span>
-              <span className="neko-badge-level">Cấp đềE{userLevel}</span>
+              <span className="neko-badge-level">Cấp độ {userLevel}</span>
             </div>
           </div>
         </section>
@@ -197,7 +197,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
             <div className="neko-card-simple">
               <div className="neko-card-icon">📧</div>
               <div className="neko-card-body">
-                <label>Email liên hềE</label>
+                <label>Email liên hệ</label>
                 <p>{authUser.email}</p>
               </div>
             </div>
@@ -235,7 +235,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
           <div className="neko-stats-column">
             <div className="neko-card-glass neko-level-stats">
               <div className="neko-stat-header">
-                <h3>Tiến trình Cấp đềE</h3>
+                <h3>Tiến trình Cấp độ</h3>
                 <span className="neko-stat-value">
                   {Math.round(progressToNextLevel)}%
                 </span>
@@ -248,7 +248,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
               </div>
               <p className="neko-stat-hint">
                 {userLevel < 100
-                  ? `Cần thêm ${pointsNeeded} điểm đềElên Level ${userLevel + 1}`
+                  ? `Cần thêm ${pointsNeeded} điểm để lên Level ${userLevel + 1}`
                   : "Bạn đã đạt đỉnh cao! 🎉"}
               </p>
             </div>
@@ -285,7 +285,7 @@ export function MyPageUser({ onNavigate }: MyPageUserProps) {
       </div>
 
       <style>{`
-        /* Thêm font-family hềEtrợ tiếng Việt */
+        /* Thêm font-family hỗ trợ tiếng Việt */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
         
         .neko-mypage-wrapper {

@@ -74,7 +74,7 @@ export function ExerciseSelector({
     if (isAvailable) {
       onNavigate("exercise", { category: catName, level: levelName });
     } else {
-      toast("Bài tập này sẽ sớm ra mắt nhé! Mèo đang chuẩn bềErất kỹ đây 😺", {
+      toast("Bài tập này sẽ sớm ra mắt nhé! Mèo đang chuẩn bị rất kỹ đây 😺", {
         icon: "⏳",
         duration: 1000,
       });
@@ -652,7 +652,7 @@ export function ExerciseSelector({
   opacity: 1;
 }
 
-/* Đảm bảo nội dung luôn hiển thềEtrên lớp gradient */
+/* Đảm bảo nội dung luôn hiển thị trên lớp gradient */
 .content {
   position: relative;
   z-index: 1;
@@ -707,7 +707,7 @@ export function ExerciseSelector({
   /* text-white */
   color: #ffffff; 
   
-  /* drop-shadow-2xl (Giá trềEgần đúng, có thềEphức tạp hơn) */
+  /* drop-shadow-2xl (Giá trị gần đúng, có thể phức tạp hơn) */
   filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15)) drop-shadow(0 10px 10px rgba(0, 0, 0, 0.04));
   
   /* -translate-y-3 */

@@ -59,27 +59,27 @@ const renderWithFurigana = (text: string) => {
 
   const parts: JSX.Element[] = [];
   let lastIndex = 0;
-  let match: RegExpExecArray | null;
 
-  while ((match = furiganaRegex.exec(text)) !== null) {
-    if (match.index > lastIndex) {
+  let matchResults;
+  while ((matchResults = furiganaRegex.exec(text)) !== null) {
+    if (matchResults.index > lastIndex) {
       parts.push(
         <span key={`text-${lastIndex}`}>
-          {text.substring(lastIndex, match.index)}
+          {text.substring(lastIndex, matchResults.index)}
         </span>,
       );
     }
 
-    const kanji = match[1];
-    const reading = match[2];
+    const kanji = matchResults[1];
+    const reading = matchResults[2];
     parts.push(
-      <ruby key={`ruby-${match.index}`}>
+      <ruby key={`ruby-${matchResults.index}`}>
         {kanji}
         <rt>{reading}</rt>
       </ruby>,
     );
 
-    lastIndex = match.index + match[0].length;
+    lastIndex = matchResults.index + matchResults[0].length;
   }
 
   if (lastIndex < text.length) {
@@ -142,8 +142,6 @@ export function MiniTestModal({
   >({});
   const [timeLeft, setTimeLeft] = useState(600);
   const [testSubmitted, setTestSubmitted] = useState(false);
-
-  const [hasPriorHistory, setHasPriorHistory] = useState(false);
   const [isClosingModal, setIsClosingModal] = useState(false);
   const [showValidationModal, setShowValidationModal] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
@@ -166,7 +164,6 @@ export function MiniTestModal({
       setRearrangeItems({});
       setTimeLeft(600);
       setTestSubmitted(false);
-      setHasPriorHistory(false);
       setIsClosingModal(false);
       setDraggingItem(null);
       setShowValidationModal(false);
@@ -182,7 +179,7 @@ export function MiniTestModal({
 
     if (!lessonId || lessonId <= 0 || !userId || userId <= 0) {
       if (onError) {
-        onError("ID bai hoc hoac nguoi dung khong hop le", "validation");
+        onError("ID bài học hoặc người dùng không hợp lệ", "validation");
       }
       return;
     }
@@ -192,12 +189,9 @@ export function MiniTestModal({
         setLoading(true);
 
         try {
-          const checkRes = await api.get(`/grammar-tests/check`, {
+          await api.get(`/grammar-tests/check`, {
             params: { lessonId },
           });
-          if (checkRes.data.hasSubmitted) {
-            setHasPriorHistory(true);
-          }
         } catch (checkErr) {}
 
         const qRes = await api.get(
@@ -251,14 +245,14 @@ export function MiniTestModal({
         } else {
           if (onError) {
             onError(
-              "Không thềEtải câu hỏi. Dữ liệu không đúng định dạng.",
+              "Không thể tải câu hỏi. Dữ liệu không đúng định dạng.",
               "server",
             );
           }
         }
       } catch (err: any) {
         if (onError) {
-          onError("Không thềEtải câu hỏi. Vui lòng thử lại sau.", "server");
+          onError("Không thể tải câu hỏi. Vui lòng thử lại sau.", "server");
         }
       } finally {
         setLoading(false);
@@ -320,7 +314,7 @@ export function MiniTestModal({
         lines.forEach((line, lineIdx) => {
           const matches = parseMultipleChoiceOptions(line);
 
-          matches.forEach((match, matchIdx) => {
+          matches.forEach((_mcMatch, matchIdx) => {
             const uniqueIndex = parseInt(`${q.id}${lineIdx}${matchIdx}`);
             if (!qAnsObj[uniqueIndex] || qAnsObj[uniqueIndex].trim() === "") {
               if (!emptyAnswers.includes(q.id)) {
@@ -336,7 +330,7 @@ export function MiniTestModal({
         lines.forEach((line, lineIdx) => {
           const lineMatches = line.match(blankRegex) || [];
 
-          lineMatches.forEach((match, matchIdx) => {
+          lineMatches.forEach((_match, matchIdx) => {
             const uniqueIndex = parseInt(`${q.id}${lineIdx}${matchIdx}`);
             if (!qAnsObj[uniqueIndex] || qAnsObj[uniqueIndex].trim() === "") {
               if (!emptyAnswers.includes(q.id)) {
@@ -544,7 +538,7 @@ export function MiniTestModal({
           return;
         } else {
           errorMsg =
-            errorData.message || "Dữ liệu không hợp lềE Vui lòng kiểm tra lại.";
+            errorData.message || "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.";
           errorTyp = "validation";
         }
       } else if (e.response?.status === 401) {
@@ -605,7 +599,7 @@ export function MiniTestModal({
       return (
         <div className="rearrange-container">
           <div className="rearrange-instruction">
-            <p>Kéo và thả các từ dưới đây đềEsắp xếp thành câu đúng:</p>
+            <p>Kéo và thả các từ dưới đây để sắp xếp thành câu đúng:</p>
           </div>
           <div className="rearrange-words">
             {items.map((word, index) => (
@@ -973,7 +967,7 @@ export function MiniTestModal({
               {submitting ? (
                 <div className="submit-spinner" />
               ) : timeLeft <= 0 ? (
-                "Het gio"
+                "Hết giờ"
               ) : (
                 <>
                   <span>Nộp bài</span>

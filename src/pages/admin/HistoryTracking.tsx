@@ -37,7 +37,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
   const ITEMS_PER_PAGE = 10;
   const TOAST_DURATION = 1000;
 
-  // ChềEadmin mới xem được
+  // Chỉ admin mới xem được
   if (!authUser) {
     return (
       <div className="app-wrapper">
@@ -59,10 +59,10 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
             <span className="text-4xl">🚫</span>
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Truy cập bềEtừ chối
+            Truy cập bị từ chối
           </h2>
           <p className="text-gray-600 mb-6">
-            Bạn không có quyền xem trang này. ChềEQuản trềEviên mới được phép.
+            Bạn không có quyền xem trang này. Chỉ Quản trị viên mới được phép.
           </p>
           <button
             onClick={() => onNavigate("mypage")}
@@ -250,7 +250,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
                 </h1>
               </div>
               <p className="text-gray-600 ml-15">
-                Xem lại các hoạt động của người dùng trong hềEthống
+                Xem lại các hoạt động của người dùng trong hệ thống
               </p>
             </div>
 
@@ -304,7 +304,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
                   </p>
                 </div>
                 <div>
-                  <p className="sub-label-text">SềErecord</p>
+                  <p className="sub-label-text">Số record</p>
                   <p className="text-highlight-title">
                     {filteredActivities.length}
                   </p>
@@ -312,7 +312,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
               </div>
               <div className="divider-top">
                 <p className="text-body-small">
-                  Tổng sềElog trong hềEthống:{" "}
+                  Tổng số log trong hệ thống:{" "}
                   <span className="text-label-bold">{activities.length}</span>
                 </p>
               </div>
@@ -505,7 +505,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
       .hover-item {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms; /* Tốc đềEchuyển đổi mặc định của Tailwind */
+  transition-duration: 150ms; /* Tốc độ chuyển đổi mặc định của Tailwind */
 }
 
 .hover-item:hover {
@@ -521,7 +521,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
 }
       .scroll-container-x {
   overflow-x: auto;
-  white-space: nowrap; /* Thường dùng đềEtránh các phần tử xuống dòng */
+  white-space: nowrap; /* Thường dùng để tránh các phần tử xuống dòng */
   -webkit-overflow-scrolling: touch; /* Giúp cuộn mượt hơn trên iOS */
 }
 
@@ -665,7 +665,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
 @media (min-width: 640px) {
   .flex-adaptive-end {
     flex-direction: row;
-    align-items: flex-end; /* Căn lềEdưới các phần tử */
+    align-items: flex-end; /* Căn lề dưới các phần tử */
   }
 }
       .card-container {
@@ -712,7 +712,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
   transform: translateY(-2px);
 }
       .sub-info-row {
-  /* flex items-center: Căn giữa Icon và Chữ theo trục dọc đềEkhông bềElệch */
+  /* flex items-center: Căn giữa Icon và Chữ theo trục dọc để không bị lệch */
   display: flex;
   align-items: center;
 
@@ -729,14 +729,14 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
   gap: 1rem; /* gap-4 */
 }
 
-/* Từ màn hình Small (sm: 640px) trềElên */
+/* Từ màn hình Small (sm: 640px) trở lên */
 @media (min-width: 640px) {
   .responsive-bar {
     /* Chuyển sang hàng ngang */
     flex-direction: row;
     /* Căn giữa các phần tử theo trục dọc */
     align-items: center;
-    /* Đẩy các phần tử ra hai đầu (Ví dụ: Tiêu đềEbên trái, Nút bấm bên phải) */
+    /* Đẩy các phần tử ra hai đầu (Ví dụ: Tiêu đề bên trái, Nút bấm bên phải) */
     justify-content: space-between;
   }
 }
@@ -748,7 +748,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
   margin-left: auto;
   margin-right: auto;
 
-  /* py-8: Khoảng cách trên dưới 2rem (32px) đềEnội dung không chạm mép trình duyệt */
+  /* py-8: Khoảng cách trên dưới 2rem (32px) để nội dung không chạm mép trình duyệt */
   padding-top: 2rem;
   padding-bottom: 2rem;
 
@@ -779,7 +779,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
   /* bg-gray-50: Màu xám cực nhẹ (#f9fafb) */
   background-color: #f9fafb;
 
-  /* Thường đi kèm với Flexbox đềEcăn giữa nội dung */
+  /* Thường đi kèm với Flexbox để căn giữa nội dung */
   display: flex;
   flex-direction: column;
 }
@@ -813,7 +813,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
   100% { transform: scale(1); opacity: 1; }
 }
       .app-wrapper {
-  /* min-h-screen: Chiều cao tối thiểu bằng 100% chiều cao màn hình thiết bềE*/
+  /* min-h-screen: Chiều cao tối thiểu bằng 100% chiều cao màn hình thiết bị */
   min-height: 100vh;
 
   /* flex items-center justify-center: "Phép thuật" căn giữa mọi thứ */
