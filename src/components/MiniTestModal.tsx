@@ -122,9 +122,6 @@ const parseMultipleChoiceOptions = (text: string) => {
   return matches;
 };
 
-const buildAnswerKey = (lineIdx: number, itemIdx: number) =>
-  `${lineIdx}-${itemIdx}`;
-
 export function MiniTestModal({
   isOpen,
   onClose,
@@ -333,7 +330,7 @@ export function MiniTestModal({
           });
         });
       } else if (q.question_type === "fill_blank") {
-        const blankRegex = /�E�Es*�E�|�E�{2,}|_{2,}|【\s*】|\[ \]|___+/g;
+        const blankRegex = /（\s*）|＿{2,}|_{2,}|【\s*】|\[ \]|___+/g;
         const lines = q.raw_text.split("\n").filter((l) => l.trim());
 
         lines.forEach((line, lineIdx) => {
@@ -943,7 +940,7 @@ export function MiniTestModal({
                             <div className="example-section">
                               <p className="example-label">Ví dụ (Rei)</p>
                               <div className="example-content">
-                                {renderWithFurigana(q.example)}
+                                {q.example}
                               </div>
                             </div>
                           )}
