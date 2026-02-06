@@ -995,7 +995,7 @@ export function MiniTestModal({
             justify-content: center;
             z-index: 99999;
             padding: 1rem;
-            font-family: sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', Arial, sans-serif;
             animation: fadeIn 0.3s ease-out;
           }
           
