@@ -30,9 +30,19 @@ const handleUnauthorized = () => {
 const api: AxiosInstance = axios.create({
   baseURL,
   withCredentials: false,
+  timeout: 15000,
 });
 
-api.interceptors.request.use(attachToken);
+api.interceptors.request.use((config) => {
+  const nextConfig = attachToken(config);
+
+  if (import.meta.env.DEV) {
+    const method = (nextConfig.method || "GET").toUpperCase();
+    logError(`[API REQUEST] ${method} ${nextConfig.baseURL || ""}${nextConfig.url || ""}`);
+  }
+
+  return nextConfig;
+});
 
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
@@ -40,7 +50,20 @@ api.interceptors.response.use(
     const normalized = normalizeApiError(error);
     (error as AxiosError & { normalized?: ApiError }).normalized = normalized;
 
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    const method = (error.config?.method || "GET").toUpperCase();
+    const url = `${error.config?.baseURL || ""}${error.config?.url || ""}`;
+    const status = error.response?.status;
+    const responseData = error.response?.data;
+
+    logError("[API ERROR]", {
+      method,
+      url,
+      status,
+      message: normalized.message,
+      response: responseData,
+    });
+
+    if (status === 401 || status === 403) {
       handleUnauthorized();
     } else if (normalized.isNetworkError) {
       logError("Network error:", normalized.message);

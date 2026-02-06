@@ -1,6 +1,7 @@
 // src/components/KanjiSelector.tsx
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import api from "../api/axios";
 
 interface KanjiType {
   id: string;
@@ -19,8 +20,6 @@ interface ApiResponse {
   count?: number;
   message?: string;
 }
-
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 // Default counts for each level (fallback values)
 const DEFAULT_KANJI_COUNTS: Record<string, number> = {
@@ -124,39 +123,16 @@ export function KanjiSelector({
           const level = kanji.id.split("-")[1].toUpperCase(); // "jlpt-n5" -> "N5"
 
           try {
-            const response = await fetch(`${BASE_URL}/kanji/jlpt/${level}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
+            const response = await api.get(`/kanji/jlpt/${level}`);
+            const data: ApiResponse = response.data;
 
-            // Nếu API trả về thành công, cập nhật count từ data length
-            if (response.ok) {
-              const data: ApiResponse = await response.json();
-
-              if (data.success && data.data) {
-                updatedKanjiList[i] = {
-                  ...kanji,
-                  count: data.data.length,
-                  subtitle: `~${data.data.length.toLocaleString()} Kanji chuẩn thi`,
-                };
-              }
-            }
-            // Nếu API trả về lỗi 401 (Unauthorized) hoặc 404, sử dụng giá trị mặc định
-            else if (response.status === 401 || response.status === 404) {
-              console.log(
-                `API ${kanji.id} không khả dụng, dùng giá trị mặc định`,
-              );
+            if (data.success && data.data) {
               updatedKanjiList[i] = {
                 ...kanji,
-                count: DEFAULT_KANJI_COUNTS[kanji.id],
-                subtitle: `~${DEFAULT_KANJI_COUNTS[kanji.id].toLocaleString()} Kanji chuẩn thi`,
+                count: data.data.length,
+                subtitle: `~${data.data.length.toLocaleString()} Kanji chuẩn thi`,
               };
-            }
-            // Các lỗi khác
-            else {
-              console.warn(`API lỗi ${response.status} cho ${kanji.id}`);
+            } else {
               updatedKanjiList[i] = {
                 ...kanji,
                 count: DEFAULT_KANJI_COUNTS[kanji.id],
@@ -220,30 +196,8 @@ export function KanjiSelector({
       setLoadingCard(typeId);
 
       try {
-        const response = await fetch(`${BASE_URL}/kanji/jlpt/${level}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          if (response.status === 401) {
-            toast.error(`Vui lòng đăng nhập để truy cập Kanji ${level}. 😿`);
-          } else if (response.status === 404) {
-            toast.error(
-              `API cho Kanji ${level} chưa được triển khai. Đang chuyển sang trang thử nghiệm...`,
-            );
-            // Vẫn cho điều hướng đến trang với dữ liệu mẫu
-          } else {
-            toast.error(
-              `Không thể tải Kanji ${level}. Vui lòng thử lại sau! 😿`,
-            );
-            return;
-          }
-        }
-
-        const data: ApiResponse = await response.json();
+        const response = await api.get(`/kanji/jlpt/${level}`);
+        const data: ApiResponse = response.data;
 
         if (data.success && data.data && data.data.length > 0) {
           const pageMapping: Record<string, string> = {
@@ -265,9 +219,15 @@ export function KanjiSelector({
         }
       } catch (error: any) {
         console.error(`Lỗi khi tải Kanji ${level}:`, error);
-        toast.error(
-          `Không thể tải Kanji ${level}. Vui lòng kiểm tra kết nối! 😿`,
-        );
+        if (error?.response?.status === 404) {
+          toast.error(
+            `API cho Kanji ${level} chưa được triển khai. Đang chuyển sang trang thử nghiệm...`,
+          );
+        } else {
+          toast.error(
+            `Không thể tải Kanji ${level}. Vui lòng kiểm tra kết nối! 😿`,
+          );
+        }
       } finally {
         setLoadingCard(null);
       }

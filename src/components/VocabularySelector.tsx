@@ -1,5 +1,6 @@
 // src/components/VocabularySelector.tsx
 import { useState, useEffect } from "react";
+import api from "../api/axios";
 
 interface VocabType {
   id: string;
@@ -16,8 +17,6 @@ interface ApiResponse {
   count?: number;
   message?: string;
 }
-
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 const vocabTypes: VocabType[] = [
   {
@@ -102,27 +101,24 @@ export function VocabularySelector({
         if (vocab.id.startsWith("n")) {
           try {
             // SỬA: Dùng toUpperCase() ở đây
-            const response = await fetch(
-              `${BASE_URL}/vocabulary/${vocab.id.toUpperCase()}/count`,
+            const response = await api.get(
+              `/vocabulary/${vocab.id.toUpperCase()}/count`,
             );
+            const data: ApiResponse = response.data;
 
-            if (!response.ok) {
+            if (!data?.success) {
               console.warn(
                 `API không trả về cho ${vocab.id}, giữ nguyên trạng thái mặc định`,
               );
               continue;
             }
 
-            const data: ApiResponse = await response.json();
-
-            if (data.success) {
-              updatedVocabList[i] = {
-                ...vocab,
-                available: true,
-                count: data.count || 0,
-                subtitle: `~${data.count?.toLocaleString() || "0"} từ vựng chuẩn thi`,
-              };
-            }
+            updatedVocabList[i] = {
+              ...vocab,
+              available: true,
+              count: data.count || 0,
+              subtitle: `~${data.count?.toLocaleString() || "0"} từ vựng chuẩn thi`,
+            };
           } catch (error) {
             console.error(`Lỗi khi gọi API cho ${vocab.id}:`, error);
           }
@@ -157,25 +153,15 @@ export function VocabularySelector({
     if (typeId.startsWith("n")) {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `${BASE_URL}/vocabulary/${typeId.toUpperCase()}/count`,
-        );
+        const response = await api.get(`/vocabulary/${typeId.toUpperCase()}/count`);
+        const data: ApiResponse = response.data;
 
-        if (!response.ok) {
+        if (!data?.success) {
           console.warn(
             `API không khả dụng cho ${typeId}, vẫn cho phép truy cập`,
           );
           // Vẫn cho phép điều hướng dù API không trả về
         } else {
-          const data: ApiResponse = await response.json();
-
-          if (!data.success) {
-            console.warn(
-              `Dữ liệu ${typeId} chưa sẵn sàng, vẫn cho phép truy cập`,
-            );
-            // Vẫn cho phép điều hướng để người dùng tự kiểm tra
-          }
-
           if (data.count === 0) {
             console.warn(`Dữ liệu ${typeId} đang trống, vẫn cho phép truy cập`);
             // Vẫn cho phép điều hướng, có thể sẽ hiển thị thông báo bên trong component
