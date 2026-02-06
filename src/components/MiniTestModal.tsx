@@ -191,9 +191,9 @@ export function MiniTestModal({
         setLoading(true);
 
         try {
-          const checkRes = await api.get(
-            `/grammar-tests/check?lesson_id=${lessonId}`,
-          );
+          const checkRes = await api.get(`/grammar-tests/check`, {
+            params: { lessonId },
+          });
           if (checkRes.data.hasSubmitted) {
             setHasPriorHistory(true);
           }

@@ -1,5 +1,6 @@
 // src/components/GrammarSelector.tsx
 import { useState, useEffect } from "react";
+import api from "../api/axios";
 
 interface GrammarType {
   id: string;
@@ -16,8 +17,6 @@ interface ApiResponse {
   data?: number; // SỬA: Đổi từ count sang data
   message?: string;
 }
-
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 const grammarTypes: GrammarType[] = [
   {
@@ -105,20 +104,19 @@ export function GrammarSelector({
         if (grammar.id.startsWith("n")) {
           try {
             // SỬA: Dùng đúng endpoint mới với /api/grammar/jlpt/{level}/count
-            const response = await fetch(
-              `${BASE_URL}/grammar/jlpt/${grammar.id.toUpperCase()}/count`,
+            const response = await api.get(
+              `/grammar/jlpt/${grammar.id.toUpperCase()}/count`,
             );
+            const data: ApiResponse = response.data;
 
-            if (!response.ok) {
+            if (!data?.success) {
               console.warn(
                 `API không trả về cho ${grammar.id}, giữ nguyên trạng thái mặc định`,
               );
               continue;
             }
 
-            const data: ApiResponse = await response.json();
-
-            if (data.success && data.data !== undefined) {
+            if (data.data !== undefined) {
               // SỬA: Lấy data.data thay vì data.count
               updatedGrammarList[i] = {
                 ...grammar,
@@ -126,11 +124,6 @@ export function GrammarSelector({
                 count: data.data || 0,
                 subtitle: `~${data.data?.toLocaleString() || "0"} cấu trúc ngữ pháp`,
               };
-            } else if (data.success === false) {
-              console.warn(
-                `API trả về không thành công cho ${grammar.id}:`,
-                data.message,
-              );
             }
           } catch (error) {
             console.error(`Lỗi khi gọi API cho ${grammar.id}:`, error);
@@ -168,24 +161,17 @@ export function GrammarSelector({
       setIsLoading(true);
       try {
         // SỬA: Dùng đúng endpoint mới
-        const response = await fetch(
-          `${BASE_URL}/grammar/jlpt/${typeId.toUpperCase()}/count`,
+        const response = await api.get(
+          `/grammar/jlpt/${typeId.toUpperCase()}/count`,
         );
+        const data: ApiResponse = response.data;
 
-        if (!response.ok) {
+        if (!data?.success) {
           console.warn(
             `API không khả dụng cho ${typeId}, vẫn cho phép truy cập`,
           );
           // Vẫn cho phép điều hướng dù API không trả về
         } else {
-          const data: ApiResponse = await response.json();
-
-          if (!data.success) {
-            console.warn(
-              `Dữ liệu ${typeId} chưa sẵn sàng, vẫn cho phép truy cập`,
-            );
-          }
-
           if (data.data === 0) {
             console.warn(`Dữ liệu ${typeId} đang trống, vẫn cho phép truy cập`);
           }
