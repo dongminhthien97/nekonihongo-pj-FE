@@ -121,6 +121,10 @@ const parseMultipleChoiceOptions = (text: string) => {
   return matches;
 };
 
+
+const buildAnswerKey = (lineIdx: number, itemIdx: number) =>
+  `${lineIdx}-${itemIdx}`;
+
 export function MiniTestModal({
   isOpen,
   onClose,
@@ -134,7 +138,7 @@ export function MiniTestModal({
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [answers, setAnswers] = useState<
-    Record<number, Record<number, string>>
+    Record<number, Record<string, string>>
   >({});
   const [rearrangeItems, setRearrangeItems] = useState<
     Record<number, string[]>
@@ -152,7 +156,7 @@ export function MiniTestModal({
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const [draftAnswers, setDraftAnswers] = useState<
-    Record<number, Record<number, string>>
+    Record<number, Record<string, string>>
   >({});
 
   // Reset states khi modal đóng
@@ -191,9 +195,9 @@ export function MiniTestModal({
         setLoading(true);
 
         try {
-          const checkRes = await api.get(
-            `/grammar-tests/check?lesson_id=${lessonId}`,
-          );
+          const checkRes = await api.get(`/grammar-tests/check`, {
+            params: { lessonId },
+          });
           if (checkRes.data.hasSubmitted) {
             setHasPriorHistory(true);
           }
@@ -216,20 +220,25 @@ export function MiniTestModal({
           setQuestions(formatted);
 
           const initialRearrange: Record<number, string[]> = {};
-          formatted.forEach((q: Question) => {
-  if (q.question_type === "rearrange" || q.question_type === "reorder") {
-    const tokens = q.raw_text
-      .replace(/[()]/g, "")
-      .split(/[\s/]+/)
-      .map((w) => w.trim())
-      .filter(Boolean);
+          const initialAnswers: Record<number, Record<string, string>> = {};
 
-    if (tokens.length > 0) {
-      initialRearrange[q.id] = tokens;
-    }
-  }
-});
+          formatted.forEach((q: Question) => {
+            if (q.question_type === "rearrange" || q.question_type === "reorder") {
+              const tokens = q.raw_text
+                .replace(/[()]/g, "")
+                .split(/[\s/]+/)
+                .map((w) => w.trim())
+                .filter(Boolean);
+
+              if (tokens.length > 0) {
+                initialRearrange[q.id] = tokens;
+                initialAnswers[q.id] = { 0: tokens.join(" ") };
+              }
+            }
+          });
+
           setRearrangeItems(initialRearrange);
+          setAnswers(initialAnswers);
         } else {
           if (onError) {
             onError(
@@ -368,10 +377,10 @@ export function MiniTestModal({
     const [movedItem] = newItems.splice(sourceIndex, 1);
     newItems.splice(targetIndex, 0, movedItem);
 
-    setRearrangeItems({
-      ...rearrangeItems,
+    setRearrangeItems((prev) => ({
+      ...prev,
       [questionId]: newItems,
-    });
+    }));
 
     setAnswers((prev) => ({
       ...prev,
@@ -380,7 +389,7 @@ export function MiniTestModal({
   };
 
   // --- HANDLERS ---
-  const handleAnswerChange = (qId: number, index: number, value: string) => {
+  const handleAnswerChange = (qId: number, index: string | number, value: string) => {
     setAnswers((prev) => {
       const currentQuestionAnswers = { ...(prev[qId] || {}) };
       return {
@@ -643,9 +652,7 @@ export function MiniTestModal({
                 });
               }
 
-              const uniqueIndex = parseInt(
-                `${question.id}${lineIdx}${blankCount}`,
-              );
+              const uniqueIndex = buildAnswerKey(lineIdx, blankCount);
 
               parts.push({
                 type: "input",
@@ -662,6 +669,24 @@ export function MiniTestModal({
                 type: "text",
                 content: line.substring(lastIndex),
               });
+            }
+
+            if (!parts.some((part) => part.type === "input")) {
+              const fallbackKey = buildAnswerKey(lineIdx, 0);
+              return (
+                <div key={lineIdx} className="fill-blank-line fill-blank-fallback">
+                  <div>{renderWithFurigana(line)}</div>
+                  <textarea
+                    value={answers[question.id]?.[fallbackKey] || ""}
+                    onChange={(e) =>
+                      handleAnswerChange(question.id, fallbackKey, e.target.value)
+                    }
+                    className="blank-input-field blank-textarea-field"
+                    placeholder="Nhập câu trả lời..."
+                    rows={2}
+                  />
+                </div>
+              );
             }
 
             return (
@@ -726,9 +751,7 @@ export function MiniTestModal({
                 );
               }
 
-              const uniqueChoiceIndex = parseInt(
-                `${question.id}${lineIdx}${choiceIndex}`,
-              );
+              const uniqueChoiceIndex = buildAnswerKey(lineIdx, choiceIndex);
               const currentVal = answers[question.id]?.[uniqueChoiceIndex];
 
               elements.push(
@@ -981,6 +1004,7 @@ export function MiniTestModal({
           }
           
           .test-modal {
+            pointer-events: auto;
             background: #FDFCFE;
             width: 100%;
             max-width: 96rem;
@@ -1383,6 +1407,22 @@ export function MiniTestModal({
           
           .blank-input-field::placeholder {
             color: #c4b5fd;
+          }
+
+          .fill-blank-fallback {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+            line-height: 1.75rem;
+          }
+
+          .blank-textarea-field {
+            width: 100%;
+            min-height: 5.5rem;
+            text-align: left;
+            padding: 0.75rem;
+            resize: vertical;
           }
           
           .choice-container {

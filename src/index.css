@@ -2747,3 +2747,8 @@ button[title="Thoát"]:hover span {
   }
 }
 
+
+/* Utility font class used at app root */
+.font-mplus {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+}
