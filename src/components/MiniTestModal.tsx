@@ -635,7 +635,7 @@ export function MiniTestModal({
 
             const parts: Array<
               | { type: "text"; content: string }
-              | { type: "input"; index: number; content: string }
+              | { type: "input"; index: string; content: string }
             > = [];
 
             let match;
