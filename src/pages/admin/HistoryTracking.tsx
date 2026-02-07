@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Footer } from "../../components/Footer";
-import axios from "axios";
+import api from "../../api/axios";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 import {
@@ -12,7 +12,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import api from "../../api/axios";
 
 interface ActivityLog {
   id: number;
@@ -31,7 +30,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
   const [activities, setActivities] = useState<ActivityLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().split("T")[0],
   );
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
@@ -88,17 +87,14 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
       try {
         setIsLoading(true);
 
-        const res = await axios.get(
-          "http://localhost:8080/api/admin/activity-logs",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            timeout: 10000,
-            withCredentials: true,
-          }
-        );
+        const res = await api.get("/admin/activity-logs", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          timeout: 10000,
+          withCredentials: true,
+        });
 
         let logs: ActivityLog[] = [];
 
@@ -116,7 +112,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
         // Sắp xếp theo thời gian mới nhất trước
         logs.sort(
           (a, b) =>
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
         );
 
         setActivities(logs);
@@ -178,8 +174,8 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
       return;
     }
 
-    axios
-      .get("http://localhost:8080/api/admin/activity-logs", {
+    api
+      .get("/admin/activity-logs", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -192,7 +188,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
 
         logs.sort(
           (a, b) =>
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
         );
 
         setActivities(logs);
@@ -374,7 +370,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
                           <td className="table-cell text-gray-600">
                             {format(
                               new Date(log.timestamp),
-                              "HH:mm:ss dd/MM/yyyy"
+                              "HH:mm:ss dd/MM/yyyy",
                             )}
                           </td>
                           <td className="table-cell">
@@ -392,7 +388,7 @@ export function HistoryTracking({ onNavigate }: HistoryTrackingProps) {
                                 e.stopPropagation();
                                 if (
                                   window.confirm(
-                                    "Bạn có chắc chắn muốn xóa log này?"
+                                    "Bạn có chắc chắn muốn xóa log này?",
                                   )
                                 ) {
                                   handleDeleteLog(log.id);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import apiClient from "../../lib/api";
 import {
   X,
   Check,
@@ -253,54 +254,9 @@ export function AdminTestDetailModal({
 
       const apiUrl = `/api/grammar/mini-test/questions?lesson_id=${test.lessonId}`;
 
-      const response = await fetch(apiUrl, {
-        headers,
-        credentials: "include",
-        method: "GET",
-      });
+      const response = await apiClient.get(apiUrl);
 
-      if (!response.ok) {
-        const fallbackUrl = `/grammar/mini-test/questions?lesson_id=${test.lessonId}`;
-
-        const fallbackResponse = await fetch(fallbackUrl, {
-          headers,
-          credentials: "include",
-          method: "GET",
-        });
-
-        if (!fallbackResponse.ok) {
-          throw new Error(
-            `Không thể kết nối đến server. Status: ${response.status}`,
-          );
-        }
-
-        const contentType = fallbackResponse.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          const text = await fallbackResponse.text();
-          throw new Error("Server trả về dữ liệu không đúng định dạng JSON");
-        }
-
-        const responseData = await fallbackResponse.json();
-
-        const processedData = processGrammarQuestionsData(responseData);
-        if (!processedData || processedData.length === 0) {
-          throw new Error("Không tìm thấy câu hỏi trong phản hồi");
-        }
-
-        setGrammarQuestions(processedData);
-        toast.success(`Đã tải ${processedData.length} câu hỏi từ server`);
-        return;
-      }
-
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await response.text();
-        throw new Error("Server trả về dữ liệu không đúng định dạng JSON");
-      }
-
-      const responseData = await response.json();
-
-      const processedData = processGrammarQuestionsData(responseData);
+      const processedData = processGrammarQuestionsData(response.data);
       if (!processedData || processedData.length === 0) {
         throw new Error("Không tìm thấy câu hỏi trong phản hồi");
       }
